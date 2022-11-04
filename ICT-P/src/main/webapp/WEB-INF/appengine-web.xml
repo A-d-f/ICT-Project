@@ -8,5 +8,9 @@
   <system-properties>
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
   </system-properties>
+  <env-variables>
+            <env-var name="GOOGLE_APPLICATION_CREDENTIALS"
+                value="webapp/speechtotext-367509-3b5b2c529e56.json" />
+        </env-variables>
 
 </appengine-web-app>
