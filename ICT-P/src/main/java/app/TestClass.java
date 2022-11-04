@@ -1,5 +1,6 @@
 package app;
 
+import java.awt.List;
 import java.util.ArrayList;
 
 import javax.sound.sampled.AudioFormat;
@@ -27,6 +28,8 @@ import com.google.cloud.speech.v1.StreamingRecognizeResponse;
 
 public class TestClass {
 	
+	
+	
 	public static void main(String[] args) throws Exception {
 		streamingMicRecognize();
 		
@@ -34,7 +37,6 @@ public class TestClass {
 	}
 	public static void streamingMicRecognize() throws Exception {
 		
-		//Credential creds = GoogleCredential.getApplicationDefault();
 	    ResponseObserver<StreamingRecognizeResponse> responseObserver = null;
 	    try (SpeechClient client = SpeechClient.create()) {
 
@@ -49,10 +51,38 @@ public class TestClass {
 	            }
 
 	            public void onComplete() {
+	            	String[] keywords = new String[] {"puu","kaatunut"};
+	            	ArrayList<String> foundWords = new ArrayList<String>();
+	            	
 	              for (StreamingRecognizeResponse response : responses) {
 	                StreamingRecognitionResult result = response.getResultsList().get(0);
 	                SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
 	                System.out.printf("Transcript : %s\n", alternative.getTranscript());
+	                
+	                String string = alternative.getTranscript();
+	                System.out.println(string);
+	                
+	                String[] list = string.split(" ");
+	                
+	                for (String a : keywords) {
+	                    System.out.println("keyword: " + a);
+	                    
+	                    for (String b: list) {
+	                    	if (b.equals(a)) {
+	                    		System.out.println("equals");
+	                    		foundWords.add(b);
+	                    	}
+	                    	
+	                    	else {
+	                    		System.out.println("not");
+	                    	}
+	                    }
+	                
+	                }
+	                
+	                for (int i = 0; i < foundWords.size(); i++) {
+	                	System.out.println("foundWords: " + foundWords.get(i) + " indeksi: " + i);
+	                }
 	              }
 	            }
 
@@ -106,11 +136,11 @@ public class TestClass {
 	    	  
 	        long estimatedTime = System.currentTimeMillis() - startTime;
 	        
-	        byte[] data = new byte[3200];
+	        byte[] data = new byte[1600];
 	       
 	        audio.read(data);
 	        
-	        if (estimatedTime > 30000) { // 60 seconds
+	        if (estimatedTime > 15000) { // 60 seconds
 	          System.out.println("Stop speaking.");
 	          targetDataLine.stop();
 	          targetDataLine.close();
