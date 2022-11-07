@@ -142,10 +142,14 @@ public class InfiniteStreamRecognize {
 				public void onComplete(String transcript) {
 					// Initializing empty list for searched keywords
 					// Chosen keywords: "puu" and "kaatunut"
-					String[] keywords = new String[] { "puu", "kaatunut" };
+					String[] keywords = new String[] { "puu", "kaatunut", "tielle" };
+					String[] shoplifting = new String[] {"kauppaan", "varastanut", "karkuun"};
 
 					// Initializing list for matching words found from transcript
-					ArrayList<String> foundWords = new ArrayList<String>();
+					ArrayList<String> foundWords1 = new ArrayList<String>();
+					ArrayList<String> foundWords2 = new ArrayList<String>();
+					int kaatunutPuu = 0;
+					int varkaus = 0;
 
 					// Transcription part
 
@@ -154,7 +158,7 @@ public class InfiniteStreamRecognize {
 
 					// Looping keywords list
 					for (String a : keywords) {
-						System.out.println("keyword: " + a);
+						//System.out.println("keyword: " + a);
 
 						// Looping splitted list
 						for (String b : splittedList) {
@@ -162,19 +166,45 @@ public class InfiniteStreamRecognize {
 							// Printing "equals" and adding it to foundWords list
 							if (b.equalsIgnoreCase(a)) {
 								System.out.println("equals");
-								foundWords.add(b);
+								foundWords1.add(b);
+								kaatunutPuu++;
 
 								// Empty else
 							} else {
+								
+								
+								// do nothing
+							}
+						}
+					}
+					
+					for (String d: shoplifting) {
+						for (String b : splittedList) {
+							// If element of splitted list matches with element of keywords list
+							// Printing "equals" and adding it to foundWords list
+							if (b.equalsIgnoreCase(d)) {
+								System.out.println("equals");
+								foundWords2.add(b);
+								varkaus++;
+
+								// Empty else
+							} else {
+								
+								
 								// do nothing
 							}
 						}
 					}
 
 					// Looping foundWords list and printing it's elements
-					for (int i = 0; i < foundWords.size(); i++) {
-						System.out.println("foundWords: " + foundWords.get(i) + " indeksi: " + i);
-					}
+//					for (int i = 0; i < foundWords.size(); i++) {
+//						System.out.println("foundWords: " + foundWords.get(i) + " indeksi: " + i);
+//					}
+					
+					System.out.println("words in foundWords list: " + foundWords1.toString() + "sanoja listalla foundWords1: " + kaatunutPuu);
+					System.out.println("words in foundWords list: " + foundWords2.toString() + "sanoja listalla foundWords1: " + varkaus);
+					
+					
 
 				}
 
