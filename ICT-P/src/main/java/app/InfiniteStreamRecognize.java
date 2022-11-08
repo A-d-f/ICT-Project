@@ -15,6 +15,7 @@ import com.google.protobuf.Duration;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -52,6 +53,8 @@ public class InfiniteStreamRecognize {
 	private static boolean lastTranscriptWasFinal = false;
 	private static StreamController referenceToStreamController;
 	private static ByteString tempByteString;
+
+	private static String savedTranscript = "";
 
 	public static void main(String... args) {
 		InfiniteStreamRecognizeOptions options = InfiniteStreamRecognizeOptions.fromFlags(args);
@@ -147,16 +150,34 @@ public class InfiniteStreamRecognize {
 				}
 
 				public void onComplete(String transcript) {
-					// Initializing empty list for searched keywords
-					// Chosen keywords: "puu" and "kaatunut"
-					List<String> fallenTree = Arrays.asList("puu", "kaatunut", "tielle");
-					List<String> shoplifting = Arrays.asList("kauppa", "varas", "karkuun");
+
+					// Method for finding and matching keywords from splittedList
+					findKeywords(transcript);
+
+					// Method for saving all transcripts as one String to be used later if needed
+					saveTranscriptToString(transcript);
+				}
+
+				public void findKeywords(String transcript) {
+
+					System.out.println("no modifications " + transcript);
+					transcript = transcript.toLowerCase();
+
+					System.out.println("lowerCaseTranscript? " + transcript);
+
+					// Lists for negative keywords to ignore
+					List<String> negativeFallenKeywords = Arrays.asList("puukko", "puuliiteri");
+					List<String> negativeShoplKeywords = Arrays.asList("");
+					Iterator<String> negativeFallenIterator = negativeFallenKeywords.iterator();
+					// Lists for keywords to search
+					List<String> fallenTreeList = Arrays.asList("puu", "kaatunut", "tielle");
+					List<String> shopliftingList = Arrays.asList("kauppa", "varas", "karkuun");
 
 					// Initializing list for matching words found from transcript
-					ArrayList<String> foundWords1 = new ArrayList<String>();
-					ArrayList<String> foundWords2 = new ArrayList<String>();
-					int kaatunutPuu = 0;
-					int varkaus = 0;
+					ArrayList<String> foundTreeWords = new ArrayList<String>();
+					ArrayList<String> foundShopliftingWords = new ArrayList<String>();
+					int calcFallen = 0;
+					int calcShopl = 0;
 
 					// Transcription part
 
@@ -164,38 +185,61 @@ public class InfiniteStreamRecognize {
 					String[] splittedList = transcript.split(" ");
 
 					// Looping keywords list
-					for (String a : splittedList) {
+					for (String splittedWord : splittedList) {
 						// System.out.println("keyword: " + a);
 
 						// Looping splitted list
 
-						for (String b : fallenTree) {
+						for (String fallenTreeWord : fallenTreeList) {
 							// If element of splitted list matches with element of keywords list
 							// Printing "equals" and adding it to foundWords list
-							if (b.equalsIgnoreCase(a)) {
-								System.out.println("equals");
-								foundWords1.add(b);
-								kaatunutPuu++;
+							if (splittedWord.contains(fallenTreeWord)) {
+
+//								for (String negativeFallenWord : negativeFallenKeywords) {
+									
+
+									while (negativeFallenIterator.hasNext()) {
+										
+										String negativeWord = negativeFallenIterator.next().toString();
+										System.out.println("splitted " + splittedWord + " negative " + negativeWord);
+										if (splittedWord.equals(negativeWord)) {
+											System.out.println("negative word found");
+										
+										
+										} else {
+											System.out.println("equals");
+											foundTreeWords.add(splittedWord);
+											calcFallen++;
+										
+										}
+									}
+									
+//								}
 
 							}
 						}
-						for (String c : shoplifting) {
-							if (c.equalsIgnoreCase(a)) {
+						for (String shopliftingWord : shopliftingList) {
+							if (splittedWord.contains(shopliftingWord)) {
 								System.out.println("equals");
-								foundWords2.add(c);
-								varkaus++;
+								foundShopliftingWords.add(shopliftingWord);
+								calcShopl++;
 							}
 						}
-
 					}
 
-					System.out.println("words in foundWords1 list: " + foundWords1.toString()
-							+ " sanoja listalla foundWords1: " + kaatunutPuu);
-					System.out.println("words in foundWords2 list: " + foundWords2.toString()
-							+ " sanoja listalla foundWords2: " + varkaus);
+					System.out.println("words in foundTreedWords list: " + foundTreeWords.toString()
+							+ " number of words in foundTreeWords: " + calcFallen);
+					System.out.println("words in foundShopliftingWords list: " + foundShopliftingWords.toString()
+							+ " number of words in foundShopliftingWords: " + calcShopl);
 
 				}
-				
+
+				public void saveTranscriptToString(String transcript) {
+
+					savedTranscript = savedTranscript + transcript;
+
+					System.out.println(savedTranscript);
+				}
 
 				public void onError(Throwable t) {
 				}
