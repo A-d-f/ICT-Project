@@ -14,9 +14,14 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.Duration;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -130,7 +135,9 @@ public class InfiniteStreamRecognize {
 						isFinalEndTime = resultEndTimeInMS;
 						lastTranscriptWasFinal = true;
 						String transcript = alternative.getTranscript();
-						onComplete(transcript);
+						System.out.println("mikä tämä on " + alternative);
+						System.out.println("response " + response);
+						//onComplete(transcript);
 					} else {
 						System.out.print(RED);
 						System.out.print("\033[2K\r");
@@ -142,8 +149,8 @@ public class InfiniteStreamRecognize {
 				public void onComplete(String transcript) {
 					// Initializing empty list for searched keywords
 					// Chosen keywords: "puu" and "kaatunut"
-					String[] keywords = new String[] { "puu", "kaatunut", "tielle" };
-					String[] shoplifting = new String[] {"kauppaan", "varastanut", "karkuun"};
+					List<String> fallenTree = Arrays.asList("puu", "kaatunut", "tielle");
+					List<String> shoplifting = Arrays.asList("kauppa", "varas", "karkuun");
 
 					// Initializing list for matching words found from transcript
 					ArrayList<String> foundWords1 = new ArrayList<String>();
@@ -157,11 +164,12 @@ public class InfiniteStreamRecognize {
 					String[] splittedList = transcript.split(" ");
 
 					// Looping keywords list
-					for (String a : keywords) {
-						//System.out.println("keyword: " + a);
+					for (String a : splittedList) {
+						// System.out.println("keyword: " + a);
 
 						// Looping splitted list
-						for (String b : splittedList) {
+
+						for (String b : fallenTree) {
 							// If element of splitted list matches with element of keywords list
 							// Printing "equals" and adding it to foundWords list
 							if (b.equalsIgnoreCase(a)) {
@@ -170,43 +178,27 @@ public class InfiniteStreamRecognize {
 								kaatunutPuu++;
 
 								// Empty else
-							} else {
-								
-								
-								// do nothing
 							}
 						}
-					}
-					
-					for (String d: shoplifting) {
-						for (String b : splittedList) {
-							// If element of splitted list matches with element of keywords list
-							// Printing "equals" and adding it to foundWords list
-							if (b.equalsIgnoreCase(d)) {
+						for (String c : shoplifting) {
+							if (c.equalsIgnoreCase(a)) {
 								System.out.println("equals");
-								foundWords2.add(b);
+								foundWords2.add(c);
 								varkaus++;
-
-								// Empty else
-							} else {
-								
-								
-								// do nothing
 							}
 						}
+
+						// do nothing
+
 					}
 
-					// Looping foundWords list and printing it's elements
-//					for (int i = 0; i < foundWords.size(); i++) {
-//						System.out.println("foundWords: " + foundWords.get(i) + " indeksi: " + i);
-//					}
-					
-					System.out.println("words in foundWords list: " + foundWords1.toString() + "sanoja listalla foundWords1: " + kaatunutPuu);
-					System.out.println("words in foundWords list: " + foundWords2.toString() + "sanoja listalla foundWords1: " + varkaus);
-					
-					
+					System.out.println("words in foundWords1 list: " + foundWords1.toString()
+							+ " sanoja listalla foundWords1: " + kaatunutPuu);
+					System.out.println("words in foundWords2 list: " + foundWords2.toString()
+							+ " sanoja listalla foundWords2: " + varkaus);
 
 				}
+//				
 
 				public void onError(Throwable t) {
 				}
@@ -214,7 +206,7 @@ public class InfiniteStreamRecognize {
 				@Override
 				public void onComplete() {
 					// TODO Auto-generated method stub
-					
+
 				}
 			};
 			clientStream = client.streamingRecognizeCallable().splitCall(responseObserver);
