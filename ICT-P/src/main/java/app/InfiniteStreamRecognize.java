@@ -190,30 +190,33 @@ public class InfiniteStreamRecognize {
 
 						// Looping splitted list
 
+						// TÄMÄ KÄY LÄPI VAIN ENSIMMÄISEN SPLITTEDWORDIN, HYPPÄÄ LIIAN AIKAISIN
+						// SEURAAVAAN SPLITTEDWORDIIN > KÄY PUU-SANAN VAIN KERRAN LÄPI
+						// TODENNÄKÖINEN ONGELMA ON TÄSSÄ FORISSA?!
+						// PUUTTUUKO 1 LOOPPI JOKA KÄY TARKASTELEE SAMAA FALLENTREEWORDIA USEAMMAN
+						// KERRAN?
 						for (String fallenTreeWord : fallenTreeList) {
 							// If element of splitted list matches with element of keywords list
 							// Printing "equals" and adding it to foundWords list
 							if (splittedWord.contains(fallenTreeWord)) {
 
 //								for (String negativeFallenWord : negativeFallenKeywords) {
-									
 
-									while (negativeFallenIterator.hasNext()) {
-										
-										String negativeWord = negativeFallenIterator.next().toString();
-										System.out.println("splitted " + splittedWord + " negative " + negativeWord);
-										if (splittedWord.equals(negativeWord)) {
-											System.out.println("negative word found");
-										
-										
-										} else {
-											System.out.println("equals");
-											foundTreeWords.add(splittedWord);
-											calcFallen++;
-										
-										}
+								while (negativeFallenIterator.hasNext()) {
+
+									String negativeWord = negativeFallenIterator.next().toString();
+									System.out.println("splitted " + splittedWord + " negative " + negativeWord);
+									if (splittedWord.equals(negativeWord)) {
+										System.out.println("negative word found");
+
+									} else {
+										System.out.println("equals");
+										foundTreeWords.add(splittedWord);
+										calcFallen++;
+
 									}
-									
+								}
+
 //								}
 
 							}
