@@ -135,9 +135,9 @@ public class InfiniteStreamRecognize {
 						isFinalEndTime = resultEndTimeInMS;
 						lastTranscriptWasFinal = true;
 						String transcript = alternative.getTranscript();
-						System.out.println("mikä tämä on " + alternative);
-						System.out.println("response " + response);
-						//onComplete(transcript);
+//						System.out.println("mikä tämä on " + alternative);
+//						System.out.println("response " + response);
+						onComplete(transcript);
 					} else {
 						System.out.print(RED);
 						System.out.print("\033[2K\r");
@@ -177,7 +177,6 @@ public class InfiniteStreamRecognize {
 								foundWords1.add(b);
 								kaatunutPuu++;
 
-								// Empty else
 							}
 						}
 						for (String c : shoplifting) {
@@ -188,8 +187,6 @@ public class InfiniteStreamRecognize {
 							}
 						}
 
-						// do nothing
-
 					}
 
 					System.out.println("words in foundWords1 list: " + foundWords1.toString()
@@ -198,7 +195,7 @@ public class InfiniteStreamRecognize {
 							+ " sanoja listalla foundWords2: " + varkaus);
 
 				}
-//				
+				
 
 				public void onError(Throwable t) {
 				}
