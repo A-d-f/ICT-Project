@@ -174,7 +174,7 @@ public class InfiniteStreamRecognize {
 					
 					
 					List<String> negativeShoplKeywords = Arrays.asList("");
-					Iterator<String> negativeFallenIterator = negativeFallenKeywords.iterator();
+					
 					// Lists for keywords to search
 					List<String> fallenTreeList = Arrays.asList("puu", "kaatunut", "tielle");
 					List<String> shopliftingList = Arrays.asList("kauppa", "varas", "karkuun");
@@ -193,7 +193,7 @@ public class InfiniteStreamRecognize {
 					// Looping keywords list
 					for (String splittedWord : splittedList) {
 						// System.out.println("keyword: " + a);
-
+						
 						// Looping splitted list
 
 						// TÄMÄ KÄY LÄPI VAIN ENSIMMÄISEN SPLITTEDWORDIN, HYPPÄÄ LIIAN AIKAISIN
@@ -207,21 +207,21 @@ public class InfiniteStreamRecognize {
 							if (splittedWord.contains(fallenTreeWord)) {
 
 //								for (String negativeFallenWord : negativeFallenKeywords) {
-
-								while (negativeFallenIterator.hasNext()) {
-
-									String negativeWord = negativeFallenIterator.next().toString();
-									System.out.println("splitted " + splittedWord + " negative " + negativeWord);
-									if (splittedWord.equals(negativeWord)) {
-										System.out.println("negative word found");
-
-									} else {
-										System.out.println("equals");
-										foundTreeWords.add(splittedWord);
-										calcFallen++;
-
-									}
-								}
+								checkNegativeWords(splittedWord, negativeFallenKeywords);
+//								while (negativeFallenIterator.hasNext()) {
+//
+//									String negativeWord = negativeFallenIterator.next().toString();
+//									System.out.println("splitted " + splittedWord + " negative " + negativeWord);
+//									if (splittedWord.equals(negativeWord)) {
+//										System.out.println("negative word found");
+//
+//									} else {
+//										System.out.println("equals");
+//										foundTreeWords.add(splittedWord);
+//										calcFallen++;
+//
+//									}
+//								}
 
 //								}
 
@@ -241,6 +241,25 @@ public class InfiniteStreamRecognize {
 					System.out.println("words in foundShopliftingWords list: " + foundShopliftingWords.toString()
 							+ " number of words in foundShopliftingWords: " + calcShopl);
 
+				}
+
+				public void checkNegativeWords(String splittedWord, List<String> negativeFallenKeywords) {
+					Iterator<String> negativeFallenIterator = negativeFallenKeywords.iterator();
+					while (negativeFallenIterator.hasNext()) {
+
+						String negativeWord = negativeFallenIterator.next().toString();
+						System.out.println("splitted " + splittedWord + " negative " + negativeWord);
+						if (splittedWord.equals(negativeWord)) {
+							System.out.println("negative word found "+ negativeWord);
+
+						} else {
+							System.out.println("not found"+ splittedWord);
+							//foundTreeWords.add(splittedWord);
+							//calcFallen++;
+
+						}
+					}
+					
 				}
 
 				public void saveTranscriptToString(String transcript) {
