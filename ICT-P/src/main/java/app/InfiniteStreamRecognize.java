@@ -166,7 +166,8 @@ public class InfiniteStreamRecognize {
 					System.out.println("lowerCaseTranscript? " + transcript);
 
 					// Lists for negative keywords to ignore
-					List<String> negativeFallenKeywords = Arrays.asList("puukko", "puukkoa", "puuliiteri", "puuliiteristä", "puuliiterissä", "päällystää", "puimuri");
+					List<String> negativeFallenKeywords = Arrays.asList("puukko", "puukkoa", "puuliiteri",
+							"puuliiteristä", "puuliiterissä", "päällystää", "puimuri");
 					List<String> negativeShopliftingKeywords = Arrays.asList("ryöstäytyä", "varasto", "varaslähtö");
 
 					/// TESTAA OSAAKO YHDYSSANOJA ESIM MOOTTORITIE
@@ -242,14 +243,14 @@ public class InfiniteStreamRecognize {
 					while (negativeIterator.hasNext()) {
 
 						String negativeWord = negativeIterator.next().toString();
-						//System.out.println("splitted " + splittedWord + " negative " + negativeWord);
+						// System.out.println("splitted " + splittedWord + " negative " + negativeWord);
 						if (splittedWord.equals(negativeWord)) {
-							//System.out.println("negative word found " + negativeWord);
+							// System.out.println("negative word found " + negativeWord);
 							neg = negativeWord;
 							found = true;
 							break;
 						} else {
-							//System.out.println("not found" + splittedWord);
+							// System.out.println("not found" + splittedWord);
 							found = false;
 
 						}
