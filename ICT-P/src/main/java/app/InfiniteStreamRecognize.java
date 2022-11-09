@@ -167,6 +167,12 @@ public class InfiniteStreamRecognize {
 
 					// Lists for negative keywords to ignore
 					List<String> negativeFallenKeywords = Arrays.asList("puukko", "puuliiteri");
+					
+					///TESTAA OSAAKO YHDYSSANOJA ESIM MOOTTORITIE
+					
+					
+					
+					
 					List<String> negativeShoplKeywords = Arrays.asList("");
 					Iterator<String> negativeFallenIterator = negativeFallenKeywords.iterator();
 					// Lists for keywords to search
