@@ -170,7 +170,6 @@ public class InfiniteStreamRecognize {
 							"puuliiteristä", "puuliiterissä", "päällystää", "puimuri");
 					List<String> negativeShopliftingKeywords = Arrays.asList("ryöstäytyä", "varasto", "varaslähtö");
 
-					/// TESTAA OSAAKO YHDYSSANOJA ESIM MOOTTORITIE
 
 					// Lists for keywords to search
 					List<String> fallenTreeList = Arrays.asList("puu", "pui", "kaatu", "pääll");
@@ -264,7 +263,7 @@ public class InfiniteStreamRecognize {
 
 					savedTranscript = savedTranscript + transcript;
 
-					System.out.println(savedTranscript);
+					//System.out.println(savedTranscript);
 				}
 
 				public void onError(Throwable t) {
