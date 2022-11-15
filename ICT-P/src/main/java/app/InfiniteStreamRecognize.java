@@ -87,13 +87,7 @@ public class InfiniteStreamRecognize {
 		try {
 			infiniteStreamingRecognize(options.langCode);
 			
-			System.out.println("ollaanko tryssa?");
-			String uri = "http://127.0.0.1:8080/hello";
 			
-			Speech s = new Speech("1", "Mitä kuuluu?", "Hyvää kuuluu");
-			javax.ws.rs.client.Client c = ClientBuilder.newClient();
-			WebTarget wt = c.target(uri);
-			Builder b = wt.request();
 		} catch (Exception e) {
 			System.out.println("Exception caught: " + e);
 		}
@@ -116,6 +110,16 @@ public class InfiniteStreamRecognize {
 
 			@Override
 			public void run() {
+				
+				System.out.println("ollaanko tryssa?");
+				String uri = "http://127.0.0.1:8080/hello";
+				
+				Speech s = new Speech("1", "Mitä kuuluu?", "Hyvää kuuluu");
+				javax.ws.rs.client.Client c = ClientBuilder.newClient();
+				WebTarget wt = c.target(uri);
+				Builder b = wt.request(); 
+				
+				
 				System.out.println(YELLOW);
 				System.out.println("Start speaking...Press Ctrl-C to stop");
 				targetDataLine.start();
@@ -133,6 +137,8 @@ public class InfiniteStreamRecognize {
 						System.out.println("Microphone input buffering interrupted : " + e.getMessage());
 					}
 				}
+				
+				
 			}
 		}
 
