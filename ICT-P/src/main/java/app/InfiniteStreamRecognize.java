@@ -3,6 +3,7 @@ package app;
 import com.google.api.gax.rpc.ClientStream;
 import com.google.api.gax.rpc.ResponseObserver;
 import com.google.api.gax.rpc.StreamController;
+import com.google.api.server.spi.Client;
 import com.google.cloud.speech.v1p1beta1.RecognitionConfig;
 import com.google.cloud.speech.v1p1beta1.SpeechClient;
 import com.google.cloud.speech.v1p1beta1.SpeechRecognitionAlternative;
@@ -12,6 +13,8 @@ import com.google.cloud.speech.v1p1beta1.StreamingRecognizeRequest;
 import com.google.cloud.speech.v1p1beta1.StreamingRecognizeResponse;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Duration;
+import com.sun.xml.internal.stream.Entity;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +31,13 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.TargetDataLine;
+
+import data.Speech;
+
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 
 public class InfiniteStreamRecognize {
 
@@ -56,7 +66,17 @@ public class InfiniteStreamRecognize {
 
 	private static String savedTranscript = "";
 
-	public static void main(String... args) {
+	public static void main(String[] args) {
+		
+	
+		/*
+		 * s = b.get(Speech.class);
+		 * 
+		 * String st=b.get(String.class); System.out.println("Object: " + s);
+		 * System.out.println("JSON: " + st);
+		 */
+		
+		
 		InfiniteStreamRecognizeOptions options = InfiniteStreamRecognizeOptions.fromFlags(args);
 		if (options == null) {
 			// Could not parse.
@@ -66,6 +86,14 @@ public class InfiniteStreamRecognize {
 
 		try {
 			infiniteStreamingRecognize(options.langCode);
+			
+			System.out.println("ollaanko tryssa?");
+			String uri = "http://127.0.0.1:8080/hello";
+			
+			Speech s = new Speech("1", "Mitä kuuluu?", "Hyvää kuuluu");
+			javax.ws.rs.client.Client c = ClientBuilder.newClient();
+			WebTarget wt = c.target(uri);
+			Builder b = wt.request();
 		} catch (Exception e) {
 			System.out.println("Exception caught: " + e);
 		}
@@ -91,9 +119,11 @@ public class InfiniteStreamRecognize {
 				System.out.println(YELLOW);
 				System.out.println("Start speaking...Press Ctrl-C to stop");
 				targetDataLine.start();
+				System.out.println("haloo" + targetDataLine.isActive());
+				System.out.println("haloojaa" + targetDataLine.isOpen());
 				byte[] data = new byte[BYTES_PER_BUFFER];
 				while (targetDataLine.isOpen()) {
-					try {
+										try {
 						int numBytesRead = targetDataLine.read(data, 0, data.length);
 						if ((numBytesRead <= 0) && (targetDataLine.isOpen())) {
 							continue;
@@ -111,6 +141,10 @@ public class InfiniteStreamRecognize {
 		Thread micThread = new Thread(micrunnable);
 		ResponseObserver<StreamingRecognizeResponse> responseObserver = null;
 		try (SpeechClient client = SpeechClient.create()) {
+			
+			System.out.println("tulostellaan");
+			System.out.println("are you alive" + micThread.isAlive());
+			System.out.println("are you alive" + micThread.interrupted());
 			ClientStream<StreamingRecognizeRequest> clientStream;
 			responseObserver = new ResponseObserver<StreamingRecognizeResponse>() {
 
