@@ -9,6 +9,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -36,7 +39,6 @@ public class Json {
 				iteratorSize++;
 				iterator2.next();
 			}
-			System.err.println(iteratorSize);
 			
 			while (iterator.hasNext()) {
 				
@@ -45,12 +47,23 @@ public class Json {
 				}
 					
 			}
-			System.err.println("list  "+ listMap);
-			//mapping the hashmap for separate lists
-			listMap.forEach((k, v)-> System.out.println("KEY: " + k + " List: "+ v));
-			System.err.println(listMap.get(1));
+			listMap.forEach((number, incident)-> handleHashmap(incident, number));
+			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void handleHashmap(Object incident, Integer number) {
+		JSONObject jobj=(JSONObject) incident;
+		String incidenttreenegative="negative";
+		String incidenttreekeywords="keywords";
+		JSONArray msg=(JSONArray) jobj.get(incidenttreenegative);
+		JSONArray msg2=(JSONArray) jobj.get(incidenttreekeywords);
+		System.err.println("Negative keywords "+number+": "+ msg);
+		System.err.println("Keywords "+number+": "+ msg2);
+		
+		
 	}
 }
