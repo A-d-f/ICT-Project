@@ -31,6 +31,7 @@ public class Json {
 				ArrayList tempList = new ArrayList();
 				tempList.add(iterator.next());
 				listMap.put("lista",tempList);
+				System.out.println("change");
 				
 				//System.err.println("list: "+ list);
 				i++;
