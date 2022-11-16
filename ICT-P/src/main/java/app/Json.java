@@ -15,32 +15,40 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.google.common.collect.Iterators;
+
 public class Json {
 
 	public static void main(String[] args) {
 		JSONParser parser = new JSONParser();
 		try {
+			// save JSON inside an Object
 			Object data = parser.parse(new FileReader("src/main/java/app/incidentassesments.json"));
-//            
-           
+			// Iterator for going through data object
 			Iterator<Object> iterator = ((ArrayList) data).iterator();
-			int i= 0;
-			Map<String, List<String>> listMap = new HashMap<String,List<String>>();
-			ArrayList list=new ArrayList();
+			// Iterator for calculating size
+			Iterator<Object> iterator2 = ((ArrayList) data).iterator();
+			// New hashmap for saving iterators objects
+			Map<Integer, Object> listMap = new HashMap<Integer, Object>();
+			// loop for calculating how many object is inside the iterator
+			int iteratorSize = 0;
+			while (iterator2.hasNext()) {
+				iteratorSize++;
+				iterator2.next();
+			}
+			System.err.println(iteratorSize);
+			
 			while (iterator.hasNext()) {
-				ArrayList tempList = new ArrayList();
-				tempList.add(iterator.next());
-				listMap.put("lista",tempList);
-				System.out.println("change");
 				
-				//System.err.println("list: "+ list);
-				i++;
-				System.out.println("incidenttree for incident: "+i+" "+tempList);
+				for (int i=0; i<iteratorSize; i++) {
+				listMap.put(i, iterator.next());
+				}
+					
 			}
 			System.err.println("list  "+ listMap);
-//			 String keywords = (String)jsonObject.get("keywords");
-//            System.err.println("keywords : "+ c);
-//			 System.err.println("keywords : "+ keywords);
+			//mapping the hashmap for separate lists
+			listMap.forEach((k, v)-> System.out.println("KEY: " + k + " List: "+ v));
+			System.err.println(listMap.get(1));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
