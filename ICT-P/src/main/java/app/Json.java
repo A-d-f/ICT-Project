@@ -47,6 +47,8 @@ public class Json {
 				}
 					
 			}
+			//Going through the listMap hashmap and calling method handleHashmap for each object inside this hashmap, number is
+			// the number of incident assesment tree (integer) and incident is the object/what is inside in every incident assesment tree
 			listMap.forEach((number, incident)-> handleHashmap(incident, number));
 			
 
