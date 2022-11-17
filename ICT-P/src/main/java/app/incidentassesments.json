@@ -116,7 +116,7 @@
 {
     "incident":"002",
     "name": "Kauppa ryöstetty",
-    "keywords":["kauppa", "ryöstö", "varas", "ryöstetty"],
+    "keywords":["kauppa", "ryöstö", "varas", "ryöstetty", "kauppa on ryöstetty"],
     "negative":["varasto", "puu", "kaatunut", "puita", "varaslähtö"],
     "content":
     [

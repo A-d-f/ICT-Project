@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
@@ -153,6 +154,7 @@ public class Json {
 			for (String fallenTreeWord : keyListForTree) {
 				// If element of splitted list matches with element of keywords list
 				// Printing "equals" and adding it to foundWords list
+
 				if (splittedWord.contains(fallenTreeWord)) {
 
 					// Jos splitted word ei ole negatiivinen eli on esim puu, palautuu false,
@@ -167,6 +169,7 @@ public class Json {
 				}
 
 			}
+
 			for (String shopliftingWord : keyListForSL) {
 				// If element of splitted list matches with element of keywords list
 				// Printing "equals" and adding it to foundWords list
@@ -184,6 +187,28 @@ public class Json {
 				}
 			}
 
+		}
+		// For checking phrases in fallen tree
+		for (String keyword : keyListForTree) {
+			if (keyword.contains(" ")) {
+				boolean m = transcript.contains(keyword);
+				System.out.println(transcript + " " + m + " mätsää " + keyword);
+				if (m) {
+					foundTreeWords.add(keyword);
+					calcFallen++;
+				}
+			}
+		}
+		// For checking phrases in shoplifting
+		for (String keyword : keyListForSL) {
+			if (keyword.contains(" ")) {
+				boolean m = transcript.contains(keyword);
+				System.out.println(transcript + " " + m + " mätsää " + keyword);
+				if (m) {
+					foundShopliftingWords.add(keyword);
+					calcShopl++;
+				}
+			}
 		}
 
 		System.out.println("words in foundTreedWords list: " + foundTreeWords.toString()
