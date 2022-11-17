@@ -26,6 +26,8 @@ import com.google.common.collect.Iterators;
 
 public class Json {
 	static String savedTranscript = "";
+	
+	
 
 	public static Map<Integer, Object> getJson() {
 		JSONParser parser = new JSONParser();
@@ -109,6 +111,8 @@ public class Json {
 	}
 
 	public static void findKeywords(String transcript) {
+		boolean incidentFallen=false;
+		boolean incidentShopL=false;
 		String incidenttreekeywords = "keywords";
 		String incidenttreenegativekeywords = "negative";
 		System.out.println("no modifications " + transcript);
@@ -224,7 +228,21 @@ public class Json {
 				+ " number of words in foundTreeWords: " + calcFallen);
 		System.out.println("words in foundShopliftingWords list: " + foundShopliftingWords.toString()
 				+ " number of words in foundShopliftingWords: " + calcShopl);
-		
+		if(calcFallen>calcShopl) {
+			System.err.println("Kyse on puun kaatumisesta.");
+			incidentFallen=true;
+			incidentShopL=false;
+		}
+		if(calcFallen==calcShopl) {
+			System.err.println("Kyse voi olla puun kaatumisesta tai ryöstöstä.");
+			incidentFallen=true;
+			incidentShopL=true;
+		}
+		if (calcFallen<calcShopl){
+			System.err.println("Kyse on varkaudesta/ryöstöstä.");
+			incidentFallen=false;
+			incidentShopL=true;
+		}
 	}
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
