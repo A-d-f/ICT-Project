@@ -116,19 +116,16 @@ public class Json {
 		listMap = getJson();
 
 		// Getting the incident assesment tree for tree falling to an object
-		Object firstKey = listMap.keySet().toArray()[0];
-		Object valueForFirstKey = listMap.get(firstKey);
+		JSONObject valueForFirstKey = (JSONObject) listMap.get(0);
 		System.err.println("RIVI 120 FIRSTKEYVALUE " + valueForFirstKey);
-		//Incident assesment tree for kaatunut puu:
-		JSONObject treeobj = (JSONObject) valueForFirstKey;
+		
 		// List contains JSONs keywords for falling tree
-		List<String> keyListForTree = (List<String>) treeobj.get(incidenttreekeywords);
+		List<String> keyListForTree = (List<String>) valueForFirstKey.get(incidenttreekeywords);
 		// List contains JSONs negative words for tree falling
-		List<String> keyNegativeListForTree = (List<String>) treeobj.get(incidenttreenegativekeywords);
+		List<String> keyNegativeListForTree = (List<String>) valueForFirstKey.get(incidenttreenegativekeywords);
 
 		// Getting the incident assesment tree for shoplifting to an object
-		Object secondKey = listMap.keySet().toArray()[1];
-		Object valueForSecondKey = listMap.get(secondKey);
+		Object valueForSecondKey = listMap.get(1);
 		//Incident assesment tree for kaupparyöstö:
 		JSONObject treeobj2 = (JSONObject) valueForSecondKey;
 		// List contains JSONs keywords for shoplifting
@@ -190,6 +187,7 @@ public class Json {
 			}
 
 		}
+		// ottaa lausutun fraasin vain kerran vaikka tulisi transcriptissä useamman kerran
 		// For checking phrases in fallen tree
 		for (String keyword : keyListForTree) {
 			if (keyword.contains(" ")) {
