@@ -11,10 +11,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -116,30 +118,30 @@ public class Json {
 		listMap = getJson();
 
 		// Getting the incident assesment tree for tree falling to an object
-		JSONObject valueForFirstKey = (JSONObject) listMap.get(0);
-		System.err.println("RIVI 120 FIRSTKEYVALUE " + valueForFirstKey);
+		JSONObject fallenTreeJSON = (JSONObject) listMap.get(0);
+		System.err.println("Fallen tree JSON: " + fallenTreeJSON);
 		
 		// List contains JSONs keywords for falling tree
-		List<String> keyListForTree = (List<String>) valueForFirstKey.get(incidenttreekeywords);
+		List<String> keyListForTree = (List<String>) fallenTreeJSON.get(incidenttreekeywords);
 		// List contains JSONs negative words for tree falling
-		List<String> keyNegativeListForTree = (List<String>) valueForFirstKey.get(incidenttreenegativekeywords);
+		List<String> keyNegativeListForTree = (List<String>) fallenTreeJSON.get(incidenttreenegativekeywords);
 
 		// Getting the incident assesment tree for shoplifting to an object
-		Object valueForSecondKey = listMap.get(1);
+		JSONObject shopLiftingJSON = (JSONObject) listMap.get(1);
 		//Incident assesment tree for kaupparyöstö:
-		JSONObject treeobj2 = (JSONObject) valueForSecondKey;
-		// List contains JSONs keywords for shoplifting
-		List<String> keyListForSL = (List<String>) treeobj2.get(incidenttreekeywords);
+		
+		List<String> keyListForSL = (List<String>) shopLiftingJSON.get(incidenttreekeywords);
 		// List contains JSONs negative words for shoplifting
-		List<String> keyNegativeListForSL = (List<String>) treeobj2.get(incidenttreenegativekeywords);
-		System.err.println("SECKEYVALUE " + valueForSecondKey);
+		List<String> keyNegativeListForSL = (List<String>) shopLiftingJSON.get(incidenttreenegativekeywords);
+		System.err.println("Shoplifting JSON: " + shopLiftingJSON);
 
 		// Initializing list for matching words found from transcript
 		ArrayList<String> foundTreeWords = new ArrayList<String>();
 		ArrayList<String> foundShopliftingWords = new ArrayList<String>();
 		int calcFallen = 0;
 		int calcShopl = 0;
-
+		boolean treePhraseFound=false;
+		boolean shopLiftingPhraseFound=false;
 		// Transcription part
 
 		// Splitting transcription by space into separate list
@@ -174,8 +176,8 @@ public class Json {
 				// Printing "equals" and adding it to foundWords list
 				if (splittedWord.contains(shopliftingWord)) {
 
-					// Jos splitted word ei ole negatiivinen eli on esim puu, palautuu false,
-					// lisätään listaan foundTreeWords
+					// Jos splitted word ei ole negatiivinen eli on esim ryöstö, palautuu false,
+					// lisätään listaan foundShopLiftingWords
 					if (checkNegativeWords(splittedWord, keyNegativeListForSL) == false) {
 
 						System.out.println("splittedWord ifissä " + splittedWord);
@@ -190,32 +192,39 @@ public class Json {
 		// ottaa lausutun fraasin vain kerran vaikka tulisi transcriptissä useamman kerran
 		// For checking phrases in fallen tree
 		for (String keyword : keyListForTree) {
-			if (keyword.contains(" ")) {
+			if (keyword.contains(" ")) {//tästä eteenpäin käsitellään vain spacen sisältäviä keywordeja
+				
 				boolean m = transcript.contains(keyword);
+				
 				System.out.println(transcript + " " + m + " mätsää " + keyword);
 				if (m) {
 					foundTreeWords.add(keyword);
-					calcFallen++;
+					int count = StringUtils.countMatches(transcript,keyword);
+					System.out.println("Fraaseja sanottu " + count + " kertaa kaatuneessa puussa");
+					calcFallen=calcFallen+count;
 				}
 			}
 		}
 		// For checking phrases in shoplifting
 		for (String keyword : keyListForSL) {
+			
 			if (keyword.contains(" ")) {
 				boolean m = transcript.contains(keyword);
 				System.out.println(transcript + " " + m + " mätsää " + keyword);
 				if (m) {
 					foundShopliftingWords.add(keyword);
-					calcShopl++;
+					int count = StringUtils.countMatches(transcript,keyword);
+					System.out.println("Fraaseja sanottu " + count + " kertaa ryöstössä");
+					calcShopl=calcShopl+count;
 				}
 			}
 		}
-
+	
 		System.out.println("words in foundTreedWords list: " + foundTreeWords.toString()
 				+ " number of words in foundTreeWords: " + calcFallen);
 		System.out.println("words in foundShopliftingWords list: " + foundShopliftingWords.toString()
 				+ " number of words in foundShopliftingWords: " + calcShopl);
-
+		
 	}
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
