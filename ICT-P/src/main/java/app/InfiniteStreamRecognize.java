@@ -192,7 +192,7 @@ public class InfiniteStreamRecognize {
 				public void onComplete(String transcript) {
 
 					// Method for finding and matching keywords from splittedList
-					findKeywords(transcript);
+					Json.dataFetch(transcript);
 
 					// Method for saving all transcripts as one String to be used later if needed
 					saveTranscriptToString(transcript);
