@@ -119,6 +119,7 @@ public class Json {
 		Object firstKey = listMap.keySet().toArray()[0];
 		Object valueForFirstKey = listMap.get(firstKey);
 		System.err.println("RIVI 120 FIRSTKEYVALUE " + valueForFirstKey);
+		//Incident assesment tree for kaatunut puu:
 		JSONObject treeobj = (JSONObject) valueForFirstKey;
 		// List contains JSONs keywords for falling tree
 		List<String> keyListForTree = (List<String>) treeobj.get(incidenttreekeywords);
@@ -128,6 +129,7 @@ public class Json {
 		// Getting the incident assesment tree for shoplifting to an object
 		Object secondKey = listMap.keySet().toArray()[1];
 		Object valueForSecondKey = listMap.get(secondKey);
+		//Incident assesment tree for kaupparyöstö:
 		JSONObject treeobj2 = (JSONObject) valueForSecondKey;
 		// List contains JSONs keywords for shoplifting
 		List<String> keyListForSL = (List<String>) treeobj2.get(incidenttreekeywords);
