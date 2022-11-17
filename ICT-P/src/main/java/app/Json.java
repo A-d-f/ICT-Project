@@ -23,7 +23,7 @@ import com.google.common.collect.Iterators;
 
 public class Json {
 	static String savedTranscript = "";
-	
+
 	public static Map<Integer, Object> getJson() {
 		JSONParser parser = new JSONParser();
 		try {
@@ -41,17 +41,19 @@ public class Json {
 				iteratorSize++;
 				iterator2.next();
 			}
-			
+
 			while (iterator.hasNext()) {
-				
-				for (int i=0; i<iteratorSize; i++) {
-				listMap.put(i, iterator.next());
+
+				for (int i = 0; i < iteratorSize; i++) {
+					listMap.put(i, iterator.next());
 				}
-					
+
 			}
-			//Going through the listMap hashmap and calling method handleHashmap for each object inside this hashmap, number is
-			// the number of incident assesment tree (integer) and incident is the object/what is inside in every incident assesment tree
-			
+			// Going through the listMap hashmap and calling method handleHashmap for each
+			// object inside this hashmap, number is
+			// the number of incident assesment tree (integer) and incident is the
+			// object/what is inside in every incident assesment tree
+
 			return listMap;
 
 		} catch (Exception e) {
@@ -61,42 +63,41 @@ public class Json {
 	}
 
 	private static JSONArray handleHashmapNegatives(Object incident, Integer number) {
-		JSONObject jobj=(JSONObject) incident;
-		String incidenttreenegative="negative";
+		JSONObject jobj = (JSONObject) incident;
+		String incidenttreenegative = "negative";
 //		String incidenttreekeywords="keywords";
-		
-		JSONArray msg=(JSONArray) jobj.get(incidenttreenegative);
+
+		JSONArray msg = (JSONArray) jobj.get(incidenttreenegative);
 //		JSONArray msg2=(JSONArray) jobj.get(incidenttreekeywords);
 //		System.err.println("Negative keywords "+number+": "+ msg);
 //		System.err.println("Keywords "+number+": "+ msg2);
-		
+
 		return msg;
 	}
-	private static JSONArray handleHashmapPositives(Object incident, Integer number) {
-		JSONObject jobj=(JSONObject) incident;
-		String incidentname="name";
-		String incidenttreekeywords="keywords";
-		
-		String incidentn=(String) jobj.get(incidentname);
+
+	private static String[] handleHashmapPositives(Object incident, Integer number) {
+		JSONObject jobj = (JSONObject) incident;
+		String incidentname = "name";
+		String incidenttreekeywords = "keywords";
+
+		String incidentn = (String) jobj.get(incidentname);
 		System.err.println(incidentn);
-		//jos transcript on poiminut puuhun liittyviä-> eka if
-		if(incidentn.equalsIgnoreCase("kaatunut puu")) {
-			JSONArray treeKeys=(JSONArray) jobj.get(incidenttreekeywords);
-			System.err.println("tuleeko täältä keyt puulle?  "+treeKeys);
+		// jos transcript on poiminut puuhun liittyviä-> eka if
+		if (incidentn.equalsIgnoreCase("kaatunut puu")) {
+			String[] treeKeys = (String[]) jobj.get(incidenttreekeywords);
+			System.err.println("tuleeko täältä keyt puulle?  " + treeKeys);
 			return treeKeys;
 		} else {
-			JSONArray shopLiftKeys=(JSONArray) jobj.get(incidenttreekeywords);
-			System.err.println("tuleeko täältä keyt varastamiselle?  "+shopLiftKeys);
+			String[] shopLiftKeys = (String[]) jobj.get(incidenttreekeywords);
+			System.err.println("tuleeko täältä keyt varastamiselle?  " + shopLiftKeys);
 			return shopLiftKeys;
 		}
-	
-		
+
 //		System.err.println("Negative keywords "+number+": "+ msg);
 //		System.err.println("Keywords "+number+": "+ msg2);
-		 
-		
+
 	}
-	
+
 	public static void dataFetch(String transcript) {
 		System.err.println("Json-luokan transcript:");
 		System.out.println("Transkripti: " + transcript);
@@ -105,43 +106,33 @@ public class Json {
 	}
 
 	public static void findKeywords(String transcript) {
-
+		String incidenttreekeywords = "keywords";
+		String incidenttreenegativekeywords = "negative";
 		System.out.println("no modifications " + transcript);
 		transcript = transcript.toLowerCase();
 		Map<Integer, Object> listMap = new HashMap<Integer, Object>();
 		System.out.println("lowerCaseTranscript? " + transcript);
-		listMap= getJson();
-		System.err.println(listMap);
-		//listMap.forEach((number, incident)-> handleHashmapNegatives(incident, number));
-		//listMap.forEach((number, incident)-> handleHashmapPos(incident, number));
-		Object treeKey = listMap.keySet().toArray()[0];
-		Object valueForFirstKey = listMap.get(treeKey);
-		Object theftKey = listMap.keySet().toArray()[1];
-		Object valueForSecKey = listMap.get(theftKey);
-		
-		JSONObject jobj=(JSONObject) valueForFirstKey;
-		String incidenttreekeywords="keywords";
-		
-		JSONArray treeKeys=(JSONArray) jobj.get(incidenttreekeywords);
-		
-		System.err.println("JSONArray List:   "+treeKeys);
-		List<String> treekeywords = new ArrayList<String>();
-		List<String> treekeywords1 = new ArrayList<String>();
-		treekeywords=(ArrayList<String>) Arrays.asList(treeKeys.toString());
-//		for (int i=0; i<treekeywords.size();i++) {
-//			treekeywords1.add(treekeywords);
-//		}
-		System.out.println("Arraylist treekeywords   "+treekeywords);
-		
-		// Lists for negative keywords to ignore
-		List<String> negativeFallenKeywords = Arrays.asList("puukko", "puukkoa", "puuliiteri", "puuliiteristä",
-				"puuliiterissä", "päällystää", "puimuri");
-		List<String> negativeShopliftingKeywords = Arrays.asList("ryöstäytyä", "varasto", "varaslähtö");
+		listMap = getJson();
 
-		// Lists for keywords to search
-		List<String> fallenTreeList = Arrays.asList("puu", "pui", "kaatu", "pääll");
-		System.err.println("String List arraysas "+fallenTreeList);
-		List<String> shopliftingList = Arrays.asList("ryöst", "varas", "asee");
+		// Getting the incident assesment tree for tree falling to an object
+		Object firstKey = listMap.keySet().toArray()[0];
+		Object valueForFirstKey = listMap.get(firstKey);
+		System.err.println("RIVI 120 FIRSTKEYVALUE " + valueForFirstKey);
+		JSONObject treeobj = (JSONObject) valueForFirstKey;
+		// List contains JSONs keywords for falling tree
+		List<String> keyListForTree = (List<String>) treeobj.get(incidenttreekeywords);
+		// List contains JSONs negative words for tree falling
+		List<String> keyNegativeListForTree = (List<String>) treeobj.get(incidenttreenegativekeywords);
+
+		// Getting the incident assesment tree for shoplifting to an object
+		Object secondKey = listMap.keySet().toArray()[1];
+		Object valueForSecondKey = listMap.get(secondKey);
+		JSONObject treeobj2 = (JSONObject) valueForSecondKey;
+		// List contains JSONs keywords for shoplifting
+		List<String> keyListForSL = (List<String>) treeobj2.get(incidenttreekeywords);
+		// List contains JSONs negative words for shoplifting
+		List<String> keyNegativeListForSL = (List<String>) treeobj2.get(incidenttreenegativekeywords);
+		System.err.println("SECKEYVALUE " + valueForSecondKey);
 
 		// Initializing list for matching words found from transcript
 		ArrayList<String> foundTreeWords = new ArrayList<String>();
@@ -159,14 +150,14 @@ public class Json {
 
 			// Looping splitted list
 
-			for (String fallenTreeWord : fallenTreeList) {
+			for (String fallenTreeWord : keyListForTree) {
 				// If element of splitted list matches with element of keywords list
 				// Printing "equals" and adding it to foundWords list
 				if (splittedWord.contains(fallenTreeWord)) {
 
 					// Jos splitted word ei ole negatiivinen eli on esim puu, palautuu false,
 					// lisätään listaan foundTreeWords
-					if (checkNegativeWords(splittedWord, negativeFallenKeywords) == false) {
+					if (checkNegativeWords(splittedWord, keyNegativeListForTree) == false) {
 
 						System.out.println("splittedWord ifissä " + splittedWord);
 						foundTreeWords.add(splittedWord);
@@ -176,14 +167,14 @@ public class Json {
 				}
 
 			}
-			for (String shopliftingWord : shopliftingList) {
+			for (String shopliftingWord : keyListForSL) {
 				// If element of splitted list matches with element of keywords list
 				// Printing "equals" and adding it to foundWords list
 				if (splittedWord.contains(shopliftingWord)) {
 
 					// Jos splitted word ei ole negatiivinen eli on esim puu, palautuu false,
 					// lisätään listaan foundTreeWords
-					if (checkNegativeWords(splittedWord, negativeShopliftingKeywords) == false) {
+					if (checkNegativeWords(splittedWord, keyNegativeListForSL) == false) {
 
 						System.out.println("splittedWord ifissä " + splittedWord);
 						foundShopliftingWords.add(splittedWord);
@@ -201,7 +192,6 @@ public class Json {
 				+ " number of words in foundShopliftingWords: " + calcShopl);
 
 	}
-
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
 		Iterator<String> negativeIterator = negativeKeywords.iterator();
