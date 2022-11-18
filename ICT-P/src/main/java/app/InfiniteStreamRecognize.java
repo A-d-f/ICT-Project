@@ -66,8 +66,8 @@ public class InfiniteStreamRecognize {
 
 	private static String savedTranscript = "";
 
-	public static void main(String[] args) {
-		
+	public static void entinenMain(String[] args) {
+		//maini alkoi ennen tästä
 	
 		/*
 		 * s = b.get(Speech.class);
@@ -77,21 +77,21 @@ public class InfiniteStreamRecognize {
 		 */
 		
 		
-		InfiniteStreamRecognizeOptions options = InfiniteStreamRecognizeOptions.fromFlags(args);
-		if (options == null) {
-			// Could not parse.
-			System.out.println("Failed to parse options.");
-			System.exit(1);
-		}
-
-		try {
-			infiniteStreamingRecognize(options.langCode);
-			
-			
-		} catch (Exception e) {
-			System.out.println("Exception caught: " + e);
-		}
-	}
+//		InfiniteStreamRecognizeOptions options = InfiniteStreamRecognizeOptions.fromFlags(args);
+//		if (options == null) {
+//			// Could not parse.
+//			System.out.println("Failed to parse options.");
+//			System.exit(1);
+//		}
+//
+//		try {
+//			infiniteStreamingRecognize(options.langCode);
+//			
+//			
+//		} catch (Exception e) {
+//			System.out.println("Exception caught: " + e);
+//		}
+	}//maini loppui tähän
 
 	public static String convertMillisToDate(double milliSeconds) {
 		long millis = (long) milliSeconds;
@@ -107,7 +107,7 @@ public class InfiniteStreamRecognize {
 
 		// Microphone Input buffering
 		class MicBuffer implements Runnable {
-
+			
 			@Override
 			public void run() {
 				
@@ -123,6 +123,7 @@ public class InfiniteStreamRecognize {
 				System.out.println(YELLOW);
 				System.out.println("Start speaking...Press Ctrl-C to stop");
 				targetDataLine.start();
+				
 				System.out.println("haloo" + targetDataLine.isActive());
 				System.out.println("haloojaa" + targetDataLine.isOpen());
 				byte[] data = new byte[BYTES_PER_BUFFER];
@@ -132,12 +133,21 @@ public class InfiniteStreamRecognize {
 						if ((numBytesRead <= 0) && (targetDataLine.isOpen())) {
 							continue;
 						}
+					
 						sharedQueue.put(data.clone());
 					} catch (InterruptedException e) {
 						System.out.println("Microphone input buffering interrupted : " + e.getMessage());
 					}
+				} 
+				if(!targetDataLine.isOpen()) {
+					System.out.println("target dataline");
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				
 				
 			}
 		}
