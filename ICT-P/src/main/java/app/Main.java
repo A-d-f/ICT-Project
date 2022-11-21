@@ -1,5 +1,7 @@
 package app;
 
+import services.SpeechService;
+
 public class Main {
 
 	public static void main(String[] args) {

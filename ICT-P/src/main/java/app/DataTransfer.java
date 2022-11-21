@@ -1,5 +1,7 @@
 package app;
 
+import services.SpeechService;
+
 public class DataTransfer implements Runnable {
 	boolean testi=true;
 	static String savedTranscript="";
@@ -23,6 +25,8 @@ public class DataTransfer implements Runnable {
 		System.err.println("Json-luokan transcript:");
 		System.out.println("Transkripti: " + transcript);
 		saveTranscriptToString(transcript);
+		//SpeechService.getTranscript(transcript);
+		SpeechService.handleData(transcript);
 		
 	}
 	public static void saveTranscriptToString(String transcript) {
