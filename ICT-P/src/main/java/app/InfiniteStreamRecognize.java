@@ -63,6 +63,7 @@ public class InfiniteStreamRecognize {
 	private static boolean lastTranscriptWasFinal = false;
 	private static StreamController referenceToStreamController;
 	private static ByteString tempByteString;
+	private static boolean testi=true;
 
 	private static String savedTranscript = "";
 
@@ -111,6 +112,7 @@ public class InfiniteStreamRecognize {
 			@Override
 			public void run() {
 				
+				while (testi==true) {
 				System.out.println("ollaanko tryssa?");
 				String uri = "http://127.0.0.1:8080/hello";
 				
@@ -149,6 +151,7 @@ public class InfiniteStreamRecognize {
 					}
 				}
 				
+			}
 			}
 		}
 
@@ -202,8 +205,8 @@ public class InfiniteStreamRecognize {
 				public void onComplete(String transcript) {
 
 					// Method for finding and matching keywords from splittedList
-					Json.dataFetch(transcript);
-
+					//Json.dataFetch(transcript);
+					DataTransfer.dataFetch(transcript);
 				}
 
 
