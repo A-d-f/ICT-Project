@@ -18,8 +18,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 
-String jotain = "";
-
 @Path("/speechservice")
 public class SpeechService {
 	
@@ -28,7 +26,6 @@ public class SpeechService {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String readData() {
 
-		
 
 		return "testing";
 
