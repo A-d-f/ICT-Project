@@ -6,7 +6,7 @@
         "negative":["puukko", "puuliiteri", "puuhamaa"],
         "content":
         [
-            [
+            
                 {
                 "id": "11",
                 "question": 
@@ -24,8 +24,8 @@
                     ]
 
                 }
-            ],
-            [
+            ,
+            
                 {
                 "id": "12",
                 "question": 
@@ -43,8 +43,8 @@
 
                     ]
                 }
-            ],
-            [
+            ,
+            
                 {
                 "id":"13",
                 "question":
@@ -73,8 +73,8 @@
                     
                     ]    
                 }
-            ],
-            [
+            ,
+            
                 {
                     "id":"14",
                     "question":
@@ -110,7 +110,7 @@
                         
                         ]    
                     }  
-            ]
+            
         ]
 },
 {
@@ -120,7 +120,7 @@
     "negative":["varasto", "puu", "kaatunut", "puita", "varaslähtö"],
     "content":
     [
-        [
+        
             {
             "id": "21",
             "question": 
@@ -169,8 +169,8 @@
                 ]
 
             }
-        ],
-        [
+        ,
+        
             {
             "id": "22",
             "question": 
@@ -199,7 +199,7 @@
 
                 ]
             }
-        ]
+        
     ]
 }  
 ]
