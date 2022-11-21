@@ -18,6 +18,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 
+String jotain = "";
+
 @Path("/speechservice")
 public class SpeechService {
 	
@@ -41,7 +43,7 @@ public class SpeechService {
 //		return "Testing";
 //	}
 	@GET
-	@Path("/handleData")
+	@Path("/handledata")
 	@Produces(MediaType.TEXT_PLAIN)
 	public static String handleData(String transcript) {
 		boolean incidentFallen=false;
@@ -66,6 +68,7 @@ public class SpeechService {
 		// Getting the incident assesment tree for shoplifting to an object
 		JSONObject shopLiftingJSON = (JSONObject) listMap.get(1);
 		//Incident assesment tree for kaupparyöstö:
+		
 		
 		List<String> keyListForSL = (List<String>) shopLiftingJSON.get(incidenttreekeywords);
 		// List contains JSONs negative words for shoplifting
@@ -203,6 +206,8 @@ public class SpeechService {
 		}
 
 		return found;
+		
+		
 	}
 	public static Map<Integer, Object> getJson() {
 		JSONParser parser = new JSONParser();
