@@ -14,8 +14,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang3.StringUtils;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.simple.JSONArray;
 
 
 @Path("/speechservice")
@@ -61,13 +67,14 @@ public class SpeechService {
 		List<String> keyListForTree = (List<String>) fallenTreeJSON.get(incidenttreekeywords);
 		// List contains JSONs negative words for tree falling
 		List<String> keyNegativeListForTree = (List<String>) fallenTreeJSON.get(incidenttreenegativekeywords);
-
+		System.out.println("Keylist for tree : " + keyListForTree);
 		// Getting the incident assesment tree for shoplifting to an object
 		JSONObject shopLiftingJSON = (JSONObject) listMap.get(1);
 		//Incident assesment tree for kaupparyöstö:
 		
-		handleContent(fallenTreeJSON);
-		handleContent(shopLiftingJSON);
+		// testin vuoksi erilliset metodit
+		handleContent1(fallenTreeJSON);
+		handleContent2(shopLiftingJSON);
 		
 		List<String> keyListForSL = (List<String>) shopLiftingJSON.get(incidenttreekeywords);
 		// List contains JSONs negative words for shoplifting
@@ -181,13 +188,31 @@ public class SpeechService {
 
 		return "Getting transcript";
 
-	}
-	private static void handleContent(JSONObject jsonObject) {
-		String content= "content";
-		List<String> contentList = (List<String>) jsonObject.get(content);
-		System.err.println("CONTENT:::  "+ contentList);
-}
+	} // testin vuoksi erilliset metodit
+	private static void handleContent1(JSONObject jsonObject) {
 
+//		List<String> contentList = (List<String>) jsonObject.get(content);
+		Object content = jsonObject.get("content");
+//		System.out.println(content);
+		Map<Integer, Object> contentMap = new HashMap<Integer, Object>();
+		contentMap = getJson2(content);
+		JSONObject contentMapped;
+		Object questions=null;
+		for (int i = 0; i<contentMap.size(); i++) {
+			contentMapped = (JSONObject) contentMap.get(i);
+			
+			
+			questions = contentMapped.get("question");
+			System.out.println("Kysymykset: " + (i+1) + " " + questions);
+		}
+		
+		
+
+	
+}
+	private static void handleContent2(JSONObject jsonObject) {
+
+}
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
 		Iterator<String> negativeIterator = negativeKeywords.iterator();
@@ -252,7 +277,43 @@ public class SpeechService {
 		}
 		return null;
 	}
-	
+	public static Map<Integer, Object> getJson2(Object data) {
+		JSONParser parser = new JSONParser();
+		try {
+			// save JSON inside an Object
+			//Object data = parser.parse(new FileReader("src/main/java/app/incidentassesments.json"));
+			// Iterator for going through data object
+			Iterator<Object> iterator = ((ArrayList) data).iterator();
+			// Iterator for calculating size
+			Iterator<Object> iterator2 = ((ArrayList) data).iterator();
+			// New hashmap for saving iterators objects
+			Map<Integer, Object> listMap2 = new HashMap<Integer, Object>();
+			// loop for calculating how many object is inside the iterator
+			int iteratorSize = 0;
+			while (iterator2.hasNext()) {
+				iteratorSize++;
+				iterator2.next();
+			}
+
+			while (iterator.hasNext()) {
+
+				for (int i = 0; i < iteratorSize; i++) {
+					listMap2.put(i, iterator.next());
+				}
+
+			}
+			// Going through the listMap hashmap and calling method handleHashmap for each
+			// object inside this hashmap, number is
+			// the number of incident assesment tree (integer) and incident is the
+			// object/what is inside in every incident assesment tree
+
+			return listMap2;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 
 }
