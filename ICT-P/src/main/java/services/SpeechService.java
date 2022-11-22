@@ -66,6 +66,8 @@ public class SpeechService {
 		JSONObject shopLiftingJSON = (JSONObject) listMap.get(1);
 		//Incident assesment tree for kaupparyöstö:
 		
+		handleContent(fallenTreeJSON);
+		handleContent(shopLiftingJSON);
 		
 		List<String> keyListForSL = (List<String>) shopLiftingJSON.get(incidenttreekeywords);
 		// List contains JSONs negative words for shoplifting
@@ -180,6 +182,13 @@ public class SpeechService {
 		return "Getting transcript";
 
 	}
+	private static void handleContent(JSONObject jsonObject) {
+		String content= "content";
+		List<String> contentList = (List<String>) jsonObject.get(content);
+		System.err.println("CONTENT:::  "+ contentList);
+}
+
+
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
 		Iterator<String> negativeIterator = negativeKeywords.iterator();
 
