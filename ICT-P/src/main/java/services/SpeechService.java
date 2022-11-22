@@ -74,7 +74,7 @@ public class SpeechService {
 		
 		// testin vuoksi erilliset metodit
 		handleContent1(fallenTreeJSON);
-		handleContent2(shopLiftingJSON);
+		
 		
 		List<String> keyListForSL = (List<String>) shopLiftingJSON.get(incidenttreekeywords);
 		// List contains JSONs negative words for shoplifting
@@ -195,23 +195,52 @@ public class SpeechService {
 		Object content = jsonObject.get("content");
 //		System.out.println(content);
 		Map<Integer, Object> contentMap = new HashMap<Integer, Object>();
+//		for (int y=0; y<content.)
+//		contentMap.put(null, contentMap)
 		contentMap = getJson2(content);
+		System.out.println("Content map 201: "+contentMap);
 		JSONObject contentMapped;
 		Object questions=null;
+		JSONArray jiisoni = new JSONArray();
 		for (int i = 0; i<contentMap.size(); i++) {
 			contentMapped = (JSONObject) contentMap.get(i);
+//			jiisoni= (JSONArray) contentMap.get(i);
 			
-			
+//			System.out.println("Testilista: "+jiisoni);
 			questions = contentMapped.get("question");
+			jiisoni.add(questions);
+//			testi.add((String) contentMapped.get("question"));
+			System.out.println("Testilista: "+jiisoni);
 			System.out.println("Kysymykset: " + (i+1) + " " + questions);
+//			for (int y =0; y<jiisoni.size(); y++) {
+//				JSONObject quesvalue=(JSONObject) contentMapped.get("value");
+//				System.out.println("Quesvalue: "+quesvalue);
+//			}
 		}
 		
+		handleContent2(jiisoni);
 		
 
 	
 }
-	private static void handleContent2(JSONObject jsonObject) {
-
+	private static void handleContent2(JSONArray json) {
+		System.out.println("Handle content 2 lista: " + json);
+		Map<Integer, Object> objectmap = new HashMap<Integer, Object>();
+		Object objekti = (Object) json;
+		objectmap=getJson2(objekti);
+		JSONObject jobject;
+		jobject=(JSONObject) objectmap.get(1);
+		System.out.println("Jobject "+ jobject);
+//		
+//		String value = "value";
+//		Iterator i = json.iterator();
+//		while (i.hasNext()) {
+//			JSONObject object = (JSONObject) i.next();
+//			String kysymys = (String) object.get("value");
+//			System.out.println("Valuet: "+kysymys);
+//		}
+//		JSONArray quesvalue=(JSONArray) json.get
+//		JSONObject js=(JSONObject) json.get
 }
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
