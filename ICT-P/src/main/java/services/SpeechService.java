@@ -228,9 +228,15 @@ public class SpeechService {
 		Map<Integer, Object> objectmap = new HashMap<Integer, Object>();
 		Object objekti = (Object) json;
 		objectmap=getJson2(objekti);
-		JSONObject jobject;
-		jobject=(JSONObject) objectmap.get(1);
-		System.out.println("Jobject "+ jobject);
+		Object jobject;
+		for (int i=0; i<objectmap.size(); i++) {
+			System.out.println("233: "+objectmap.get(i));
+			objectmap.put(i, objectmap.get(i));
+			
+		}
+		System.out.println("237 "+objectmap);
+		System.out.println("238 "+ objectmap.get("id"));
+//		System.out.println("Jobject "+ jobject);
 //		
 //		String value = "value";
 //		Iterator i = json.iterator();
