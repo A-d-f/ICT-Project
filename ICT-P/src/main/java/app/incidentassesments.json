@@ -8,11 +8,11 @@
         [
             
                 {
-                "id": "11",
+                
                 "question": 
                     [
                         {
-                        "value": "mikä on puiden lukumäärä", "keywords":["mikä on puiden lukumäärä", "puiden lukumäärä", "puiden", "lukumäärä", "montako puuta"]
+                        "id": "11", "value": "mikä on puiden lukumäärä", "keywords":["mikä on puiden lukumäärä", "puiden lukumäärä", "puiden", "lukumäärä", "montako puuta"]
                         }
                     ],
                 "answers":
@@ -27,11 +27,11 @@
             ,
             
                 {
-                "id": "12",
+                
                 "question": 
                 [
                     {
-                    "value": "missä puu on", "keywords":["Missä puu on", "missä puu", "missä", "puu", "puun sijainti", "julkinen", "yksityinen"]
+                    "id": "12", "value": "missä puu on", "keywords":["Missä puu on", "missä puu", "missä", "puu", "puun sijainti", "julkinen", "yksityinen"]
                     }
                 ],
 
@@ -46,11 +46,11 @@
             ,
             
                 {
-                "id":"13",
+                
                 "question":
                 [
                     {
-                        "value":"estääkö tapahtuma liikennettä", "keywords":["estääkö", "estääkö liikenteen", "estääkö tapahtuma liikennettä"]
+                        "id":"13", "value":"estääkö tapahtuma liikennettä", "keywords":["estääkö", "estääkö liikenteen", "estääkö tapahtuma liikennettä"]
                     }
                 ],
                 "answers":
@@ -76,11 +76,11 @@
             ,
             
                 {
-                    "id":"14",
+                    
                     "question":
                     [
                         {
-                            "value":"onko aiheutunut ihmisvahinkoa", "keywords":["onko aiheutunut ihmisvahinkoa", "ihmisvahinko", "aiheutunut", "loukkaant"]
+                            "id":"14", "value":"onko aiheutunut ihmisvahinkoa", "keywords":["onko aiheutunut ihmisvahinkoa", "ihmisvahinko", "aiheutunut", "loukkaant"]
                         }
                     ],
                     "answers":
@@ -122,11 +122,11 @@
     [
         
             {
-            "id": "21",
+            
             "question": 
                 [
                     {
-                    "value": "onko väkivallan uhkaa", "keywords":["onko väkivallan uhkaa", "uhka", "väkivallan"]
+                    "id": "21", "value": "onko väkivallan uhkaa", "keywords":["onko väkivallan uhkaa", "uhka", "väkivallan"]
                     }
                 ],
             "answers":
@@ -172,11 +172,11 @@
         ,
         
             {
-            "id": "22",
+            
             "question": 
             [
                 {
-                "value": "onko tekijä tiedossa", "keywords":["onko tekijä tiedossa", "tekijä", "tiedossa"]
+                "id": "22", "value": "onko tekijä tiedossa", "keywords":["onko tekijä tiedossa", "tekijä", "tiedossa"]
                 }
             ],
 
