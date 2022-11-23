@@ -2,6 +2,7 @@ package services;
 
 
 import java.io.FileReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,9 +17,10 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang3.StringUtils;
 
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.simple.JSONArray;
@@ -26,7 +28,7 @@ import org.json.simple.JSONArray;
 
 @Path("/speechservice")
 public class SpeechService {
-	
+	static List<String> info = null;
 	@GET
 	@Path("/getdata")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -232,7 +234,17 @@ public class SpeechService {
 		for (int i=0; i<objectmap.size(); i++) {
 			System.out.println("233: "+objectmap.get(i));
 			objectmap.put(i, objectmap.get(i));
-			
+			System.out.println("objectmap: "+objectmap);
+			System.out.println("keywords: "+  objectmap.get("keywords"));
+//			JSONArray om = (JSONArray) objectmap.get(i);
+//			System.out.println("kukkuu: "+om.get(1));
+			objectmap.forEach((key, value)-> {
+				getValue(value);
+			});
+//			for(int a=0; a<objectmap.size(); a++) {
+//				
+//				System.out.println("242 " + objectmap.get(a));
+//			}
 		}
 		System.out.println("237 "+objectmap);
 		System.out.println("238 "+ objectmap.get("id"));
@@ -248,6 +260,35 @@ public class SpeechService {
 //		JSONArray quesvalue=(JSONArray) json.get
 //		JSONObject js=(JSONObject) json.get
 }
+
+	private static void getValue(Object value) {
+		System.out.println("TADAAAAAAAA: " + value);
+//		List<String> st = (List<String>) value.get("keywords");
+//		System.out.println("Keywords: " + st.toString());
+//		JSONArray va = (JSONArray) value;
+		JSONObject asd;
+		asd = (JSONObject) JSONValue.parse((Reader) value);
+		System.out.println("jeeee:" + asd);
+		
+//		System.out.println("VALUE: " + asd.get("value"));
+//		saveInfo(asd.get("value"), asd.get("keywords"), asd.get("id"));
+//		Object paska = asd.get("value");
+//		for(Object question:va) {
+//			System.out.println("265 " + question);
+//		}
+	}
+	
+
+	private static void saveInfo(Object value, Object keywords, Object id) {
+		System.out.println("testi 267"+value+keywords+id);
+		
+		
+		
+//		info.add(keywords.toString());
+		
+//		System.out.println("infolista: " + info);
+	}
+
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
 		Iterator<String> negativeIterator = negativeKeywords.iterator();
