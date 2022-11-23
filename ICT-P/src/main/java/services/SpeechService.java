@@ -27,7 +27,7 @@ public class SpeechService {
 	public String readData() {
 
 
-		return "testing";
+		return "1";
 
 	}
 
