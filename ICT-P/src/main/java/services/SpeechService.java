@@ -28,7 +28,8 @@ import org.json.simple.JSONArray;
 
 @Path("/speechservice")
 public class SpeechService {
-	static List<String> info = null;
+	// List of keywordlists of questions
+	static List<List<String>> info = new ArrayList<>();
 	@GET
 	@Path("/getdata")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -230,65 +231,32 @@ public class SpeechService {
 		Map<Integer, Object> objectmap = new HashMap<Integer, Object>();
 		Object objekti = (Object) json;
 		objectmap=getJson2(objekti);
-		Object jobject;
+		//
 		for (int i=0; i<objectmap.size(); i++) {
 			System.out.println("233: "+objectmap.get(i));
 			objectmap.put(i, objectmap.get(i));
 			System.out.println("objectmap: "+objectmap);
 			System.out.println("keywords: "+  objectmap.get("keywords"));
-//			JSONArray om = (JSONArray) objectmap.get(i);
-//			System.out.println("kukkuu: "+om.get(1));
-			objectmap.forEach((key, value)-> {
-				getValue(value);
-			});
-//			for(int a=0; a<objectmap.size(); a++) {
-//				
-//				System.out.println("242 " + objectmap.get(a));
-//			}
 		}
-		System.out.println("237 "+objectmap);
-		System.out.println("238 "+ objectmap.get("id"));
-//		System.out.println("Jobject "+ jobject);
-//		
-//		String value = "value";
-//		Iterator i = json.iterator();
-//		while (i.hasNext()) {
-//			JSONObject object = (JSONObject) i.next();
-//			String kysymys = (String) object.get("value");
-//			System.out.println("Valuet: "+kysymys);
-//		}
-//		JSONArray quesvalue=(JSONArray) json.get
-//		JSONObject js=(JSONObject) json.get
+		
+		// loop through objectmap and call getValue with parameter object value
+		objectmap.forEach((key, value)-> {
+			getValue(value);
+		});
+		System.err.println(" RIVIN 251 INFOLISTA TÄSSÄ OLKAA HYVÄ!: "+info);
 }
 
 	private static void getValue(Object value) {
 		System.out.println("TADAAAAAAAA: " + value);
-//		List<String> st = (List<String>) value.get("keywords");
-//		System.out.println("Keywords: " + st.toString());
-//		JSONArray va = (JSONArray) value;
-		JSONObject asd;
-		asd = (JSONObject) JSONValue.parse((Reader) value);
-		System.out.println("jeeee:" + asd);
-		
-//		System.out.println("VALUE: " + asd.get("value"));
-//		saveInfo(asd.get("value"), asd.get("keywords"), asd.get("id"));
-//		Object paska = asd.get("value");
-//		for(Object question:va) {
-//			System.out.println("265 " + question);
-//		}
+		//Change object to JsonArray
+		JSONArray array= (JSONArray) value;
+		// Object from arrays first index
+		JSONObject quesObject= (JSONObject) array.get(0);
+		// List for objects keywords
+		List<String> keyt = (List<String>) quesObject.get("keywords");
+		// saving all question objects keywords (keyslist) to an arraylist info
+		info.add(keyt);
 	}
-	
-
-	private static void saveInfo(Object value, Object keywords, Object id) {
-		System.out.println("testi 267"+value+keywords+id);
-		
-		
-		
-//		info.add(keywords.toString());
-		
-//		System.out.println("infolista: " + info);
-	}
-
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
 		Iterator<String> negativeIterator = negativeKeywords.iterator();
