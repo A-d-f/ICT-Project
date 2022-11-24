@@ -32,6 +32,13 @@ public class Content {
 		this.qkeywords = qkeywords;
 		this.qnegative = qnegative;
 	}
+//	public Content(String aid, String avalue, List<String> akeywords, List<String> anegative) {
+//		super();
+//		this.aid = aid;
+//		this.avalue = avalue;
+//		this.akeywords = akeywords;
+//		this.anegative = anegative;
+//	}
 	public String getQid() {
 		return qid;
 	}
@@ -85,6 +92,7 @@ public class Content {
 	public String toString() {
 		if(aid==null) {
 			 aid="MINÄ OLEN AID";
+			 
 		}
         return qid + " " +qvalue +" " + qkeywords +" " + qnegative +" " + aid + " " +avalue +" " + akeywords + " " +anegative;
     }

@@ -207,17 +207,26 @@ public class SpeechService {
 		contentMap = getJson2(content);
 		System.out.println("Content map 201: "+contentMap);
 		JSONObject contentMapped;
+//		JSONArray answerMapped = null;
 		Object questions=null;
+		Object answers = null;
 		JSONArray jiisoni = new JSONArray();
+		JSONArray jiisoni2 = new JSONArray();
 		for (int i = 0; i<contentMap.size(); i++) {
 			contentMapped = (JSONObject) contentMap.get(i);
 //			jiisoni= (JSONArray) contentMap.get(i);
 			
 //			System.out.println("Testilista: "+jiisoni);
 			questions = contentMapped.get("question");
+			answers = contentMapped.get("answers");
+			
+			System.out.println("221: "+answers);
 			jiisoni.add(questions);
+			jiisoni.add(answers);
+//			jiisoni2.add(answers);
 //			testi.add((String) contentMapped.get("question"));
 			System.out.println("Testilista: "+jiisoni);
+//			System.out.println("Testilista2: "+jiisoni2);
 			System.out.println("Kysymykset: " + (i+1) + " " + questions);
 //			for (int y =0; y<jiisoni.size(); y++) {
 //				JSONObject quesvalue=(JSONObject) contentMapped.get("value");
@@ -226,6 +235,7 @@ public class SpeechService {
 		}
 		
 		handleContent2(jiisoni);
+//		handleContent3(jiisoni2);
 		
 
 	
@@ -249,26 +259,81 @@ public class SpeechService {
 		});
 		System.err.println(" RIVIN 251 INFOLISTA TÄSSÄ OLKAA HYVÄ!: "+info.toString());
 }
+//	private static void handleContent3(JSONArray json) {
+//		System.out.println("Handle content 2 lista: " + json);
+//		Map<Integer, Object> objectmap = new HashMap<Integer, Object>();
+//		Object objekti = (Object) json;
+//		objectmap=getJson2(objekti);
+//		//
+//		for (int i=0; i<objectmap.size(); i++) {
+//			System.out.println("233: "+objectmap.get(i));
+//			objectmap.put(i, objectmap.get(i));
+//			System.out.println("objectmap 2: "+objectmap);
+//			System.out.println("keywords: "+  objectmap.get("keywords"));
+//		}
+//		
+//		// loop through objectmap and call getValue with parameter object value
+//		objectmap.forEach((key, value)-> {
+//			getValue2(value);
+//		});
+//		System.err.println(" RIVIN 251 INFOLISTA TÄSSÄ OLKAA HYVÄ!: "+info.toString());
+//}
 
 	private static void getValue(Object value) {
 //		System.out.println("TADAAAAAAAA: " + value);
 		//Change object to JsonArray
 		JSONArray array= (JSONArray) value;
 		// Object from arrays first index
+//		JSONObject quesObject = null;
+		for (int u=0;u<array.size();u++) {
+			 JSONObject quesObject= (JSONObject) array.get(u);
+			 System.out.println("quesobject: " + quesObject);
+				// List for objects keywords
+				List<String> keyt = (List<String>) quesObject.get("qkeywords");
+				String valueSt = (String) quesObject.get("qvalue");
+				String id=(String) quesObject.get("qid");
+				List<String> neg = (List<String>) quesObject.get("qnegative");
+				List<String> akeyt= (List<String>) quesObject.get("akeywords");
+				String aValue = (String) quesObject.get("avalue");
+				String aid = (String) quesObject.get("aid");
+				System.out.println("AID: " + aid);
+				List<String> anegative=(List<String>) quesObject.get("anegative");
+//				System.out.println("String value onpi: "+valueSt);
+				// saving all question objects keywords (keyslist) to an arraylist info
+				Content content = new Content(id, valueSt, keyt, neg, aid, aValue, akeyt, anegative);
+//				que.setKeywords(keyt);
+//				System.out.println("Question luokan keyt: "+content.getQkeywords());
+//				System.out.println("Question luokan value:" + content.getQvalue());
+//				System.out.println("Question luokan ID:" + content.getQid());
+//				
+//				System.out.println("Answer luokan keyt: "+content.getAkeywords());
+//				System.out.println("Answer luokan value:" + content.getAvalue());
+//				System.out.println("Answer luokan ID:" + content.getAid());
+				info.add(content);
+		}
+		
+		
+	}
+	private static void getValue2(Object value) {
+//		System.out.println("TADAAAAAAAA: " + value);
+		//Change object to JsonArray
+		JSONArray array= (JSONArray) value;
+		// Object from arrays first index
 		JSONObject quesObject= (JSONObject) array.get(0);
+		System.out.println("getValue 2 quesObject: "+ quesObject);
 		// List for objects keywords
-		List<String> keyt = (List<String>) quesObject.get("qkeywords");
-		String valueSt = (String) quesObject.get("qvalue");
-		String id=(String) quesObject.get("qid");
-		List<String> neg = (List<String>) quesObject.get("qnegative");
-//		System.out.println("String value onpi: "+valueSt);
+		List<String> keyt = (List<String>) quesObject.get("akeywords");
+		String valueSt = (String) quesObject.get("avalue");
+		String id=(String) quesObject.get("aid");
+		List<String> neg = (List<String>) quesObject.get("anegative");
+		System.out.println("String value onpi: "+valueSt);
 		// saving all question objects keywords (keyslist) to an arraylist info
 		Content content = new Content(id, valueSt, keyt, neg);
 //		que.setKeywords(keyt);
-		System.out.println("Question luokan keyt: "+content.getQkeywords());
+		System.out.println("Answer luokan keyt: "+content.getAkeywords());
 //		que.setValue(valueSt);
-		System.out.println("Question luokan value:" + content.getQvalue());
-		System.out.println("Question luokan ID:" + content.getQid());
+		System.out.println("Answer luokan value:" + content.getAvalue());
+		System.out.println("Answer luokan ID:" + content.getAid());
 		info.add(content);
 		
 	}
