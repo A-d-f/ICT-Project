@@ -12,15 +12,15 @@
                 "question": 
                     [
                         {
-                        "id": "11", "value": "mikä on puiden lukumäärä", "keywords":["mikä on puiden lukumäärä", "puiden lukumäärä", "puiden", "lukumäärä", "montako puuta"]
+                        "qid": "11", "qvalue": "mikä on puiden lukumäärä", "qkeywords":["mikä on puiden lukumäärä", "puiden lukumäärä", "puiden", "lukumäärä", "montako puuta"]
                         }
                     ],
                 "answers":
                     [
-                        { "id": "111", "value": "1", "keywords":["yksi", "puu"] },
-                        { "id": "112", "value": "2", "keywords":["pari", "kaksi", "puuta"] },
-                        { "id": "113", "value": "3", "keywords": ["kolme", "puuta"] },
-                        { "id": "114", "value": "Monta", "keywords": ["monta", "use", "kymmeniä", "muutam", "puuta"], "negative":["useasti", "usein", "useimmiten"] }
+                        { "aid": "111", "avalue": "1", "akeywords":["yksi", "puu"] },
+                        { "aid": "112", "avalue": "2", "akeywords":["pari", "kaksi", "puuta"] },
+                        { "aid": "113", "avalue": "3", "akeywords": ["kolme", "puuta"] },
+                        { "aid": "114", "avalue": "Monta", "akeywords": ["monta", "use", "kymmeniä", "muutam", "puuta"], "anegative":["useasti", "usein", "useimmiten"] }
                     ]
 
                 }
@@ -31,15 +31,15 @@
                 "question": 
                 [
                     {
-                    "id": "12", "value": "missä puu on", "keywords":["Missä puu on", "missä puu", "missä", "puu", "puun sijainti", "julkinen", "yksityinen"]
+                    "qid": "12", "qvalue": "missä puu on", "qkeywords":["Missä puu on", "missä puu", "missä", "puu", "puun sijainti", "julkinen", "yksityinen"]
                     }
                 ],
 
 
                 "answers":
                     [
-                        { "id": "121", "value": "Yksityinen alue", "keywords":["yksityinen", "metsä", "kotona", "mökillä"] },
-                        { "id": "122", "value": "Julkinen", "keywords":["julkinen", "julkisella", "koulu", "päiväkodin", "kaupungin", "keskustassa", "piha"] }
+                        { "aid": "121", "avalue": "Yksityinen alue", "akeywords":["yksityinen", "metsä", "kotona", "mökillä"] },
+                        { "aid": "122", "avalue": "Julkinen", "akeywords":["julkinen", "julkisella", "koulu", "päiväkodin", "kaupungin", "keskustassa", "piha"] }
 
                     ]
                 }
@@ -50,13 +50,13 @@
                 "question":
                 [
                     {
-                        "id":"13", "value":"estääkö tapahtuma liikennettä", "keywords":["estääkö", "estääkö liikenteen", "estääkö tapahtuma liikennettä"]
+                        "qid":"13", "qvalue":"estääkö tapahtuma liikennettä", "qkeywords":["estääkö", "estääkö liikenteen", "estääkö tapahtuma liikennettä"]
                     }
                 ],
                 "answers":
                     [
                         {
-                        "id":"131", "value":"kyllä", "keywords":["estää", "liikenteen", "tukossa", "jumissa"], "children":[
+                        "aid":"131", "avalue":"kyllä", "akeywords":["estää", "liikenteen", "tukossa", "jumissa"], "children":[
                             {
                                 "id":"1311","qvalue":"mitä liikennettä tapahtuma estää", "keywords":["mitä liikennettä estää"], "child1":[
                                     {"id":"13111", "value":"moottoritie", "keywords":["moottoritie", "motari"]},
@@ -69,7 +69,7 @@
                             }
                         ]
                     },
-                        {"id":"132", "value":"ei", "keywords":["ei estä", "ei", "estä"], "negative":["estää"]}
+                        {"aid":"132", "avalue":"ei", "akeywords":["ei estä", "ei", "estä"], "anegative":["estää"]}
                     
                     ]    
                 }
@@ -80,13 +80,13 @@
                     "question":
                     [
                         {
-                            "id":"14", "value":"onko aiheutunut ihmisvahinkoa", "keywords":["onko aiheutunut ihmisvahinkoa", "ihmisvahinko", "aiheutunut", "loukkaant"]
+                            "qid":"14", "qvalue":"onko aiheutunut ihmisvahinkoa", "qkeywords":["onko aiheutunut ihmisvahinkoa", "ihmisvahinko", "aiheutunut", "loukkaant"]
                         }
                     ],
                     "answers":
                         [
                             {
-                            "id":"141", "value":"kyllä", "keywords":["kyllä", "ihminen", "välissä", "jumi", "päälle", "on ihmisvahinkoa", "on vahinkoa", "on loukkaant"], "children":[
+                            "aid":"141", "avalue":"kyllä", "akeywords":["kyllä", "ihminen", "välissä", "jumi", "päälle", "on ihmisvahinkoa", "on vahinkoa", "on loukkaant"], "children":[
                                 {
                                     "id":"1411","qvalue":"kuinka monta ihmistä on vahingoittunut", "keywords":["kuinka monta ihmistä on vahingoittunut", "kuinka monta", "monta vahingoittunut"], "child1":[
                                         {"id":"14111", "value":"yksi", "keywords":["yksi", "ihminen", "vahingoittunut"]},
@@ -106,7 +106,7 @@
                                 }
                             ]
                         },
-                            {"id":"142", "value":"ei", "keywords":["ei", "ei vahinkoa", "vahinkoa", "ihmisvahinkoa", "ei ihmisvahinkoa"]}
+                            {"aid":"142", "avalue":"ei", "akeywords":["ei", "ei vahinkoa", "vahinkoa", "ihmisvahinkoa", "ei ihmisvahinkoa"]}
                         
                         ]    
                     }  

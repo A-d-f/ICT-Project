@@ -29,6 +29,9 @@ public class Question {
     public List<String> getKeywords(){
         return this.keywords;
     }
+    public String toString() {
+        return id + " "+ value + " " + keywords;
+    }
 }
 
 	

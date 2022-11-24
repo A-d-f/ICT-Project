@@ -23,6 +23,7 @@ import org.json.simple.parser.JSONParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import data.Content;
 import data.Question;
 
 import org.json.simple.JSONArray;
@@ -31,7 +32,8 @@ import org.json.simple.JSONArray;
 @Path("/speechservice")
 public class SpeechService {
 	// List of keywordlists of questions
-	static List<List<String>> info = new ArrayList<>();
+//	static List<List<Question>> info = new ArrayList<>();
+	static List<Content> info = new ArrayList<>();
 	@GET
 	@Path("/getdata")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -245,7 +247,7 @@ public class SpeechService {
 		objectmap.forEach((key, value)-> {
 			getValue(value);
 		});
-		System.err.println(" RIVIN 251 INFOLISTA TÄSSÄ OLKAA HYVÄ!: "+info);
+		System.err.println(" RIVIN 251 INFOLISTA TÄSSÄ OLKAA HYVÄ!: "+info.toString());
 }
 
 	private static void getValue(Object value) {
@@ -255,18 +257,20 @@ public class SpeechService {
 		// Object from arrays first index
 		JSONObject quesObject= (JSONObject) array.get(0);
 		// List for objects keywords
-		List<String> keyt = (List<String>) quesObject.get("keywords");
-		String valueSt = (String) quesObject.get("value");
-		String id=(String) quesObject.get("id");
+		List<String> keyt = (List<String>) quesObject.get("qkeywords");
+		String valueSt = (String) quesObject.get("qvalue");
+		String id=(String) quesObject.get("qid");
+		List<String> neg = (List<String>) quesObject.get("qnegative");
 //		System.out.println("String value onpi: "+valueSt);
 		// saving all question objects keywords (keyslist) to an arraylist info
-		Question que = new Question(id, valueSt, keyt);
-		que.setKeywords(keyt);
-		System.out.println("Question luokan keyt: "+que.getKeywords());
-		que.setValue(valueSt);
-		System.out.println("Question luokan value:" + que.getValue());
-		System.out.println("Question luokan ID:" + que.getId());
-		info.add(keyt);
+		Content content = new Content(id, valueSt, keyt, neg);
+//		que.setKeywords(keyt);
+		System.out.println("Question luokan keyt: "+content.getQkeywords());
+//		que.setValue(valueSt);
+		System.out.println("Question luokan value:" + content.getQvalue());
+		System.out.println("Question luokan ID:" + content.getQid());
+		info.add(content);
+		
 	}
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
