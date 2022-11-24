@@ -23,6 +23,8 @@ import org.json.simple.parser.JSONParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import data.Question;
+
 import org.json.simple.JSONArray;
 
 
@@ -247,14 +249,23 @@ public class SpeechService {
 }
 
 	private static void getValue(Object value) {
-		System.out.println("TADAAAAAAAA: " + value);
+//		System.out.println("TADAAAAAAAA: " + value);
 		//Change object to JsonArray
 		JSONArray array= (JSONArray) value;
 		// Object from arrays first index
 		JSONObject quesObject= (JSONObject) array.get(0);
 		// List for objects keywords
 		List<String> keyt = (List<String>) quesObject.get("keywords");
+		String valueSt = (String) quesObject.get("value");
+		String id=(String) quesObject.get("id");
+//		System.out.println("String value onpi: "+valueSt);
 		// saving all question objects keywords (keyslist) to an arraylist info
+		Question que = new Question(id, valueSt, keyt);
+		que.setKeywords(keyt);
+		System.out.println("Question luokan keyt: "+que.getKeywords());
+		que.setValue(valueSt);
+		System.out.println("Question luokan value:" + que.getValue());
+		System.out.println("Question luokan ID:" + que.getId());
 		info.add(keyt);
 	}
 
