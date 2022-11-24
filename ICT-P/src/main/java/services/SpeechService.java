@@ -302,13 +302,13 @@ public class SpeechService {
 				// saving all question objects keywords (keyslist) to an arraylist info
 				Content content = new Content(id, valueSt, keyt, neg, aid, aValue, akeyt, anegative);
 //				que.setKeywords(keyt);
-//				System.out.println("Question luokan keyt: "+content.getQkeywords());
-//				System.out.println("Question luokan value:" + content.getQvalue());
-//				System.out.println("Question luokan ID:" + content.getQid());
-//				
-//				System.out.println("Answer luokan keyt: "+content.getAkeywords());
-//				System.out.println("Answer luokan value:" + content.getAvalue());
-//				System.out.println("Answer luokan ID:" + content.getAid());
+				System.out.println("Question luokan keyt: "+content.getQkeywords());
+				System.out.println("Question luokan value:" + content.getQvalue());
+				System.out.println("Question luokan ID:" + content.getQid());
+				
+				System.out.println("Answer luokan keyt: "+content.getAkeywords());
+				System.out.println("Answer luokan value:" + content.getAvalue());
+				System.out.println("Answer luokan ID:" + content.getAid());
 				info.add(content);
 		}
 		
