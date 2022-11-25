@@ -1,7 +1,10 @@
 package services;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import data.Answer;
 import data.Content;
+import data.Incident;
 import data.Question;
 
 import org.json.simple.JSONArray;
@@ -32,20 +36,23 @@ import org.json.simple.JSONArray;
 
 @Path("/speechservice")
 public class SpeechService {
+	
+	static ArrayList<Incident> incidentList=new ArrayList<>();
+	static String tofront = null;
+	
 	// List of keywordlists of questions
 //	static List<List<Question>> info = new ArrayList<>();
 	static List<Question> info = new ArrayList<>();
 //	static List<Answer> info2 = new ArrayList<>();
 	static List<Answer> info2=new ArrayList<>();
 	static List<List<String>> info3=new ArrayList<>();
+	
 	@GET
 	@Path("/getdata")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String readData() {
-
-
-		return "testing";
-
+		
+		return "1";
 	}
 
 	
@@ -59,48 +66,129 @@ public class SpeechService {
 	@GET
 	@Path("/handledata")
 	@Produces(MediaType.TEXT_PLAIN)
-	public static String handleData(String transcript) {
-		boolean incidentFallen=false;
-		boolean incidentShopL=false;
-		String incidenttreekeywords = "keywords";
-		String incidenttreenegativekeywords = "negative";
-		System.out.println("no modifications " + transcript);
-		transcript = transcript.toLowerCase();
-		Map<Integer, Object> listMap = new HashMap<Integer, Object>();
-		System.out.println("lowerCaseTranscript? " + transcript);
-		listMap = getJson();
+	public static void handleData(String transcript) {
+		ArrayList<Incident> incidentList=new ArrayList<>();
+		try {
+			String json=lueTdsto();//Lue tiedosto
+			JSONParser parser = new JSONParser();//Tee JSONParser
+			Object obj = parser.parse(json);//Merkkijono parsitaan objektiksi
+			
+//			Object data = parser.parse(new FileReader("src/main/java/app/incidentassesments.json"));
+			JSONArray array = (JSONArray)obj;//Objektista JSONArray
+			
+			for (int i=0;i<array.size();i++) {
+				JSONObject jo = (JSONObject)array.get(i);
+				Incident incident=new Incident();
+				incident.setId(jo.get("incident"));
+				incident.setName((String) jo.get("name"));
+				JSONArray arr=(JSONArray)jo.get("keywords");
+				readKeyWords(arr, incident);
+				arr=(JSONArray)jo.get("negative");
+				readNegatives(arr, incident);
 
-		// Getting the incident assesment tree for tree falling to an object
-		JSONObject fallenTreeJSON = (JSONObject) listMap.get(0);
-		System.err.println("Fallen tree JSON: " + fallenTreeJSON);
+				arr=(JSONArray)jo.get("content");
+				readContent(arr, incident);
+				
+				incidentList.add(incident);
+			}
+			for (Incident i:incidentList) {
+				System.out.println(i);
+			}
+			
+			System.out.println("95: " + incidentList.get(1).getKeywordList());
+//			tofront = chooseIncident(transcript);
+//			System.out.println("100: " + tofront);
+			
+			
+		}
+		catch(Exception e) {
+		    System.err.println("Jotain meni pieleen");
+		}
+	}
+	
+	private static void readContent(JSONArray arr, Incident incident) {
+		Content content=new Content();
+		for (int i=0;i<arr.size();i++) {
+			JSONObject jo=(JSONObject)arr.get(i);
+			JSONArray qarray=(JSONArray)jo.get("question");
+			JSONObject qo=(JSONObject)qarray.get(0);
+			Question q=new Question();
+			q.setId(qo.get("qid"));
+			q.setQuestion((String) qo.get("qvalue"));
+//			System.out.println("Question 77: "+q.getId()+" "+q.getQuestion());
+			JSONArray karray=(JSONArray)qo.get("qkeywords");
+			ArrayList<String> qkeywordList=new ArrayList<>();
+			for (int k=0;k<karray.size();k++) {
+				qkeywordList.add((String)karray.get(k));
+//				System.out.println("QKeyword 82:"+(String)karray.get(k));
+			}
+			q.setKeywordList(qkeywordList);
+			content.addQuestionList(q);
+			
+			JSONArray aarray=(JSONArray)jo.get("answers");
+			for (int k=0;k<aarray.size();k++) {
+				JSONObject ao=(JSONObject)aarray.get(k);
+				Answer a=new Answer();
+				a.setId(ao.get("aid"));
+				a.setAvalue((String) ao.get("avalue"));
+//				System.out.println("Answer 93:"+a.getId()+" "+a.getAvalue());
+				JSONArray akeyarr=(JSONArray)ao.get("akeywords");
+//				System.out.println("AKeywords 94: "+ao.get("akeywords"));
+				ArrayList<String> akeyList=new ArrayList<>();
+				for (int m=0;m<akeyarr.size();m++) {
+					akeyList.add((String) akeyarr.get(m));
+//					System.out.println("AKeyword 98:"+a.getId()+" "+a.getAvalue()+" "+(String) akeyarr.get(m));
+				}
+				a.setKeywordList(akeyList);
+				q.addAnswerList(a);
+			}
+		}
+		incident.setContent(content);
+	}
+	private static void readNegatives(JSONArray arr, Incident incident) {
+		ArrayList<String> list=new ArrayList<>();
+//		System.out.println(arr);
+		for (int i=0;i<arr.size();i++) {
+			list.add((String) arr.get(i));
+//			System.out.println("Negatives rivi 111: "+(String) arr.get(i));
+		}
+		incident.setNegativeList(list);
+	}
+	private static void readKeyWords(JSONArray arr, Incident incident) {
+		ArrayList<String> list=new ArrayList<>();
+//		System.out.println(arr);
+		for (int i=0;i<arr.size();i++) {
+			list.add((String) arr.get(i));
+		}
+		incident.setKeywordList(list);
+	}
+	
+	private static String chooseIncident(String transcript) {
+		System.out.println("167 " + incidentList.get(0).getKeywordList());
 		
-		// List contains JSONs keywords for falling tree
-		List<String> keyListForTree = (List<String>) fallenTreeJSON.get(incidenttreekeywords);
-		// List contains JSONs negative words for tree falling
-		List<String> keyNegativeListForTree = (List<String>) fallenTreeJSON.get(incidenttreenegativekeywords);
-		System.out.println("Keylist for tree : " + keyListForTree);
-		// Getting the incident assesment tree for shoplifting to an object
-		JSONObject shopLiftingJSON = (JSONObject) listMap.get(1);
-		//Incident assesment tree for kaupparyöstö:
-		
-		// testin vuoksi erilliset metodit
-		handleContent1(fallenTreeJSON);
-		
-		
-		List<String> keyListForSL = (List<String>) shopLiftingJSON.get(incidenttreekeywords);
-		// List contains JSONs negative words for shoplifting
-		List<String> keyNegativeListForSL = (List<String>) shopLiftingJSON.get(incidenttreenegativekeywords);
-		System.err.println("Shoplifting JSON: " + shopLiftingJSON);
-
-		// Initializing list for matching words found from transcript
 		ArrayList<String> foundTreeWords = new ArrayList<String>();
 		ArrayList<String> foundShopliftingWords = new ArrayList<String>();
 		int calcFallen = 0;
 		int calcShopl = 0;
 		boolean treePhraseFound=false;
 		boolean shopLiftingPhraseFound=false;
+		
+		boolean incidentFallen = false;
+		boolean incidentShopL = false;
+		
+		List<String> fallenTreeKeywordList = new ArrayList<>();
+		List<String> fallenTreeNegativeList = new ArrayList<>();
+		List<String> shopliftingKeywordList = new ArrayList<>();
+		List<String> shopliftingNegativeList = new ArrayList<>();
+		
+		fallenTreeKeywordList = incidentList.get(0).getKeywordList();
+		fallenTreeNegativeList = incidentList.get(0).getNegativeList();
+		shopliftingKeywordList = incidentList.get(1).getKeywordList();
+		shopliftingNegativeList = incidentList.get(1).getNegativeList();
+		
+		System.out.println("188 ");
+		
 		// Transcription part
-
 		// Splitting transcription by space into separate list
 		String[] splittedList = transcript.split(" ");
 
@@ -108,8 +196,7 @@ public class SpeechService {
 		for (String splittedWord : splittedList) {
 
 			// Looping splitted list
-
-			for (String fallenTreeWord : keyListForTree) {
+			for (String fallenTreeWord : fallenTreeKeywordList) {
 				// If element of splitted list matches with element of keywords list
 				// Printing "equals" and adding it to foundWords list
 
@@ -117,7 +204,7 @@ public class SpeechService {
 
 					// Jos splitted word ei ole negatiivinen eli on esim puu, palautuu false,
 					// lisätään listaan foundTreeWords
-					if (checkNegativeWords(splittedWord, keyNegativeListForTree) == false) {
+					if (checkNegativeWords(splittedWord, fallenTreeNegativeList) == false) {
 
 						System.out.println("splittedWord ifissä " + splittedWord);
 						foundTreeWords.add(splittedWord);
@@ -128,14 +215,14 @@ public class SpeechService {
 
 			}
 
-			for (String shopliftingWord : keyListForSL) {
+			for (String shopliftingWord : shopliftingKeywordList) {
 				// If element of splitted list matches with element of keywords list
 				// Printing "equals" and adding it to foundWords list
 				if (splittedWord.contains(shopliftingWord)) {
 
 					// Jos splitted word ei ole negatiivinen eli on esim ryöstö, palautuu false,
 					// lisätään listaan foundShopLiftingWords
-					if (checkNegativeWords(splittedWord, keyNegativeListForSL) == false) {
+					if (checkNegativeWords(splittedWord, shopliftingNegativeList) == false) {
 
 						System.out.println("splittedWord ifissä " + splittedWord);
 						foundShopliftingWords.add(splittedWord);
@@ -148,7 +235,7 @@ public class SpeechService {
 		}
 		// ottaa lausutun fraasin vain kerran vaikka tulisi transcriptissä useamman kerran
 		// For checking phrases in fallen tree
-		for (String keyword : keyListForTree) {
+		for (String keyword : fallenTreeKeywordList) {
 			if (keyword.contains(" ")) {//tästä eteenpäin käsitellään vain spacen sisältäviä keywordeja
 				
 				boolean m = transcript.contains(keyword);
@@ -163,7 +250,7 @@ public class SpeechService {
 			}
 		}
 		// For checking phrases in shoplifting
-		for (String keyword : keyListForSL) {
+		for (String keyword : shopliftingKeywordList) {
 			
 			if (keyword.contains(" ")) {
 				boolean m = transcript.contains(keyword);
@@ -198,195 +285,8 @@ public class SpeechService {
 		}
 
 		return "Getting transcript";
-
-	} // testin vuoksi erilliset metodit
-	private static void handleContent1(JSONObject jsonObject) {
-
-//		List<String> contentList = (List<String>) jsonObject.get(content);
-		Object content = jsonObject.get("content");
-//		System.out.println(content);
-		Map<Integer, Object> contentMap = new HashMap<Integer, Object>();
-//		for (int y=0; y<content.)
-//		contentMap.put(null, contentMap)
-		contentMap = getJson2(content);
-		System.out.println("Content map 201: "+contentMap);
-		JSONObject contentMapped;
-//		JSONArray answerMapped = null;
-		Object questions=null;
-		Object answers = null;
-		JSONArray jiisoni = new JSONArray();
-		JSONArray jiisoni2 = new JSONArray();
-		for (int i = 0; i<contentMap.size(); i++) {
-			System.out.println("CONTENT MAP SIZE 218: " + contentMap.size());
-			contentMapped = (JSONObject) contentMap.get(i);
-//			jiisoni= (JSONArray) contentMap.get(i);
-			
-//			System.out.println("Testilista: "+jiisoni);
-			questions = contentMapped.get("question");
-			answers = contentMapped.get("answers");
-			
-			System.out.println("221: "+answers);
-			jiisoni.add(questions);
-			jiisoni2.add(answers);
-//			jiisoni2.add(answers);
-//			testi.add((String) contentMapped.get("question"));
-			System.out.println("Testilista: "+jiisoni);
-//			System.out.println("Testilista2: "+jiisoni2);
-			System.out.println("Kysymykset: " + (i+1) + " " + questions);
-//			for (int y =0; y<jiisoni.size(); y++) {
-//				JSONObject quesvalue=(JSONObject) contentMapped.get("value");
-//				System.out.println("Quesvalue: "+quesvalue);
-//			}
-		}
-		System.out.println("239: "+answers);
-		handleContent2(jiisoni);
-		handleContent3(jiisoni2);
-		String transcript2 = "Yksityinen alue on mielipaikkani ja aivoni sulaa";
-		System.out.println("241: " +  info.get(0).getKeywords());
-		System.out.println("245: " + info2.get(0));
-		for (int a = 0; a<info2.size(); a++) {
-			
-//			if (info2.get(a).getAid().startsWith("11")) {
-				System.out.println("Answer keywords :" +info2.get(a).getAid() +info2.get(a).getAkeywords());
-				if (transcript2.contains(info2.get(a).getAvalue())) {
-					System.out.println("Answer id: "+info2.get(a).getAid());
-				}
-				
-//			}
-			
-		}
-		System.out.println("INFO 3: " +info3);
-		
-		
-}
-	private static void handleContent2(JSONArray json) {
-//		System.out.println("Handle content 2 lista: " + json);
-		Map<Integer, Object> objectmap = new HashMap<Integer, Object>();
-		Object objekti = (Object) json;
-		objectmap=getJson2(objekti);
-		//
-		for (int i=0; i<objectmap.size(); i++) {
-			System.out.println("233: "+objectmap.get(i));
-			objectmap.put(i, objectmap.get(i));
-			System.out.println("objectmap: "+objectmap);
-			System.out.println("keywords: "+  objectmap.get("keywords"));
-		}
-		
-		// loop through objectmap and call getValue with parameter object value
-		objectmap.forEach((key, value)-> {
-			getValue(value);
-		});
-//		System.err.println(" RIVIN 262 KYSYMYSLISTA TÄSSÄ OLKAA HYVÄ!: "+info.toString());
-//		System.err.println(" RIVIN 263 VASTAUSLISTA TÄSSÄ OLKAA HYVÄ!: "+info2.toString());
-}
-	private static void handleContent3(Object answers) {
-		System.out.println("Handle content 2 lista: " + answers);
-		Map<Integer, Object> objectmap = new HashMap<Integer, Object>();
-		Object objekti = (Object) answers;
-		objectmap=getJson2(objekti);
-		//
-		for (int i=0; i<objectmap.size(); i++) {
-			System.out.println("233: "+objectmap.get(i));
-			objectmap.put(i, objectmap.get(i));
-			System.out.println("objectmap 2: "+objectmap);
-			System.out.println("keywords: "+  objectmap.get("keywords"));
-		}
-		
-		// loop through objectmap and call getValue with parameter object value
-		objectmap.forEach((key, value)-> {
-			getValue2(value);
-		});
-		System.err.println(" RIVIN 251 INFOLISTA TÄSSÄ OLKAA HYVÄ!: "+info.toString());
-		System.err.println(" RIVIN 263 VASTAUSLISTA TÄSSÄ OLKAA HYVÄ!: "+info2.toString());
-}
-
-	private static void getValue(Object value) {
-//		System.out.println("TADAAAAAAAA: " + value);
-		//Change object to JsonArray
-		JSONArray array= (JSONArray) value;
-		// Object from arrays first index
-//		JSONObject quesObject = null;
-		 JSONObject quesObject= (JSONObject) array.get(0);
-		String valueSt= (String) quesObject.get("qvalue");
-		String id=(String) quesObject.get("qid");
-		List<String> keyt = (List<String>) quesObject.get("qkeywords");
-		
-		
-			 
-			 System.out.println("quesobject: " + quesObject);
-				// List for objects keywords
-//				List<String> keyt = (List<String>) quesObject.get("qkeywords");
-//				String valueSt = (String) quesObject.get("qvalue");
-//				String id=(String) quesObject.get("qid");
-//				List<String> neg = (List<String>) quesObject.get("qnegative");
-//				List<String> keyt= (List<String>) quesObject.get("qkeywords");
-//				String aValue = (String) quesObject.get("qvalue");
-//				String aid = (String) quesObject.get("aid");
-//				System.out.println("AID: " + aid);
-				List<String> anegative=(List<String>) quesObject.get("anegative");
-//				System.out.println("String value onpi: "+valueSt);
-				// saving all question objects keywords (keyslist) to an arraylist info
-				Question que = new Question(id,valueSt,keyt);
-//				Answer ans = new Answer(aid, aValue, akeyt);
-//				Content content = new Content(id, valueSt, keyt, neg, aid, aValue, akeyt, anegative);
-//				que.setKeywords(keyt);
-//				System.out.println("Question luokan keyt: "+content.getQkeywords());
-//				System.out.println("Question luokan value:" + content.getQvalue());
-//				System.out.println("Question luokan ID:" + content.getQid());
-//				
-//				System.out.println("Answer luokan keyt: "+content.getAkeywords());
-//				System.out.println("Answer luokan value:" + content.getAvalue());
-//				System.out.println("Answer luokan ID:" + content.getAid());
-				info.add(que);
-//				info2.add(ans);
-//		}
-		
-		
 	}
-	private static void getValue2(Object value) {
-//		System.out.println("TADAAAAAAAA: " + value);
-		//Change object to JsonArray
-		JSONArray array= (JSONArray) value;
-		// Object from arrays first index
-		JSONObject quesObject;
-		for (int e=0; e<array.size();e++) {
-			quesObject = (JSONObject) array.get(e);
-			
-			// List for objects keywords
-			List<String> akeyt = (List<String>) quesObject.get("akeywords");
-			String avalueSt = (String) quesObject.get("avalue");
-			String aid=(String) quesObject.get("aid");
-			List<String> neg = (List<String>) quesObject.get("anegative");
-			Answer ans = new Answer(aid, avalueSt, akeyt);
-//			List<Answer> argh = null;
-//			argh.add(ans);
-			info2.add(ans);
-			info3.add(ans.getAkeywords());
-		}
-		System.out.println("346: " + info.get(2) + " " +info2.get(2));
-		
-	}
-//	private static void getValue3(Object value) {
-////		System.out.println("TADAAAAAAAA: " + value);
-//		//Change object to JsonArray
-////		JSONArray array= (JSONArray) value;
-//		// Object from arrays first index
-////		JSONObject quesObject;
-////		for (int e=0; e<array.size();e++) {
-////			quesObject = (JSONObject) array.get(e);
-//			
-//			// List for objects keywords
-//			List<String> akeyt = (List<String>) quesObject.get("akeywords");
-//			String avalueSt = (String) quesObject.get("avalue");
-//			String aid=(String) quesObject.get("aid");
-//			List<String> neg = (List<String>) quesObject.get("anegative");
-//			Answer ans = new Answer(aid, avalueSt, akeyt);
-//			info2.add(ans);
-//		}
-//		System.out.println("346: " + info.get(2) + " " +info2.get(2));
-//		
-//	}
-
+	
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
 		Iterator<String> negativeIterator = negativeKeywords.iterator();
 
@@ -410,83 +310,71 @@ public class SpeechService {
 		}
 
 		return found;
-		
-		
 	}
-	public static Map<Integer, Object> getJson() {
-		JSONParser parser = new JSONParser();
-		try {
-			// save JSON inside an Object
-			Object data = parser.parse(new FileReader("src/main/java/app/incidentassesments.json"));
-			// Iterator for going through data object
-			Iterator<Object> iterator = ((ArrayList) data).iterator();
-			// Iterator for calculating size
-			Iterator<Object> iterator2 = ((ArrayList) data).iterator();
-			// New hashmap for saving iterators objects
-			Map<Integer, Object> listMap = new HashMap<Integer, Object>();
-			// loop for calculating how many object is inside the iterator
-			int iteratorSize = 0;
-			while (iterator2.hasNext()) {
-				iteratorSize++;
-				iterator2.next();
-			}
-
-			while (iterator.hasNext()) {
-
-				for (int i = 0; i < iteratorSize; i++) {
-					listMap.put(i, iterator.next());
-				}
-
-			}
-			// Going through the listMap hashmap and calling method handleHashmap for each
-			// object inside this hashmap, number is
-			// the number of incident assesment tree (integer) and incident is the
-			// object/what is inside in every incident assesment tree
-
-			return listMap;
-
-		} catch (Exception e) {
-			e.printStackTrace();
+	
+	public static String lueTdsto() {
+		File in=new File("./src/main/java/app/incidentassesments.json");
+		File f=new File("./src/main/java/app/incidentassesments.json");
+		if (f.exists()) {
+			System.out.println("File exists");
 		}
-		return null;
-	}
-	public static Map<Integer, Object> getJson2(Object data) {
-		JSONParser parser = new JSONParser();
-		try {
-			// save JSON inside an Object
-			//Object data = parser.parse(new FileReader("src/main/java/app/incidentassesments.json"));
-			// Iterator for going through data object
-			Iterator<Object> iterator = ((ArrayList) data).iterator();
-			// Iterator for calculating size
-			Iterator<Object> iterator2 = ((ArrayList) data).iterator();
-			// New hashmap for saving iterators objects
-			Map<Integer, Object> listMap2 = new HashMap<Integer, Object>();
-			// loop for calculating how many object is inside the iterator
-			int iteratorSize = 0;
-			while (iterator2.hasNext()) {
-				iteratorSize++;
-				iterator2.next();
+		FileReader fr=null;
+		StringBuffer sb=new StringBuffer();
+		try{
+			fr=new FileReader(in);
+			//luettujen merkkien lukumäärä
+			int lkm=0;
+			//taulukko, johon merkit luetaan
+			char [] c=new char[10];
+			
+			//niin kauan kuin luettujen merkkien 
+			//lukumäärä on eri kuin -1 
+			while ((lkm=fr.read(c))!=-1){
+				//tulostetaan luetut merkit tiedostoon, ei näytölle
+//				fw.write(c, 0, lkm);
+				System.out.print(c);
+				sb.append(c, 0, lkm);
 			}
-
-			while (iterator.hasNext()) {
-
-				for (int i = 0; i < iteratorSize; i++) {
-					listMap2.put(i, iterator.next());
-				}
-
-			}
-			// Going through the listMap hashmap and calling method handleHashmap for each
-			// object inside this hashmap, number is
-			// the number of incident assesment tree (integer) and incident is the
-			// object/what is inside in every incident assesment tree
-
-			return listMap2;
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		return null;
+		/*
+		 * FileReader -luokan muodostin heittää poikkeuksen
+		 * FileNotFoundException, jos tiedostoa ei löydy
+		*/		
+		catch (FileNotFoundException e){
+			Tulosta("Tiedostoa ei löytynyt: "+
+					e.getMessage());
+		}
+
+		/*
+		 * FileReader.read heittää poikkeuksen 
+		 * IOException, jos lukeminen epäonnistuu
+		 * Saman poikkeuksen heittää myös FileWriter -muodostin
+		 */
+		catch (IOException e){
+			Tulosta("Tiedoston lukeminen epäonnistui: "+
+					e.getMessage());
+		}
+		
+		/*
+		 * Tapahtuipa poikkeuksia tai ei, try - catch - finally
+		 * kokonaisuudessa toteutetaan viimeisenä aina finally -lohko.
+		 */		
+		finally{
+			try{
+				if (fr!=null)
+					fr.close();
+			}
+			//Myös close voi heittää poikkeuksen, joka
+			//on otettava kiinni
+			catch (IOException e){
+				//do nothing
+			}
+		}
+		Tulosta(sb.toString());
+		return sb.toString();
 	}
-
-
+	static void Tulosta(String s){
+		System.out.println(s);
+	}
 }
+

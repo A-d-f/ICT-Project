@@ -32,8 +32,6 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.TargetDataLine;
 
-import data.Speech;
-
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
@@ -116,7 +114,6 @@ public class InfiniteStreamRecognize {
 				System.out.println("ollaanko tryssa?");
 				String uri = "http://127.0.0.1:8080/hello";
 				
-				Speech s = new Speech("1", "Mitä kuuluu?", "Hyvää kuuluu");
 				javax.ws.rs.client.Client c = ClientBuilder.newClient();
 				WebTarget wt = c.target(uri);
 				Builder b = wt.request(); 
