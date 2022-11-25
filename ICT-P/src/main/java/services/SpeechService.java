@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import data.Answer;
 import data.Content;
+import data.Found;
 import data.Incident;
 import data.Question;
 
@@ -37,8 +38,12 @@ import org.json.simple.JSONArray;
 @Path("/speechservice")
 public class SpeechService {
 	
+	//Lista incidenttejä varten jotta voidaan chooseIncidentissä hakea incidenttien avainsanalistat
 	static ArrayList<Incident> incidentList=new ArrayList<>();
-	static String tofront = null;
+	
+	//Uusi luokka tehty frontille lähetettävää stringiä varten,
+	//mutta ei ainakaan toistaiseksi löydä getterillä chooseIncidentissä päivitettyä arvoa esim "1" vaan tulostaa null
+	static Found tofront = new Found();
 	
 	// List of keywordlists of questions
 //	static List<List<Question>> info = new ArrayList<>();
@@ -51,7 +56,8 @@ public class SpeechService {
 	@Path("/getdata")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String readData() {
-		
+//		String found = tofront.getFound().toString();
+//		System.out.println("readData " + found);
 		return "1";
 	}
 
@@ -67,14 +73,14 @@ public class SpeechService {
 	@Path("/handledata")
 	@Produces(MediaType.TEXT_PLAIN)
 	public static void handleData(String transcript) {
-		ArrayList<Incident> incidentList=new ArrayList<>();
+		
 		try {
-			String json=lueTdsto();//Lue tiedosto
+			//String json=lueTdsto();//Lue tiedosto
 			JSONParser parser = new JSONParser();//Tee JSONParser
-			Object obj = parser.parse(json);//Merkkijono parsitaan objektiksi
+			//Object obj = parser.parse(json);//Merkkijono parsitaan objektiksi
 			
-//			Object data = parser.parse(new FileReader("src/main/java/app/incidentassesments.json"));
-			JSONArray array = (JSONArray)obj;//Objektista JSONArray
+			Object data = parser.parse(new FileReader("src/main/java/app/incidentassesments.json"));
+			JSONArray array = (JSONArray)data;//Objektista JSONArray
 			
 			for (int i=0;i<array.size();i++) {
 				JSONObject jo = (JSONObject)array.get(i);
@@ -95,15 +101,17 @@ public class SpeechService {
 				System.out.println(i);
 			}
 			
-			System.out.println("95: " + incidentList.get(1).getKeywordList());
-//			tofront = chooseIncident(transcript);
-//			System.out.println("100: " + tofront);
+			//Valitsee oikean incidentin keywordien perusteella
+			chooseIncident(transcript);
+			
 			
 			
 		}
 		catch(Exception e) {
 		    System.err.println("Jotain meni pieleen");
 		}
+		
+	
 	}
 	
 	private static void readContent(JSONArray arr, Incident incident) {
@@ -163,7 +171,8 @@ public class SpeechService {
 		incident.setKeywordList(list);
 	}
 	
-	private static String chooseIncident(String transcript) {
+	//Sama metodi mitä aiemmassa koodissa, muutettu voidiksi Found-olion takia
+	private static void chooseIncident(String transcript) {
 		System.out.println("167 " + incidentList.get(0).getKeywordList());
 		
 		ArrayList<String> foundTreeWords = new ArrayList<String>();
@@ -269,22 +278,28 @@ public class SpeechService {
 		System.out.println("words in foundShopliftingWords list: " + foundShopliftingWords.toString()
 				+ " number of words in foundShopliftingWords: " + calcShopl);
 		if(calcFallen>calcShopl) {
-			System.err.println("Kyse on puun kaatumisesta.");
+			
 			incidentFallen=true;
 			incidentShopL=false;
+			tofront.setFound("1"); 
+			System.err.println("Kyse on puun kaatumisesta." +tofront);
+			System.out.println("getFound" + tofront.getFound().toString());
 		}
 		if(calcFallen==calcShopl) {
-			System.err.println("Kyse voi olla puun kaatumisesta tai ryöstöstä.");
+			
 			incidentFallen=true;
 			incidentShopL=true;
+			tofront.setFound(""); 
+			System.err.println("Kyse voi olla puun kaatumisesta tai ryöstöstä." +tofront);
 		}
 		if (calcFallen<calcShopl){
-			System.err.println("Kyse on varkaudesta/ryöstöstä.");
+			
 			incidentFallen=false;
 			incidentShopL=true;
+			tofront.setFound("2"); 
+			System.err.println("Kyse on varkaudesta/ryöstöstä."+tofront);
+			
 		}
-
-		return "Getting transcript";
 	}
 	
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
@@ -312,69 +327,71 @@ public class SpeechService {
 		return found;
 	}
 	
-	public static String lueTdsto() {
-		File in=new File("./src/main/java/app/incidentassesments.json");
-		File f=new File("./src/main/java/app/incidentassesments.json");
-		if (f.exists()) {
-			System.out.println("File exists");
-		}
-		FileReader fr=null;
-		StringBuffer sb=new StringBuffer();
-		try{
-			fr=new FileReader(in);
-			//luettujen merkkien lukumäärä
-			int lkm=0;
-			//taulukko, johon merkit luetaan
-			char [] c=new char[10];
-			
-			//niin kauan kuin luettujen merkkien 
-			//lukumäärä on eri kuin -1 
-			while ((lkm=fr.read(c))!=-1){
-				//tulostetaan luetut merkit tiedostoon, ei näytölle
-//				fw.write(c, 0, lkm);
-				System.out.print(c);
-				sb.append(c, 0, lkm);
-			}
-		}
-		/*
-		 * FileReader -luokan muodostin heittää poikkeuksen
-		 * FileNotFoundException, jos tiedostoa ei löydy
-		*/		
-		catch (FileNotFoundException e){
-			Tulosta("Tiedostoa ei löytynyt: "+
-					e.getMessage());
-		}
 
-		/*
-		 * FileReader.read heittää poikkeuksen 
-		 * IOException, jos lukeminen epäonnistuu
-		 * Saman poikkeuksen heittää myös FileWriter -muodostin
-		 */
-		catch (IOException e){
-			Tulosta("Tiedoston lukeminen epäonnistui: "+
-					e.getMessage());
-		}
-		
-		/*
-		 * Tapahtuipa poikkeuksia tai ei, try - catch - finally
-		 * kokonaisuudessa toteutetaan viimeisenä aina finally -lohko.
-		 */		
-		finally{
-			try{
-				if (fr!=null)
-					fr.close();
-			}
-			//Myös close voi heittää poikkeuksen, joka
-			//on otettava kiinni
-			catch (IOException e){
-				//do nothing
-			}
-		}
-		Tulosta(sb.toString());
-		return sb.toString();
-	}
-	static void Tulosta(String s){
-		System.out.println(s);
-	}
+	
+//	public static String lueTdsto() {
+//		File in=new File("./src/main/java/app/incidentassesments.json");
+//		File f=new File("./src/main/java/app/incidentassesments.json");
+//		if (f.exists()) {
+//			System.out.println("File exists");
+//		}
+//		FileReader fr=null;
+//		StringBuffer sb=new StringBuffer();
+//		try{
+//			fr=new FileReader(in);
+//			//luettujen merkkien lukumäärä
+//			int lkm=0;
+//			//taulukko, johon merkit luetaan
+//			char [] c=new char[10];
+//			
+//			//niin kauan kuin luettujen merkkien 
+//			//lukumäärä on eri kuin -1 
+//			while ((lkm=fr.read(c))!=-1){
+//				//tulostetaan luetut merkit tiedostoon, ei näytölle
+////				fw.write(c, 0, lkm);
+//				System.out.print(c);
+//				sb.append(c, 0, lkm);
+//			}
+//		}
+//		/*
+//		 * FileReader -luokan muodostin heittää poikkeuksen
+//		 * FileNotFoundException, jos tiedostoa ei löydy
+//		*/		
+//		catch (FileNotFoundException e){
+//			Tulosta("Tiedostoa ei löytynyt: "+
+//					e.getMessage());
+//		}
+//
+//		/*
+//		 * FileReader.read heittää poikkeuksen 
+//		 * IOException, jos lukeminen epäonnistuu
+//		 * Saman poikkeuksen heittää myös FileWriter -muodostin
+//		 */
+//		catch (IOException e){
+//			Tulosta("Tiedoston lukeminen epäonnistui: "+
+//					e.getMessage());
+//		}
+//		
+//		/*
+//		 * Tapahtuipa poikkeuksia tai ei, try - catch - finally
+//		 * kokonaisuudessa toteutetaan viimeisenä aina finally -lohko.
+//		 */		
+//		finally{
+//			try{
+//				if (fr!=null)
+//					fr.close();
+//			}
+//			//Myös close voi heittää poikkeuksen, joka
+//			//on otettava kiinni
+//			catch (IOException e){
+//				//do nothing
+//			}
+//		}
+//		Tulosta(sb.toString());
+//		return sb.toString();
+//	}
+//	static void Tulosta(String s){
+//		System.out.println(s);
+//	}
 }
 
