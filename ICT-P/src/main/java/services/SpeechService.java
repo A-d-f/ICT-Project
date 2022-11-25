@@ -35,7 +35,9 @@ public class SpeechService {
 	// List of keywordlists of questions
 //	static List<List<Question>> info = new ArrayList<>();
 	static List<Question> info = new ArrayList<>();
-	static List<Answer> info2 = new ArrayList<>();
+//	static List<Answer> info2 = new ArrayList<>();
+	static List<Answer> info2=new ArrayList<>();
+	static List<List<String>> info3=new ArrayList<>();
 	@GET
 	@Path("/getdata")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -215,6 +217,7 @@ public class SpeechService {
 		JSONArray jiisoni = new JSONArray();
 		JSONArray jiisoni2 = new JSONArray();
 		for (int i = 0; i<contentMap.size(); i++) {
+			System.out.println("CONTENT MAP SIZE 218: " + contentMap.size());
 			contentMapped = (JSONObject) contentMap.get(i);
 //			jiisoni= (JSONArray) contentMap.get(i);
 			
@@ -224,7 +227,7 @@ public class SpeechService {
 			
 			System.out.println("221: "+answers);
 			jiisoni.add(questions);
-			jiisoni.add(answers);
+			jiisoni2.add(answers);
 //			jiisoni2.add(answers);
 //			testi.add((String) contentMapped.get("question"));
 			System.out.println("Testilista: "+jiisoni);
@@ -235,15 +238,29 @@ public class SpeechService {
 //				System.out.println("Quesvalue: "+quesvalue);
 //			}
 		}
-		
+		System.out.println("239: "+answers);
 		handleContent2(jiisoni);
-//		handleContent3(jiisoni2);
+		handleContent3(jiisoni2);
+		String transcript2 = "Yksityinen alue on mielipaikkani ja aivoni sulaa";
+		System.out.println("241: " +  info.get(0).getKeywords());
+		System.out.println("245: " + info2.get(0));
+		for (int a = 0; a<info2.size(); a++) {
+			
+//			if (info2.get(a).getAid().startsWith("11")) {
+				System.out.println("Answer keywords :" +info2.get(a).getAid() +info2.get(a).getAkeywords());
+				if (transcript2.contains(info2.get(a).getAvalue())) {
+					System.out.println("Answer id: "+info2.get(a).getAid());
+				}
+				
+//			}
+			
+		}
+		System.out.println("INFO 3: " +info3);
 		
-
-	
+		
 }
 	private static void handleContent2(JSONArray json) {
-		System.out.println("Handle content 2 lista: " + json);
+//		System.out.println("Handle content 2 lista: " + json);
 		Map<Integer, Object> objectmap = new HashMap<Integer, Object>();
 		Object objekti = (Object) json;
 		objectmap=getJson2(objekti);
@@ -259,28 +276,29 @@ public class SpeechService {
 		objectmap.forEach((key, value)-> {
 			getValue(value);
 		});
-		System.err.println(" RIVIN 262 KYSYMYSLISTA TÄSSÄ OLKAA HYVÄ!: "+info.toString());
+//		System.err.println(" RIVIN 262 KYSYMYSLISTA TÄSSÄ OLKAA HYVÄ!: "+info.toString());
+//		System.err.println(" RIVIN 263 VASTAUSLISTA TÄSSÄ OLKAA HYVÄ!: "+info2.toString());
+}
+	private static void handleContent3(Object answers) {
+		System.out.println("Handle content 2 lista: " + answers);
+		Map<Integer, Object> objectmap = new HashMap<Integer, Object>();
+		Object objekti = (Object) answers;
+		objectmap=getJson2(objekti);
+		//
+		for (int i=0; i<objectmap.size(); i++) {
+			System.out.println("233: "+objectmap.get(i));
+			objectmap.put(i, objectmap.get(i));
+			System.out.println("objectmap 2: "+objectmap);
+			System.out.println("keywords: "+  objectmap.get("keywords"));
+		}
+		
+		// loop through objectmap and call getValue with parameter object value
+		objectmap.forEach((key, value)-> {
+			getValue2(value);
+		});
+		System.err.println(" RIVIN 251 INFOLISTA TÄSSÄ OLKAA HYVÄ!: "+info.toString());
 		System.err.println(" RIVIN 263 VASTAUSLISTA TÄSSÄ OLKAA HYVÄ!: "+info2.toString());
 }
-//	private static void handleContent3(JSONArray json) {
-//		System.out.println("Handle content 2 lista: " + json);
-//		Map<Integer, Object> objectmap = new HashMap<Integer, Object>();
-//		Object objekti = (Object) json;
-//		objectmap=getJson2(objekti);
-//		//
-//		for (int i=0; i<objectmap.size(); i++) {
-//			System.out.println("233: "+objectmap.get(i));
-//			objectmap.put(i, objectmap.get(i));
-//			System.out.println("objectmap 2: "+objectmap);
-//			System.out.println("keywords: "+  objectmap.get("keywords"));
-//		}
-//		
-//		// loop through objectmap and call getValue with parameter object value
-//		objectmap.forEach((key, value)-> {
-//			getValue2(value);
-//		});
-//		System.err.println(" RIVIN 251 INFOLISTA TÄSSÄ OLKAA HYVÄ!: "+info.toString());
-//}
 
 	private static void getValue(Object value) {
 //		System.out.println("TADAAAAAAAA: " + value);
@@ -288,28 +306,28 @@ public class SpeechService {
 		JSONArray array= (JSONArray) value;
 		// Object from arrays first index
 //		JSONObject quesObject = null;
-		JSONObject quest = (JSONObject) array.get(0);
-		String valueSt= (String) quest.get("qvalue");
-		String id=(String) quest.get("qid");
-		List<String> keyt = (List<String>) quest.get("qkeywords");
+		 JSONObject quesObject= (JSONObject) array.get(0);
+		String valueSt= (String) quesObject.get("qvalue");
+		String id=(String) quesObject.get("qid");
+		List<String> keyt = (List<String>) quesObject.get("qkeywords");
 		
-		for (int u=0;u<array.size();u++) {
-			 JSONObject quesObject= (JSONObject) array.get(u);
+		
+			 
 			 System.out.println("quesobject: " + quesObject);
 				// List for objects keywords
 //				List<String> keyt = (List<String>) quesObject.get("qkeywords");
 //				String valueSt = (String) quesObject.get("qvalue");
 //				String id=(String) quesObject.get("qid");
 //				List<String> neg = (List<String>) quesObject.get("qnegative");
-				List<String> akeyt= (List<String>) quesObject.get("akeywords");
-				String aValue = (String) quesObject.get("avalue");
-				String aid = (String) quesObject.get("aid");
-				System.out.println("AID: " + aid);
+//				List<String> keyt= (List<String>) quesObject.get("qkeywords");
+//				String aValue = (String) quesObject.get("qvalue");
+//				String aid = (String) quesObject.get("aid");
+//				System.out.println("AID: " + aid);
 				List<String> anegative=(List<String>) quesObject.get("anegative");
 //				System.out.println("String value onpi: "+valueSt);
 				// saving all question objects keywords (keyslist) to an arraylist info
 				Question que = new Question(id,valueSt,keyt);
-				Answer ans = new Answer(aid, aValue, akeyt);
+//				Answer ans = new Answer(aid, aValue, akeyt);
 //				Content content = new Content(id, valueSt, keyt, neg, aid, aValue, akeyt, anegative);
 //				que.setKeywords(keyt);
 //				System.out.println("Question luokan keyt: "+content.getQkeywords());
@@ -320,8 +338,8 @@ public class SpeechService {
 //				System.out.println("Answer luokan value:" + content.getAvalue());
 //				System.out.println("Answer luokan ID:" + content.getAid());
 				info.add(que);
-				info2.add(ans);
-		}
+//				info2.add(ans);
+//		}
 		
 		
 	}
@@ -330,26 +348,44 @@ public class SpeechService {
 		//Change object to JsonArray
 		JSONArray array= (JSONArray) value;
 		// Object from arrays first index
-		JSONObject quesObject= (JSONObject) array.get(0);
-		System.out.println("getValue 2 quesObject: "+ quesObject);
-		// List for objects keywords
-		List<String> keyt = (List<String>) quesObject.get("akeywords");
-		String valueSt = (String) quesObject.get("avalue");
-		String id=(String) quesObject.get("aid");
-		List<String> neg = (List<String>) quesObject.get("anegative");
-		System.out.println("String value onpi: "+valueSt);
-		// saving all question objects keywords (keyslist) to an arraylist info
-//		Content content = new Content(id, valueSt, keyt, neg);
-//		Question que = new Question(id,valueSt,keyt);
-//		Answer ans = new Answer()
-//		que.setKeywords(keyt);
-//		System.out.println("Answer luokan keyt: "+content.getAkeywords());
-////		que.setValue(valueSt);
-//		System.out.println("Answer luokan value:" + content.getAvalue());
-//		System.out.println("Answer luokan ID:" + content.getAid());
-//		info.add(content);
+		JSONObject quesObject;
+		for (int e=0; e<array.size();e++) {
+			quesObject = (JSONObject) array.get(e);
+			
+			// List for objects keywords
+			List<String> akeyt = (List<String>) quesObject.get("akeywords");
+			String avalueSt = (String) quesObject.get("avalue");
+			String aid=(String) quesObject.get("aid");
+			List<String> neg = (List<String>) quesObject.get("anegative");
+			Answer ans = new Answer(aid, avalueSt, akeyt);
+//			List<Answer> argh = null;
+//			argh.add(ans);
+			info2.add(ans);
+			info3.add(ans.getAkeywords());
+		}
+		System.out.println("346: " + info.get(2) + " " +info2.get(2));
 		
 	}
+//	private static void getValue3(Object value) {
+////		System.out.println("TADAAAAAAAA: " + value);
+//		//Change object to JsonArray
+////		JSONArray array= (JSONArray) value;
+//		// Object from arrays first index
+////		JSONObject quesObject;
+////		for (int e=0; e<array.size();e++) {
+////			quesObject = (JSONObject) array.get(e);
+//			
+//			// List for objects keywords
+//			List<String> akeyt = (List<String>) quesObject.get("akeywords");
+//			String avalueSt = (String) quesObject.get("avalue");
+//			String aid=(String) quesObject.get("aid");
+//			List<String> neg = (List<String>) quesObject.get("anegative");
+//			Answer ans = new Answer(aid, avalueSt, akeyt);
+//			info2.add(ans);
+//		}
+//		System.out.println("346: " + info.get(2) + " " +info2.get(2));
+//		
+//	}
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
 		Iterator<String> negativeIterator = negativeKeywords.iterator();
