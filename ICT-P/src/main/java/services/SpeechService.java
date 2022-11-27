@@ -187,7 +187,7 @@ public class SpeechService {
 	// Sama metodi mitä aiemmassa koodissa, muutettu voidiksi Found-olion takia
 	private static void chooseIncident(String transcript) {
 		System.out.println("167 " + incidentList.get(0).getKeywordList());
-
+		transcript=transcript.toLowerCase();
 		ArrayList<String> foundTreeWords = new ArrayList<String>();
 		ArrayList<String> foundShopliftingWords = new ArrayList<String>();
 		int calcFallen = 0;
