@@ -24,6 +24,13 @@ public class Answer {
 	public ArrayList<String> getKeywordList() {
 		return keywordList;
 	}
+	public String keywordsToString() {
+		String asd = null;
+		for (int i = 0; i<keywordList.size(); i++) {
+			asd=asd + " " +keywordList.get(i);
+		}
+		return asd;
+	}
 	public void setKeywordList(ArrayList<String> keywordList) {
 		this.keywordList = keywordList;
 	}

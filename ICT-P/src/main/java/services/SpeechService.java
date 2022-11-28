@@ -23,6 +23,7 @@ import org.json.simple.parser.JSONParser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.SystemParameterOrBuilder;
 
 import data.Answer;
 import data.Content;
@@ -51,6 +52,7 @@ public class SpeechService {
 //	static List<Answer> info2 = new ArrayList<>();
 	static List<Answer> info2 = new ArrayList<>();
 	static List<List<String>> info3 = new ArrayList<>();
+	static List<String> testilista = new ArrayList<>();
 
 	@GET
 	@Path("/getdata")
@@ -96,11 +98,12 @@ public class SpeechService {
 
 					arr = (JSONArray) jo.get("content");
 					readContent(arr, incident);
-
+					checkAnswers(transcript, arr);
 					incidentList.add(incident);
 				}
 				for (Incident i : incidentList) {
-					System.out.println(i);
+					System.out.println("103: " + i);
+					System.out.println("104: " + i.getKeywordList());
 				}
 			} catch (Exception e) {
 				System.err.println("Jotain meni pieleen");
@@ -151,20 +154,35 @@ public class SpeechService {
 //				System.out.println("Answer 93:"+a.getId()+" "+a.getAvalue());
 				JSONArray akeyarr = (JSONArray) ao.get("akeywords");
 //				System.out.println("AKeywords 94: "+ao.get("akeywords"));
-				ArrayList<String> akeyList = new ArrayList<>();
+			    ArrayList<String> akeyList = new ArrayList<>();
 				for (int m = 0; m < akeyarr.size(); m++) {
 					akeyList.add((String) akeyarr.get(m));
 //					System.out.println("AKeyword 98:"+a.getId()+" "+a.getAvalue()+" "+(String) akeyarr.get(m));
 				}
 				a.setKeywordList(akeyList);
 				q.addAnswerList(a);
+				System.out.println("163: Keywords: " + akeyList);
+				System.out.println("Answer keywords: " + a.getId() + " " + a.getKeywordList());
+				readAkeyList(akeyList);
+				
+				
 			}
+			
 		}
 		incident.setContent(content);
-		
+		System.out.println("Testilista: " + testilista);
 	
 	}
-
+	
+	private static ArrayList<String> readAkeyList(ArrayList<String >list) {
+		int counter = 0;
+		while (counter<2) {
+		System.out.println("174 list: " + list);
+		counter++;
+		}
+		return list;
+	}
+	
 	private static void readNegatives(JSONArray arr, Incident incident) {
 		ArrayList<String> list = new ArrayList<>();
 //		System.out.println(arr);
@@ -318,6 +336,54 @@ public class SpeechService {
 
 		}
 	}
+	public static void checkAnswers(String transcript, JSONArray array) {
+		
+		
+		
+		for (int l=0; l<array.size(); l++) {
+			JSONObject jo = (JSONObject) array.get(l);
+			JSONArray aarray = (JSONArray) jo.get("answers");
+			
+			
+			List<String> lista = new ArrayList<>();
+			for (int k = 0; k < aarray.size(); k++) {
+				
+//				Answer ans = new Answer();
+				Answer ans = new Answer();
+				JSONObject ao = (JSONObject) aarray.get(k);
+				ans.setId(ao.get("aid"));
+				JSONArray akeys = (JSONArray) ao.get("akeywords");
+				ans.setAvalue((String) ao.get("avalue"));
+				System.out.println("Akeys 349: " + akeys);
+				ans.setKeywordList(akeys);
+				System.out.println("TADAAAA " + ans.keywordsToString());
+				String asd = ans.keywordsToString();
+				for (String keyword : ans.getKeywordList()) {
+					if (transcript.contains(keyword)) {
+						System.err.println("Puheessa mainittiin ID "+ans.getId() +" eli vastaus: " + ans.getAvalue());
+					}
+				}
+				
+//				System.out.println("TADAAAA " + ans.keywordsToString());
+//				if (transcript.contains(ans.keywordsToString())) {
+//					System.out.println("VASTAUKSEN ID: " + ans.getId());
+//				}
+//				for (int u=0; u<akeys.size(); u++) {
+//					lista.add((String) akeys.get(u));
+//					System.out.println("LISTAAAAAAA: "+ lista);
+//					for (String keyword : lista) {
+//						if (transcript.contains(keyword)){
+//							String foundWord = keyword;
+//							
+//							
+//						}
+//					System.out.println("akeys u 351: " + ao.get("aid") + akeys.get(u));
+				}
+				
+				}
+			}
+		
+	
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
 		Iterator<String> negativeIterator = negativeKeywords.iterator();
