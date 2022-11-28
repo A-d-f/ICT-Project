@@ -1,11 +1,14 @@
 package app;
 
+import java.io.IOException;
+
 import services.SpeechService;
 
 public class DataTransfer implements Runnable {
 	boolean testi=true;
 	static String savedTranscript="";
 	private static String currentTranscript="";
+	SpeechService service=new SpeechService();
 	@Override
 	public void run() {
 		while (testi==true) {
@@ -21,15 +24,15 @@ public class DataTransfer implements Runnable {
 		}
 		
 	}
-	public static void dataFetch(String transcript) {
+	public void dataFetch(String transcript) throws IOException, InterruptedException {
 		System.err.println("Json-luokan transcript:");
 		System.out.println("Transkripti: " + transcript);
 		saveTranscriptToString(transcript);
 		//SpeechService.getTranscript(transcript);
-		SpeechService.handleData(transcript);
+		service.handleData(transcript);
 		
 	}
-	public static void saveTranscriptToString(String transcript) {
+	public void saveTranscriptToString(String transcript) {
 		currentTranscript=transcript;
 		savedTranscript = savedTranscript + transcript;
 
