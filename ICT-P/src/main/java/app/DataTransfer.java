@@ -30,6 +30,7 @@ public class DataTransfer implements Runnable {
 		saveTranscriptToString(transcript);
 		//SpeechService.getTranscript(transcript);
 		service.handleData(transcript);
+
 		
 	}
 	public void saveTranscriptToString(String transcript) {
