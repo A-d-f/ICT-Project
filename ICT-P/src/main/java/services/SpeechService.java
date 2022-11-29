@@ -43,7 +43,7 @@ public class SpeechService {
 
 	boolean chosenIncident = false;
 	static Content con = new Content();
-	public Found tofront = new Found();
+	static Found tofront = new Found();
 	public List<Question> info = new ArrayList<>();
 	public List<Answer> info2 = new ArrayList<>();
 	public List<List<String>> info3 = new ArrayList<>();
@@ -56,23 +56,24 @@ public class SpeechService {
 
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String readData(Found found) {
-		System.out.println("readData " + found.getId());
+		System.out.println("readData " + found.getId() + " " + found.getFoundWords() + " " + found.getSize() + " " + found.getValue());
 		tofront.setId(found.getId());
 		tofront.setFoundWords(found.getFoundWords());
+		tofront.setValue(found.getValue());
 		return "success";
 
 	}
 
 	@GET
-	@Path("/getthis")
+	@Path("/getvalues")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ArrayList<Found> getTranscript() {
+	public static ArrayList<Found> getFoundValues() {
 
 		ArrayList<Found> list = new ArrayList<>();
-		Found found = new Found();
-		found.setId(tofront.getId());
-		System.out.println("founds id" + found.getId());
+//		Found found = new Found();
+//		found.setId(tofront.getId());
+		System.out.println("founds id" + tofront.getId());
 		list.add(tofront);
 		System.out.println("lista" + list.toString());
 
@@ -300,7 +301,6 @@ public class SpeechService {
 			//Adding object to ojbList
 			objList.add(foundObj);
 
-
 		}
 		
 		// Sorting objList with Collections method sort by object's keywordlist size, so
@@ -311,177 +311,15 @@ public class SpeechService {
 		if (objList.get(0).getFoundWords().isEmpty()) {
 			chosenIncident = false;
 		} else {
+			
 			chosenIncident = true;
+			sendObject(objList.get(0));
+			
 		}
-
 
 		return chosenIncident;
 
 	}
-
-//	// Sama metodi mitä aiemmassa koodissa, muutettu voidiksi Found-olion takia
-//	public void chooseIncident(String transcript) throws IOException, InterruptedException {
-//		System.out.println("167 " + incidentList.get(0).getKeywordList());
-//		transcript = transcript.toLowerCase();
-//		ArrayList<String> foundTreeWords = new ArrayList<String>();
-//		ArrayList<String> foundShopliftingWords = new ArrayList<String>();
-//		int calcFallen = 0;
-//		int calcShopl = 0;
-//
-//		List<String> fallenTreeKeywordList = new ArrayList<>();
-//		List<String> fallenTreeNegativeList = new ArrayList<>();
-//		List<String> shopliftingKeywordList = new ArrayList<>();
-//		List<String> shopliftingNegativeList = new ArrayList<>();
-//
-//		fallenTreeKeywordList = incidentList.get(0).getKeywordList();
-//		fallenTreeNegativeList = incidentList.get(0).getNegativeList();
-//		shopliftingKeywordList = incidentList.get(1).getKeywordList();
-//		shopliftingNegativeList = incidentList.get(1).getNegativeList();
-//
-//		System.out.println("188 ");
-//
-//		// Transcription part
-//		// Splitting transcription by space into separate list
-//		String[] splittedList = transcript.split(" ");
-//
-//		// Looping keywords list
-//		for (String splittedWord : splittedList) {
-//
-//			// Looping splitted list
-//			for (String fallenTreeWord : fallenTreeKeywordList) {
-//				// If element of splitted list matches with element of keywords list
-//				// Printing "equals" and adding it to foundWords list
-//
-//				if (splittedWord.contains(fallenTreeWord)) {
-//
-//					// Jos splitted word ei ole negatiivinen eli on esim puu, palautuu false,
-//					// lisätään listaan foundTreeWords
-//					if (checkNegativeWords(splittedWord, fallenTreeNegativeList) == false) {
-//
-//						System.out.println("splittedWord ifissä " + splittedWord);
-//						foundTreeWords.add(splittedWord);
-//						calcFallen++;
-//					}
-//
-//				}
-//
-//			}
-//
-//			for (String shopliftingWord : shopliftingKeywordList) {
-//				// If element of splitted list matches with element of keywords list
-//				// Printing "equals" and adding it to foundWords list
-//				if (splittedWord.contains(shopliftingWord)) {
-//
-//					// Jos splitted word ei ole negatiivinen eli on esim ryöstö, palautuu false,
-//					// lisätään listaan foundShopLiftingWords
-//					if (checkNegativeWords(splittedWord, shopliftingNegativeList) == false) {
-//
-//						System.out.println("splittedWord ifissä " + splittedWord);
-//						foundShopliftingWords.add(splittedWord);
-//						calcShopl++;
-//					}
-//
-//				}
-//			}
-//
-//		}
-//		// ottaa lausutun fraasin vain kerran vaikka tulisi transcriptissä useamman
-//		// kerran
-//		// For checking phrases in fallen tree
-//		for (String keyword : fallenTreeKeywordList) {
-//			if (keyword.contains(" ")) {// tästä eteenpäin käsitellään vain spacen sisältäviä keywordeja
-//
-//				boolean m = transcript.contains(keyword);
-//
-//				System.out.println(transcript + " " + m + " mätsää " + keyword);
-//				if (m) {
-//					foundTreeWords.add(keyword);
-//					int count = StringUtils.countMatches(transcript, keyword);
-//					System.out.println("Fraaseja sanottu " + count + " kertaa kaatuneessa puussa");
-//					calcFallen = calcFallen + count;
-//				}
-//			}
-//		}
-//		// For checking phrases in shoplifting
-//		for (String keyword : shopliftingKeywordList) {
-//
-//			if (keyword.contains(" ")) {
-//				boolean m = transcript.contains(keyword);
-//				System.out.println(transcript + " " + m + " mätsää " + keyword);
-//				if (m) {
-//					foundShopliftingWords.add(keyword);
-//					int count = StringUtils.countMatches(transcript, keyword);
-//					System.out.println("Fraaseja sanottu " + count + " kertaa ryöstössä");
-//					calcShopl = calcShopl + count;
-//				}
-//			}
-//		}
-//
-//		System.out.println("words in foundTreedWords list: " + foundTreeWords.toString()
-//				+ " number of words in foundTreeWords: " + calcFallen);
-//		System.out.println("words in foundShopliftingWords list: " + foundShopliftingWords.toString()
-//				+ " number of words in foundShopliftingWords: " + calcShopl);
-//
-//		if (calcFallen > calcShopl) {
-//
-//			tofront.setId("1");
-//			tofront.setValue("");
-//			tofront.setFoundWords(foundTreeWords);
-//			sendObject(tofront);
-//			System.err.println("Kyse on puun kaatumisesta.");
-//
-//		}
-//		if (calcFallen == calcShopl) {
-//
-//			System.err.println("Kyse voi olla puun kaatumisesta tai ryöstöstä.");
-//		}
-//		if (calcFallen < calcShopl) {
-//
-//			tofront.setId("2");
-//			tofront.setValue("");
-//			tofront.setFoundWords(foundShopliftingWords);
-//			sendObject(tofront);
-//			System.err.println("Kyse on varkaudesta/ryöstöstä.");
-//
-//		}
-//	}
-
-//	public void checkAnswers(String transcript, JSONArray array) {
-//
-//		for (int l = 0; l < array.size(); l++) {
-//			JSONObject jo = (JSONObject) array.get(l);
-//			JSONArray aarray = (JSONArray) jo.get("answers");
-//
-//			List<String> lista = new ArrayList<>();
-//			for (int k = 0; k < aarray.size(); k++) {
-//
-////				Answer ans = new Answer();
-//				Answer ans = new Answer();
-//				JSONObject ao = (JSONObject) aarray.get(k);
-//				ans.setId(ao.get("aid"));
-//				JSONArray akeys = (JSONArray) ao.get("akeywords");
-//				ans.setAvalue((String) ao.get("avalue"));
-//				System.out.println("Akeys 349: " + akeys);
-//				ans.setKeywordList(akeys);
-//				System.out.println("TADAAAA " + ans.keywordsToString());
-//				String asd = ans.keywordsToString();
-//
-//		if (calcFallen < calcShopl) {
-//			chosenIncident = true;
-//			incidentFallen = false;
-//			incidentShopL = true;
-//			tofront.setId("2");
-//			tofront.setValue("");
-//			tofront.setFoundWords(foundShopliftingWords);
-//			sendObject(tofront);
-//			System.err.println("Kyse on varkaudesta/ryöstöstä.");
-//
-//		}
-//
-//		// if calcFallen > calcShopl tai calcFallen < calcShopl -> boolean
-//		// chosenIncident == true
-//	}
-//}}
 
 	public static void checkAnswers(String transcript, Content con) {
 		Answer ans = new Answer();
