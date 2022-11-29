@@ -27,6 +27,7 @@ public class DataTransfer implements Runnable {
 		saveTranscriptToString(transcript);
 		//SpeechService.getTranscript(transcript);
 		SpeechService.handleData(transcript);
+		SpeechService.getTranscriptToAnswers(transcript);
 		
 	}
 	public static void saveTranscriptToString(String transcript) {

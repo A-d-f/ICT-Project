@@ -24,6 +24,7 @@ import org.json.simple.parser.JSONParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.SystemParameterOrBuilder;
+import com.google.api.client.googleapis.json.GoogleJsonErrorContainer;
 
 import data.Answer;
 import data.Content;
@@ -45,6 +46,7 @@ public class SpeechService {
 	// päivitettyä arvoa esim "1" vaan tulostaa null
 	static Found tofront = new Found();
 	static String testword;
+	static boolean chosenIncident=false;
 
 	// List of keywordlists of questions
 //	static List<List<Question>> info = new ArrayList<>();
@@ -53,7 +55,9 @@ public class SpeechService {
 	static List<Answer> info2 = new ArrayList<>();
 	static List<List<String>> info3 = new ArrayList<>();
 	static List<String> testilista = new ArrayList<>();
-
+//	static JSONArray JScont;
+	static List<String> testilista2 = new ArrayList<>();
+	static Content con = new Content();
 	@GET
 	@Path("/getdata")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -97,11 +101,13 @@ public class SpeechService {
 					readNegatives(arr, incident);
 
 					arr = (JSONArray) jo.get("content");
+					
+//					System.out.println("JSCONT 103: " + JScont);
 					readContent(arr, incident);
 					// Väärässä paikassa -> chooseIncident() alle. 
 					// Tämä try catch tehdään vain kerran alussa, kun JSON luetaan ensimmäisen kerran incident-olioon
 					// arr -> incidentList (incidentList.get(0).getContent()?)
-					checkAnswers(transcript, arr); 
+//					checkAnswers(transcript, arr); 
 					
 					incidentList.add(incident);
 				}
@@ -112,18 +118,38 @@ public class SpeechService {
 			} catch (Exception e) {
 				System.err.println("Jotain meni pieleen");
 			}
-
+			
 		}
 		
-		System.out.println("110" +incidentList.get(0).getContent());
+//		que. incidentList.get(0).getContent().getQuestionList();
+		
+//		System.out.println("126  " + con.getQuestionList().get(0).getAnswerList().get(0));
 		// Valitsee oikean incidentin keywordien perusteella
 		
 		// if (booleanChosenIncident == null) -> chooseIncident() 
 		// else -> checkAnswers()
-		chooseIncident(transcript);
+		if (chosenIncident==false) {
+			chooseIncident(transcript);
+		}
+		for (int w = 0 ; w < incidentList.size(); w++) {
+			con.setQuestionList(incidentList.get(w).getContent().getQuestionList());
+			checkAnswers(transcript, con);
+		}
+		
+		
+		
+		
+		
 		
 		// Tähän täytyy tehdä logiikka, joka ensin käy tekemässä chooseIncidentin, josta saadaan boolean (mikä incident on valittu). 
 		// Sitten kun se on tehty, voidaan kutsua checkAnswers(). 
+		
+	}
+//	public static void getTranscriptToAnswers(String transcript) {
+//		checkAnswers(transcript, JScont);
+//	}
+	public static void getTranscriptToAnswers(String transcript) {
+//		checkAnswers(transcript, incidentList);
 		
 	}
 	
@@ -214,6 +240,7 @@ public class SpeechService {
 
 	// Sama metodi mitä aiemmassa koodissa, muutettu voidiksi Found-olion takia
 	private static void chooseIncident(String transcript) {
+		
 		System.out.println("167 " + incidentList.get(0).getKeywordList());
 		transcript=transcript.toLowerCase();
 		ArrayList<String> foundTreeWords = new ArrayList<String>();
@@ -323,13 +350,14 @@ public class SpeechService {
 
 			incidentFallen = true;
 			incidentShopL = false;
+			chosenIncident=true;
 			tofront.setFound("1");
 			testword = "1";
 			System.err.println("Kyse on puun kaatumisesta." + testword);
 			System.out.println("getFound" + tofront.getFound().toString());
 		}
 		if (calcFallen == calcShopl) {
-
+			
 			incidentFallen = true;
 			incidentShopL = true;
 			tofront.setFound("");
@@ -337,7 +365,7 @@ public class SpeechService {
 			System.err.println("Kyse voi olla puun kaatumisesta tai ryöstöstä." + testword);
 		}
 		if (calcFallen < calcShopl) {
-
+			chosenIncident=true;
 			incidentFallen = false;
 			incidentShopL = true;
 			tofront.setFound("2");
@@ -348,52 +376,68 @@ public class SpeechService {
 		
 		// if calcFallen > calcShopl tai calcFallen < calcShopl -> boolean chosenIncident == true
 	}
-	public static void checkAnswers(String transcript, JSONArray array) {
+	
+	
+	
+	public static void checkAnswers(String transcript, Content con) {
+		Answer ans = new Answer();
+		Question que = new Question();
+		for (int i = 0; i < con.getQuestionList().size(); i++) {
+			que.setAnswerList(con.getQuestionList().get(i).getAnswerList());
 		
 		
+		for (int e = 0; e < que.getAnswerList().size(); e++) {
+			ans.setAvalue(que.getAnswerList().get(e).getAvalue());
+			ans.setId(que.getAnswerList().get(e).getId());
+			ans.setKeywordList(que.getAnswerList().get(e).getKeywordList());
 		
-		for (int l=0; l<array.size(); l++) {
-			JSONObject jo = (JSONObject) array.get(l);
-			JSONArray aarray = (JSONArray) jo.get("answers");
-			
-			
-			List<String> lista = new ArrayList<>();
-			for (int k = 0; k < aarray.size(); k++) {
-				
-//				Answer ans = new Answer();
-				Answer ans = new Answer();
-				JSONObject ao = (JSONObject) aarray.get(k);
-				ans.setId(ao.get("aid"));
-				JSONArray akeys = (JSONArray) ao.get("akeywords");
-				ans.setAvalue((String) ao.get("avalue"));
-				System.out.println("Akeys 349: " + akeys);
-				ans.setKeywordList(akeys);
-				System.out.println("TADAAAA " + ans.keywordsToString());
-				String asd = ans.keywordsToString();
-				for (String keyword : ans.getKeywordList()) {
-					if (transcript.contains(keyword)) {
-						System.err.println("Puheessa mainittiin ID "+ans.getId() +" eli vastaus: " + ans.getAvalue());
-					}
-				}
-				
-//				System.out.println("TADAAAA " + ans.keywordsToString());
-//				if (transcript.contains(ans.keywordsToString())) {
-//					System.out.println("VASTAUKSEN ID: " + ans.getId());
-//				}
-//				for (int u=0; u<akeys.size(); u++) {
-//					lista.add((String) akeys.get(u));
-//					System.out.println("LISTAAAAAAA: "+ lista);
-//					for (String keyword : lista) {
-//						if (transcript.contains(keyword)){
-//							String foundWord = keyword;
-//							
-//							
-//						}
-//					System.out.println("akeys u 351: " + ao.get("aid") + akeys.get(u));
-				}
-				
-				}
+		for (String keyword : ans.getKeywordList()) {
+			if (transcript.contains(keyword)) {
+				System.err.println("Puheessa mainittiin ID "+ans.getId() +" eli vastaus: " + ans.getAvalue());
 			}
+		}
+		}
+		}
+//		System.err.println("TADAAAAAA 390: "+ans.getAvalue() + " "+ans.getId()+" "+ans.getKeywordList());
+	
+	
+	}
+	
+	
+//	public static void checkAnswers(String transcript, ArrayList<Incident> incidentList2) {
+//		
+//		
+//		
+//		for (int l=0; l<incidentList2.size(); l++) {
+////			JSONObject jo = (JSONObject) incidentList2.get(l);
+////			JSONArray aarray = (JSONArray) jo.get("answers");
+//			Content con = new Content();
+//			
+//			
+//			List<String> lista = new ArrayList<>();
+//			for (int k = 0; k < aarray.size(); k++) {
+//				
+////				Answer ans = new Answer();
+//				Answer ans = new Answer();
+//				JSONObject ao = (JSONObject) aarray.get(k);
+//				ans.setId(ao.get("aid"));
+//				JSONArray akeys = (JSONArray) ao.get("akeywords");
+//				ans.setAvalue((String) ao.get("avalue"));
+//				System.out.println("Akeys 349: " + akeys);
+//				ans.setKeywordList(akeys);
+//				System.out.println("TADAAAA " + ans.keywordsToString());
+//				String asd = ans.keywordsToString();
+//				for (String keyword : ans.getKeywordList()) {
+//					if (transcript.contains(keyword)) {
+//						System.err.println("Puheessa mainittiin ID "+ans.getId() +" eli vastaus: " + ans.getAvalue());
+//					}
+//				}
+//				
+////			
+//				}
+//				
+//				}
+//			}
 		
 	
 
@@ -421,4 +465,6 @@ public class SpeechService {
 
 		return found;
 	}
+
+	
 }

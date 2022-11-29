@@ -5,6 +5,9 @@ import java.util.ArrayList;
 public class Question {
 	private int id;
 	private String question;
+	public Question() {
+		super();
+	}
 	private ArrayList<String> keywordList;
 	private ArrayList<Answer> answerList;
 
