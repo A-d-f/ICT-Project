@@ -40,7 +40,10 @@ public class SpeechService {
 	// Uusi luokka tehty frontille lähetettävää stringiä varten,
 	// mutta ei ainakaan toistaiseksi löydä getterillä chooseIncidentissä
 	// päivitettyä arvoa esim "1" vaan tulostaa null
-	public static Found tofront = new Found();
+
+	boolean chosenIncident = false;
+	static Content con = new Content();
+	public Found tofront = new Found();
 	public List<Question> info = new ArrayList<>();
 	public List<Answer> info2 = new ArrayList<>();
 	public List<List<String>> info3 = new ArrayList<>();
@@ -62,7 +65,7 @@ public class SpeechService {
 	@Path("/getthis")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public static ArrayList<Found> getTranscript() {
+	public ArrayList<Found> getTranscript() {
 
 		ArrayList<Found> list = new ArrayList<>();
 		Found found = new Found();
@@ -99,8 +102,15 @@ public class SpeechService {
 					readNegatives(arr, incident);
 
 					arr = (JSONArray) jo.get("content");
+
+//					System.out.println("JSCONT 103: " + JScont);
 					readContent(arr, incident);
-					checkAnswers(transcript, arr);
+					// Väärässä paikassa -> chooseIncident() alle.
+					// Tämä try catch tehdään vain kerran alussa, kun JSON luetaan ensimmäisen
+					// kerran incident-olioon
+					// arr -> incidentList (incidentList.get(0).getContent()?)
+//					checkAnswers(transcript, arr); 
+
 					incidentList.add(incident);
 				}
 				for (Incident i : incidentList) {
@@ -113,10 +123,21 @@ public class SpeechService {
 
 		}
 
-//		System.out.println("110"
-//				+ incidentList.get(0).getContent().getQuestionList().get(0).getAnswerList().get(0).getKeywordList());
 		// Valitsee oikean incidentin keywordien perusteella
-		chooseIncident(transcript);
+
+		// if (booleanChosenIncident == null) -> chooseIncident()
+		// else -> checkAnswers()
+		if (chosenIncident == false) {
+			chooseIncident(transcript);
+		}
+		for (int w = 0; w < incidentList.size(); w++) {
+			con.setQuestionList(incidentList.get(w).getContent().getQuestionList());
+			checkAnswers(transcript, con);
+		}
+
+		// Tähän täytyy tehdä logiikka, joka ensin käy tekemässä chooseIncidentin, josta
+		// saadaan boolean (mikä incident on valittu).
+		// Sitten kun se on tehty, voidaan kutsua checkAnswers().
 
 	}
 
@@ -206,6 +227,7 @@ public class SpeechService {
 		incident.setKeywordList(list);
 	}
 
+
 	//Method for choosing incident,
 	//Returns boolean value
 	public boolean chooseIncident(String transcript) {
@@ -268,12 +290,15 @@ public class SpeechService {
 				}
 			}
 
+
 			//Setting foundWords list to object
 			foundObj.setFoundWords(foundWords);
 			//Setting foundWords list size to object
 			foundObj.setSize(foundWords.size());
 			//Adding object to ojbList
 			objList.add(foundObj);
+
+
 		}
 		
 		// Sorting objList with Collections method sort by object's keywordlist size, so
@@ -286,6 +311,7 @@ public class SpeechService {
 		} else {
 			chosenIncident = true;
 		}
+
 
 		return chosenIncident;
 
@@ -437,6 +463,34 @@ public class SpeechService {
 				ans.setKeywordList(akeys);
 				System.out.println("TADAAAA " + ans.keywordsToString());
 				String asd = ans.keywordsToString();
+
+		if (calcFallen < calcShopl) {
+			chosenIncident = true;
+			incidentFallen = false;
+			incidentShopL = true;
+			tofront.setId("2");
+			tofront.setValue("");
+			tofront.setFoundWords(foundShopliftingWords);
+			sendObject(tofront);
+			System.err.println("Kyse on varkaudesta/ryöstöstä.");
+
+		}
+
+		// if calcFallen > calcShopl tai calcFallen < calcShopl -> boolean
+		// chosenIncident == true
+	}
+
+	public static void checkAnswers(String transcript, Content con) {
+		Answer ans = new Answer();
+		Question que = new Question();
+		for (int i = 0; i < con.getQuestionList().size(); i++) {
+			que.setAnswerList(con.getQuestionList().get(i).getAnswerList());
+
+			for (int e = 0; e < que.getAnswerList().size(); e++) {
+				ans.setAvalue(que.getAnswerList().get(e).getAvalue());
+				ans.setId(que.getAnswerList().get(e).getId());
+				ans.setKeywordList(que.getAnswerList().get(e).getKeywordList());
+
 				for (String keyword : ans.getKeywordList()) {
 					if (transcript.contains(keyword)) {
 						System.err
@@ -444,23 +498,10 @@ public class SpeechService {
 					}
 				}
 
-//				System.out.println("TADAAAA " + ans.keywordsToString());
-//				if (transcript.contains(ans.keywordsToString())) {
-//					System.out.println("VASTAUKSEN ID: " + ans.getId());
-//				}
-//				for (int u=0; u<akeys.size(); u++) {
-//					lista.add((String) akeys.get(u));
-//					System.out.println("LISTAAAAAAA: "+ lista);
-//					for (String keyword : lista) {
-//						if (transcript.contains(keyword)){
-//							String foundWord = keyword;
-//							
-//							
-//						}
-//					System.out.println("akeys u 351: " + ao.get("aid") + akeys.get(u));
 			}
-
 		}
+
+
 	}
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
@@ -488,68 +529,4 @@ public class SpeechService {
 		return found;
 	}
 
-//	public static String lueTdsto() {
-//		File in=new File("./src/main/java/app/incidentassesments.json");
-//		File f=new File("./src/main/java/app/incidentassesments.json");
-//		if (f.exists()) {
-//			System.out.println("File exists");
-//		}
-//		FileReader fr=null;
-//		StringBuffer sb=new StringBuffer();
-//		try{
-//			fr=new FileReader(in);
-//			//luettujen merkkien lukumäärä
-//			int lkm=0;
-//			//taulukko, johon merkit luetaan
-//			char [] c=new char[10];
-//			
-//			//niin kauan kuin luettujen merkkien 
-//			//lukumäärä on eri kuin -1 
-//			while ((lkm=fr.read(c))!=-1){
-//				//tulostetaan luetut merkit tiedostoon, ei näytölle
-////				fw.write(c, 0, lkm);
-//				System.out.print(c);
-//				sb.append(c, 0, lkm);
-//			}
-//		}
-//		/*
-//		 * FileReader -luokan muodostin heittää poikkeuksen
-//		 * FileNotFoundException, jos tiedostoa ei löydy
-//		*/		
-//		catch (FileNotFoundException e){
-//			Tulosta("Tiedostoa ei löytynyt: "+
-//					e.getMessage());
-//		}
-//
-//		/*
-//		 * FileReader.read heittää poikkeuksen 
-//		 * IOException, jos lukeminen epäonnistuu
-//		 * Saman poikkeuksen heittää myös FileWriter -muodostin
-//		 */
-//		catch (IOException e){
-//			Tulosta("Tiedoston lukeminen epäonnistui: "+
-//					e.getMessage());
-//		}
-//		
-//		/*
-//		 * Tapahtuipa poikkeuksia tai ei, try - catch - finally
-//		 * kokonaisuudessa toteutetaan viimeisenä aina finally -lohko.
-//		 */		
-//		finally{
-//			try{
-//				if (fr!=null)
-//					fr.close();
-//			}
-//			//Myös close voi heittää poikkeuksen, joka
-//			//on otettava kiinni
-//			catch (IOException e){
-//				//do nothing
-//			}
-//		}
-//		Tulosta(sb.toString());
-//		return sb.toString();
-//	}
-//	static void Tulosta(String s){
-//		System.out.println(s);
-//	}
 }
