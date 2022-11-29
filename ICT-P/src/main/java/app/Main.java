@@ -6,6 +6,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		DataTransfer data = new DataTransfer();
+		InfiniteStreamRecognize inffi= new InfiniteStreamRecognize();
 		Thread dataThread = new Thread(data);
 		dataThread.start();
 		InfiniteStreamRecognizeOptions options = InfiniteStreamRecognizeOptions.fromFlags(args);
@@ -16,7 +17,7 @@ public class Main {
 		}
 
 		try {
-			InfiniteStreamRecognize.infiniteStreamingRecognize(options.langCode);
+			inffi.infiniteStreamingRecognize(options.langCode);
 		
 		} catch (Exception e) {
 			System.out.println("Exception caught: " + e);

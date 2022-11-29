@@ -8,55 +8,55 @@
         [
             
                 {
-                "id": "11",
+                
                 "question": 
                     [
                         {
-                        "value": "mikä on puiden lukumäärä", "keywords":["mikä on puiden lukumäärä", "puiden lukumäärä", "puiden", "lukumäärä", "montako puuta"]
+                        "qid": "11", "qvalue": "mikä on puiden lukumäärä", "qkeywords":["mikä on puiden lukumäärä", "puiden lukumäärä", "puiden", "lukumäärä", "montako puuta"]
                         }
                     ],
                 "answers":
                     [
-                        { "id": "111", "value": "1", "keywords":["yksi", "puu"] },
-                        { "id": "112", "value": "2", "keywords":["pari", "kaksi", "puuta"] },
-                        { "id": "113", "value": "3", "keywords": ["kolme", "puuta"] },
-                        { "id": "114", "value": "Monta", "keywords": ["monta", "use", "kymmeniä", "muutam", "puuta"], "negative":["useasti", "usein", "useimmiten"] }
+                        { "aid": "111", "avalue": "1", "akeywords":["yksi", "puu"] },
+                        { "aid": "112", "avalue": "2", "akeywords":["pari", "kaksi", "puuta"] },
+                        { "aid": "113", "avalue": "3", "akeywords": ["kolme", "puuta"] },
+                        { "aid": "114", "avalue": "Monta", "akeywords": ["monta", "use", "kymmeniä", "muutam", "puuta"], "anegative":["useasti", "usein", "useimmiten"] }
                     ]
 
                 }
             ,
             
                 {
-                "id": "12",
+                
                 "question": 
                 [
                     {
-                    "value": "missä puu on", "keywords":["Missä puu on", "missä puu", "missä", "puu", "puun sijainti", "julkinen", "yksityinen"]
+                    "qid": "12", "qvalue": "missä puu on", "qkeywords":["Missä puu on", "missä puu", "missä", "puu", "puun sijainti", "julkinen", "yksityinen"]
                     }
                 ],
 
 
                 "answers":
                     [
-                        { "id": "121", "value": "Yksityinen alue", "keywords":["yksityinen", "metsä", "kotona", "mökillä"] },
-                        { "id": "122", "value": "Julkinen", "keywords":["julkinen", "julkisella", "koulu", "päiväkodin", "kaupungin", "keskustassa", "piha"] }
+                        { "aid": "121", "avalue": "Yksityinen alue", "akeywords":["yksityinen", "metsä", "kotona", "mökillä"] },
+                        { "aid": "122", "avalue": "Julkinen", "akeywords":["julkinen", "julkisella", "koulu", "päiväkodin", "kaupungin", "keskustassa", "piha"] }
 
                     ]
                 }
             ,
             
                 {
-                "id":"13",
+                
                 "question":
                 [
                     {
-                        "value":"estääkö tapahtuma liikennettä", "keywords":["estääkö", "estääkö liikenteen", "estääkö tapahtuma liikennettä"]
+                        "qid":"13", "qvalue":"estääkö tapahtuma liikennettä", "qkeywords":["estääkö", "estääkö liikenteen", "estääkö tapahtuma liikennettä"]
                     }
                 ],
                 "answers":
                     [
                         {
-                        "id":"131", "value":"kyllä", "keywords":["estää", "liikenteen", "tukossa", "jumissa"], "children":[
+                        "aid":"131", "avalue":"kyllä", "akeywords":["estää", "liikenteen", "tukossa", "jumissa"], "children":[
                             {
                                 "id":"1311","qvalue":"mitä liikennettä tapahtuma estää", "keywords":["mitä liikennettä estää"], "child1":[
                                     {"id":"13111", "value":"moottoritie", "keywords":["moottoritie", "motari"]},
@@ -69,44 +69,44 @@
                             }
                         ]
                     },
-                        {"id":"132", "value":"ei", "keywords":["ei estä", "ei", "estä"], "negative":["estää"]}
+                        {"aid":"132", "avalue":"ei", "akeywords":["ei estä", "ei", "estä"], "anegative":["estää"]}
                     
                     ]    
                 }
             ,
             
                 {
-                    "id":"14",
+                    
                     "question":
                     [
                         {
-                            "value":"onko aiheutunut ihmisvahinkoa", "keywords":["onko aiheutunut ihmisvahinkoa", "ihmisvahinko", "aiheutunut", "loukkaant"]
+                            "qid":"14", "qvalue":"onko aiheutunut ihmisvahinkoa", "qkeywords":["onko aiheutunut ihmisvahinkoa", "ihmisvahinko", "aiheutunut", "loukkaant"]
                         }
                     ],
                     "answers":
                         [
                             {
-                            "id":"141", "value":"kyllä", "keywords":["kyllä", "ihminen", "välissä", "jumi", "päälle", "on ihmisvahinkoa", "on vahinkoa", "on loukkaant"], "children":[
+                            "aid":"141", "avalue":"kyllä", "akeywords":["kyllä", "ihminen", "välissä", "jumi", "päälle", "on ihmisvahinkoa", "on vahinkoa", "on loukkaant"], "children":[
                                 {
-                                    "id":"1411","qvalue":"kuinka monta ihmistä on vahingoittunut", "keywords":["kuinka monta ihmistä on vahingoittunut", "kuinka monta", "monta vahingoittunut"], "child1":[
-                                        {"id":"14111", "value":"yksi", "keywords":["yksi", "ihminen", "vahingoittunut"]},
-                                        {"id":"14112", "value":"kaksi", "keywords":["kaksi", "ihmistä", "vahingoittunut"]},
-                                        {"id":"14113", "value":"kolme", "keywords":["kolme", "ihmistä", "vahingoittunut"]},
-                                        {"id":"14114", "value":"useita", "keywords":["monta", "ihmistä", "vahingoittunut", "use", "kymmeniä", "muutam"], "negative":["useasti", "usein", "useimmiten"]}  
+                                    "qid":"1411","qvalue":"kuinka monta ihmistä on vahingoittunut", "qkeywords":["kuinka monta ihmistä on vahingoittunut", "kuinka monta", "monta vahingoittunut"], "child1":[
+                                        {"aid":"14111", "avalue":"yksi", "akeywords":["yksi", "ihminen", "vahingoittunut"]},
+                                        {"aid":"14112", "avalue":"kaksi", "akeywords":["kaksi", "ihmistä", "vahingoittunut"]},
+                                        {"aid":"14113", "avalue":"kolme", "akeywords":["kolme", "ihmistä", "vahingoittunut"]},
+                                        {"aid":"14114", "avalue":"useita", "akeywords":["monta", "ihmistä", "vahingoittunut", "use", "kymmeniä", "muutam"], "anegative":["useasti", "usein", "useimmiten"]}  
                                     ]
                                 },
                                 {
-                                    "id":"1412","qvalue":"minkälaista vahinkoa", "keywords":["minkälaista vahinkoa", "vahinkoa"], "child2":[
-                                        {"id":"14121", "value":"lievästi loukkaantunut", "keywords":["lievä", "loukkaant", "lievästi loukkaantunut", "vahingoitt", "haavoit", "tajuis", "elos", "reagoiva",
+                                    "qid":"1412","qvalue":"minkälaista vahinkoa", "qkeywords":["minkälaista vahinkoa", "vahinkoa"], "child2":[
+                                        {"aid":"14121", "avalue":"lievästi loukkaantunut", "akeywords":["lievä", "loukkaant", "lievästi loukkaantunut", "vahingoitt", "haavoit", "tajuis", "elos", "reagoiva",
                                         "reagoi", "murtu", "vähäi", "naarmu", "veri", "verta", "luu", "luita", "toimintakyk" ]},
-                                        {"id":"14122", "value":"vakavasti loukkaantunut", "keywords":["vakava", "loukkaant", "vakavasti loukkaantunut", "tajut", "elos", "reagoimaton", "loukkaantu",
-                                        "vahingoitt", "haavoit", "veri", "verta", "paljon", "runsa", "luu", "luita", "toimintakyv", "päävamma", "päähän", "sokissa", "poikki", "hengitysvaikeu"], "negative":["tajuta"]},
-                                        {"id":"14123", "value":"eloton", "keywords":["eloton", "kuollut", "kuol"]}  
+                                        {"aid":"14122", "avalue":"vakavasti loukkaantunut", "akeywords":["vakava", "loukkaant", "vakavasti loukkaantunut", "tajut", "elos", "reagoimaton", "loukkaantu",
+                                        "vahingoitt", "haavoit", "veri", "verta", "paljon", "runsa", "luu", "luita", "toimintakyv", "päävamma", "päähän", "sokissa", "poikki", "hengitysvaikeu"], "anegative":["tajuta"]},
+                                        {"aid":"14123", "avalue":"eloton", "akeywords":["eloton", "kuollut", "kuol"]}  
                                     ]  
                                 }
                             ]
                         },
-                            {"id":"142", "value":"ei", "keywords":["ei", "ei vahinkoa", "vahinkoa", "ihmisvahinkoa", "ei ihmisvahinkoa"]}
+                            {"aid":"142", "avalue":"ei", "akeywords":["ei", "ei vahinkoa", "vahinkoa", "ihmisvahinkoa", "ei ihmisvahinkoa"]}
                         
                         ]    
                     }  
@@ -122,49 +122,49 @@
     [
         
             {
-            "id": "21",
+            
             "question": 
                 [
                     {
-                    "value": "onko väkivallan uhkaa", "keywords":["onko väkivallan uhkaa", "uhka", "väkivallan"]
+                    "qid": "21", "qvalue": "onko väkivallan uhkaa", "qkeywords":["onko väkivallan uhkaa", "uhka", "väkivallan"]
                     }
                 ],
             "answers":
                 [
-                    { "id": "211", "value": "kyllä", "keywords":["vaarassa", "uhkailee", "kyllä", "uhka"], "children":[
+                    { "aid": "211", "avalue": "kyllä", "akeywords":["vaarassa", "uhkailee", "kyllä", "uhka"], "children":[
                         {
-                            "id": "2111", "qvalue":"Onko henkilövahinkoa", "keywords":["henkilövahinkoa", "onko henkilövahinkoa"], "child1":[
-                                {"id":"21111", "value":"kyllä", "keywords":["kyllä", "vahinko", "henkilövahinko"], "child1.1":[
-                                    {"id":"211111", "qvalue":"kuinka monta ihmistä on vahingoittunut", "keywords":["kuinka monta ihmistä on vahingoittunut", "kuinka monta", "vahingoittunut", 
+                            "qid": "2111", "qvalue":"Onko henkilövahinkoa", "qkeywords":["henkilövahinkoa", "onko henkilövahinkoa"], "child1":[
+                                {"aid":"21111", "avalue":"kyllä", "akeywords":["kyllä", "vahinko", "henkilövahinko"], "child1.1":[
+                                    {"qid":"211111", "qvalue":"kuinka monta ihmistä on vahingoittunut", "qkeywords":["kuinka monta ihmistä on vahingoittunut", "kuinka monta", "vahingoittunut", 
                                         "ihmistä"], "child1.1.1":[
-                                        {"id":"2111111", "value":"yksi", "keywords":["yksi", "ihminen", "vahingoittunut"]},
-                                        {"id":"2111112", "value":"kaksi", "keywords":["kaksi", "ihmistä", "vahingoittunut"]},
-                                        {"id":"2111113", "value":"kolme", "keywords":["kolme", "ihmistä", "vahingoittunut"]},
-                                        {"id":"2111114", "value":"useita", "keywords":["monta", "ihmistä", "vahingoittunut", "use", "kymmeniä", "muutam"], "negative":["useasti", "usein", "useimmiten"]} 
+                                        {"aid":"2111111", "avalue":"yksi", "akeywords":["yksi", "ihminen", "vahingoittunut"]},
+                                        {"aid":"2111112", "avalue":"kaksi", "akeywords":["kaksi", "ihmistä", "vahingoittunut"]},
+                                        {"aid":"2111113", "avalue":"kolme", "akeywords":["kolme", "ihmistä", "vahingoittunut"]},
+                                        {"aid":"2111114", "avalue":"useita", "akeywords":["monta", "ihmistä", "vahingoittunut", "use", "kymmeniä", "muutam"], "anegative":["useasti", "usein", "useimmiten"]} 
                                     ]},
-                                    {"id":"211112", "qvalue":"minkälaista vahinkoa", "keywords":["minkälaista vahinkoa", "minkälaista", "vahinkoa"], "child1.1.2":[
-                                        {"id":"2111121", "value":"lievästi loukkaantunut", "keywords":["lievästi loukkaantunut", "lievä", "loukkaantu", "vahingoitt", "haavoit", "tajuis", "elos", "reagoiva", "reagoi", "murtu", "vähäi", "naarmu",
-                                        "veri", "verta", "luu", "luita", "toimintakyk"], "negative":["tajuta, elotie, elosalama, elostelija, elostella, elostelu"]},
-                                        {"id":"2111122", "value":"vakavasti loukkaantunut", "keywords":["vakavasti loukkaantunut", "vakava", "tajut", "elos", "reagoimaton", "loukkaantu", "vahingoitt", "haavoit", "veri", "verta",
+                                    {"qid":"211112", "qvalue":"minkälaista vahinkoa", "qkeywords":["minkälaista vahinkoa", "minkälaista", "vahinkoa"], "child1.1.2":[
+                                        {"aid":"2111121", "avalue":"lievästi loukkaantunut", "akeywords":["lievästi loukkaantunut", "lievä", "loukkaantu", "vahingoitt", "haavoit", "tajuis", "elos", "reagoiva", "reagoi", "murtu", "vähäi", "naarmu",
+                                        "veri", "verta", "luu", "luita", "toimintakyk"], "anegative":["tajuta, elotie, elosalama, elostelija, elostella, elostelu"]},
+                                        {"aid":"2111122", "avalue":"vakavasti loukkaantunut", "akeywords":["vakavasti loukkaantunut", "vakava", "tajut", "elos", "reagoimaton", "loukkaantu", "vahingoitt", "haavoit", "veri", "verta",
                                         "paljon", "runsa", "luu", "luita", "toimintakyv", "päävamma", "päähän", "sokissa", "poikki", "hengitysvaikeu"]},
-                                        {"id":"2111123", "value":"eloton", "keywords":["eloton", "kuollut", "elot", "kuoll"]}
+                                        {"aid":"2111123", "avalue":"eloton", "akeywords":["eloton", "kuollut", "elot", "kuoll"]}
                                     ]}
                                 ]},
-                                {"id":"21112", "value":"ei", "keywords":["ei", "vahinkoa", "ei henkilövahinkoa"]}
+                                {"aid":"21112", "avalue":"ei", "akeywords":["ei", "vahinkoa", "ei henkilövahinkoa"]}
                             ]
                         },
                         {
-                            "id": "2112", "qvalue":"aseistus", "keywords":["aseistus", "onko asetta", "ase"], "child2":[
-                                {"id":"21121", "value":"teräase", "keywords":["teräase", "puukko", "veitsi"]},
-                                {"id":"21122", "value":"ampuma-ase", "keywords":["pyssy", "haulikko", "pistooli"]},
-                                {"id":"21123", "value":"lyömäase", "keywords":["pesäpallomaila","moukari"]},
-                                {"id":"21124", "value":"ei asetta", "keywords":["ei asetta"]}
+                            "qid": "2112", "qvalue":"aseistus", "qkeywords":["aseistus", "onko asetta", "ase"], "child2":[
+                                {"aid":"21121", "avalue":"teräase", "akeywords":["teräase", "puukko", "veitsi"]},
+                                {"aid":"21122", "avalue":"ampuma-ase", "akeywords":["pyssy", "haulikko", "pistooli"]},
+                                {"aid":"21123", "avalue":"lyömäase", "akeywords":["pesäpallomaila","moukari"]},
+                                {"aid":"21124", "avalue":"ei asetta", "akeywords":["ei asetta"]}
                                 
                             ] 
                         }
                     ]
                     },
-                    { "id": "212", "value": "ei", "keywords":["ei", "ei asetta", "ase"] }
+                    { "aid": "212", "avalue": "ei", "akeywords":["ei", "ei asetta", "ase"] }
                     
                 ]
 
@@ -172,34 +172,35 @@
         ,
         
             {
-            "id": "22",
+            
             "question": 
             [
                 {
-                "value": "onko tekijä tiedossa", "keywords":["onko tekijä tiedossa", "tekijä", "tiedossa"]
+                "qid": "22", "qvalue": "onko tekijä tiedossa", "qkeywords":["onko tekijä tiedossa", "tekijä", "tiedossa"]
                 }
             ],
 
 
             "answers":
                 [
-                    { "id": "221", "value": "kyllä", "keywords":["kyllä", "tekijä", "tekijä on tiedossa"], "children":[
-                        {"id": "2211", "qvalue":"kuinka monta tekijää", "keywords":["kuinka monta", "tekijä", "tekijää", "kuinka monta tekijää"], "child1":[
-                            {"id":"22111", "value":"yksi", "keywords":["yksi", "ihminen", "tekijä"]},
-                            {"id":"22112", "value":"kaksi", "keywords":["kaksi", "ihmistä", "tekijä"]},
-                            {"id":"22113", "value":"kolme", "keywords":["kolme", "ihmistä", "tekijä"]},
-                            {"id":"22114", "value":"useita", "keywords":["monta", "ihmistä","use", "muutam", "tekijä"], "negative":["useasti", "usein", "useimmiten"]} 
+                    { "aid": "221", "avalue": "kyllä", "akeywords":["kyllä", "tekijä", "tekijä on tiedossa"], "children":[
+                        {"qid": "2211", "qvalue":"kuinka monta tekijää", "qkeywords":["kuinka monta", "tekijä", "tekijää", "kuinka monta tekijää"], "child1":[
+                            {"aid":"22111", "avalue":"yksi", "akeywords":["yksi", "ihminen", "tekijä"]},
+                            {"aid":"22112", "avalue":"kaksi", "akeywords":["kaksi", "ihmistä", "tekijä"]},
+                            {"aid":"22113", "avalue":"kolme", "akeywords":["kolme", "ihmistä", "tekijä"]},
+                            {"aid":"22114", "avalue":"useita", "akeywords":["monta", "ihmistä","use", "muutam", "tekijä"], "anegative":["useasti", "usein", "useimmiten"]} 
                         ]},
-                        {"id": "2212", "qvalue":"onko tekijä paikalla", "keywords":["onko tekijä paikalla", "tekijä", "paikalla"], "child2":[
-                            {"id": "22121", "value": "kyllä", "keywords":["kyllä", "paikalla", "tekijä on paikalla"]},
-                            {"id": "22122", "value": "ei", "keywords":["ei", "tekijä", "paikalla"]}
+                        {"qid": "2212", "qvalue":"onko tekijä paikalla", "qkeywords":["onko tekijä paikalla", "tekijä", "paikalla"], "child2":[
+                            {"aid": "22121", "avalue": "kyllä", "akeywords":["kyllä", "paikalla", "tekijä on paikalla"]},
+                            {"aid": "22122", "avalue": "ei", "akeywords":["ei", "tekijä", "paikalla"]}
                         ]}
                     ] },
-                    { "id": "222", "value": "ei", "keywords":["ei", "tekijä ei tiedossa", "tekijä", "tiedossa"] }
+                    { "aid": "222", "avalue": "ei", "akeywords":["ei", "tekijä ei tiedossa", "tekijä", "tiedossa"] }
 
                 ]
             }
         
     ]
-}  
+}
+  
 ]
