@@ -143,13 +143,7 @@ public class SpeechService {
 		// Sitten kun se on tehty, voidaan kutsua checkAnswers(). 
 		
 	}
-//	public static void getTranscriptToAnswers(String transcript) {
-//		checkAnswers(transcript, JScont);
-//	}
-	public static void getTranscriptToAnswers(String transcript) {
-//		checkAnswers(transcript, incidentList);
-		
-	}
+
 	
 	public void sendObject(Found found) {
 		//Creating client etc for REST
@@ -408,48 +402,12 @@ public class SpeechService {
 		}
 		}
 		}
-//		System.err.println("TADAAAAAA 390: "+ans.getAvalue() + " "+ans.getId()+" "+ans.getKeywordList());
+
 	
 	
 	}
 	
-	
-//	public static void checkAnswers(String transcript, ArrayList<Incident> incidentList2) {
-//		
-//		
-//		
-//		for (int l=0; l<incidentList2.size(); l++) {
-////			JSONObject jo = (JSONObject) incidentList2.get(l);
-////			JSONArray aarray = (JSONArray) jo.get("answers");
-//			Content con = new Content();
-//			
-//			
-//			List<String> lista = new ArrayList<>();
-//			for (int k = 0; k < aarray.size(); k++) {
-//				
-////				Answer ans = new Answer();
-//				Answer ans = new Answer();
-//				JSONObject ao = (JSONObject) aarray.get(k);
-//				ans.setId(ao.get("aid"));
-//				JSONArray akeys = (JSONArray) ao.get("akeywords");
-//				ans.setAvalue((String) ao.get("avalue"));
-//				System.out.println("Akeys 349: " + akeys);
-//				ans.setKeywordList(akeys);
-//				System.out.println("TADAAAA " + ans.keywordsToString());
-//				String asd = ans.keywordsToString();
-//				for (String keyword : ans.getKeywordList()) {
-//					if (transcript.contains(keyword)) {
-//						System.err.println("Puheessa mainittiin ID "+ans.getId() +" eli vastaus: " + ans.getAvalue());
-//					}
-//				}
-//				
-////			
-//				}
-//				
-//				}
-//			}
-		
-	
+
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
 		Iterator<String> negativeIterator = negativeKeywords.iterator();
