@@ -42,7 +42,7 @@ public class SpeechService {
 
 	
 	
-	static boolean chosenIncident=false;
+	boolean chosenIncident=false;
 	static Content con = new Content();
 	public static Found tofront = new Found();
 	public List<Question> info = new ArrayList<>();
