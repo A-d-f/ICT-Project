@@ -15,6 +15,7 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.Duration;
 import com.sun.xml.internal.stream.Entity;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,33 +40,34 @@ import javax.ws.rs.core.MediaType;
 
 public class InfiniteStreamRecognize {
 
-	private static final int STREAMING_LIMIT = 290000; // ~5 minutes
+	private final int STREAMING_LIMIT = 290000; // ~5 minutes
 
-	public static final String RED = "\033[0;31m";
-	public static final String GREEN = "\033[0;32m";
-	public static final String YELLOW = "\033[0;33m";
+	public final String RED = "\033[0;31m";
+	public final String GREEN = "\033[0;32m";
+	public final String YELLOW = "\033[0;33m";
 
 	// Creating shared object
-	private static volatile BlockingQueue<byte[]> sharedQueue = new LinkedBlockingQueue();
-	private static TargetDataLine targetDataLine;
-	private static int BYTES_PER_BUFFER = 6400; // buffer size in bytes
+	private volatile BlockingQueue<byte[]> sharedQueue = new LinkedBlockingQueue();
+	private TargetDataLine targetDataLine;
+	private int BYTES_PER_BUFFER = 6400; // buffer size in bytes
 
-	private static int restartCounter = 0;
-	private static ArrayList<ByteString> audioInput = new ArrayList<ByteString>();
-	private static ArrayList<ByteString> lastAudioInput = new ArrayList<ByteString>();
-	private static int resultEndTimeInMS = 0;
-	private static int isFinalEndTime = 0;
-	private static int finalRequestEndTime = 0;
-	private static boolean newStream = true;
-	private static double bridgingOffset = 0;
-	private static boolean lastTranscriptWasFinal = false;
-	private static StreamController referenceToStreamController;
-	private static ByteString tempByteString;
-	private static boolean testi=true;
+	private int restartCounter = 0;
+	private ArrayList<ByteString> audioInput = new ArrayList<ByteString>();
+	private ArrayList<ByteString> lastAudioInput = new ArrayList<ByteString>();
+	private int resultEndTimeInMS = 0;
+	private int isFinalEndTime = 0;
+	private int finalRequestEndTime = 0;
+	private boolean newStream = true;
+	private double bridgingOffset = 0;
+	private boolean lastTranscriptWasFinal = false;
+	private StreamController referenceToStreamController;
+	private ByteString tempByteString;
+	private boolean testi=true;
+	DataTransfer data= new DataTransfer();
 
-	private static String savedTranscript = "";
+	private String savedTranscript = "";
 
-	public static void entinenMain(String[] args) {
+	public void entinenMain(String[] args) {
 		//maini alkoi ennen tästä
 	
 		/*
@@ -92,7 +94,7 @@ public class InfiniteStreamRecognize {
 //		}
 	}//maini loppui tähän
 
-	public static String convertMillisToDate(double milliSeconds) {
+	public String convertMillisToDate(double milliSeconds) {
 		long millis = (long) milliSeconds;
 		DecimalFormat format = new DecimalFormat();
 		format.setMinimumIntegerDigits(2);
@@ -102,7 +104,7 @@ public class InfiniteStreamRecognize {
 	}
 
 	/** Performs infinite streaming speech recognition */
-	public static void infiniteStreamingRecognize(String languageCode) throws Exception {
+	public void infiniteStreamingRecognize(String languageCode) throws Exception {
 
 		// Microphone Input buffering
 		class MicBuffer implements Runnable {
@@ -190,7 +192,15 @@ public class InfiniteStreamRecognize {
 						String transcript = alternative.getTranscript();
 //						System.out.println("mikä tämä on " + alternative);
 //						System.out.println("response " + response);
-						onComplete(transcript);
+						try {
+							onComplete(transcript);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					} else {
 						System.out.print(RED);
 						System.out.print("\033[2K\r");
@@ -199,11 +209,11 @@ public class InfiniteStreamRecognize {
 					}
 				}
 
-				public void onComplete(String transcript) {
+				public void onComplete(String transcript) throws IOException, InterruptedException {
 
 					// Method for finding and matching keywords from splittedList
 					//Json.dataFetch(transcript);
-					DataTransfer.dataFetch(transcript);
+					data.dataFetch(transcript);
 				}
 
 
