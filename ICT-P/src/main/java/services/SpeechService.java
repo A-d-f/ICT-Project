@@ -110,7 +110,7 @@ public class SpeechService {
 
 		}
 		
-		System.out.println("110" +incidentList.get(0).getContent());
+		System.out.println("110" +incidentList.get(0).getContent().getQuestionList().get(0).getAnswerList().get(0).getKeywordList());
 		// Valitsee oikean incidentin keywordien perusteella
 		chooseIncident(transcript);
 
