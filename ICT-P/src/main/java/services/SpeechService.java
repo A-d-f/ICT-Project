@@ -27,8 +27,6 @@ import data.Found;
 import data.Incident;
 import data.Question;
 
-
-
 @Path("/speechservice")
 public class SpeechService {
 
@@ -40,11 +38,9 @@ public class SpeechService {
 	// mutta ei ainakaan toistaiseksi löydä getterillä chooseIncidentissä
 	// päivitettyä arvoa esim "1" vaan tulostaa null
 
-	
-	
-	boolean chosenIncident=false;
+	boolean chosenIncident = false;
 	static Content con = new Content();
-	public static Found tofront = new Found();
+	public Found tofront = new Found();
 	public List<Question> info = new ArrayList<>();
 	public List<Answer> info2 = new ArrayList<>();
 	public List<List<String>> info3 = new ArrayList<>();
@@ -57,7 +53,7 @@ public class SpeechService {
 	public String readData(Found found) {
 		System.out.println("readData " + found.getId());
 		tofront.setId(found.getId());
-		tofront.setFoundWords(found.getFoundWords());		
+		tofront.setFoundWords(found.getFoundWords());
 		return "success";
 	}
 
@@ -65,22 +61,23 @@ public class SpeechService {
 	@Path("/getthis")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public static ArrayList<Found> getTranscript() {
+	public ArrayList<Found> getTranscript() {
 
 		ArrayList<Found> list = new ArrayList<>();
 		Found found = new Found();
 		found.setId(tofront.getId());
-		System.out.println("founds id" + found.getId());	
+		System.out.println("founds id" + found.getId());
 		list.add(tofront);
 		System.out.println("lista" + list.toString());
-	
+
 		return list;
-		
+
 	}
 
 	public void handleData(String transcript) throws IOException, InterruptedException {
 
-		//Tarkistetaan onko incidentListiin jo haettu tiedot eli tehdään vain ensimmäisellä kerralla kun ohjelmaa ajetaan
+		// Tarkistetaan onko incidentListiin jo haettu tiedot eli tehdään vain
+		// ensimmäisellä kerralla kun ohjelmaa ajetaan
 		if (incidentList.isEmpty()) {
 
 			try {
@@ -101,14 +98,15 @@ public class SpeechService {
 					readNegatives(arr, incident);
 
 					arr = (JSONArray) jo.get("content");
-					
+
 //					System.out.println("JSCONT 103: " + JScont);
 					readContent(arr, incident);
-					// Väärässä paikassa -> chooseIncident() alle. 
-					// Tämä try catch tehdään vain kerran alussa, kun JSON luetaan ensimmäisen kerran incident-olioon
+					// Väärässä paikassa -> chooseIncident() alle.
+					// Tämä try catch tehdään vain kerran alussa, kun JSON luetaan ensimmäisen
+					// kerran incident-olioon
 					// arr -> incidentList (incidentList.get(0).getContent()?)
 //					checkAnswers(transcript, arr); 
-					
+
 					incidentList.add(incident);
 				}
 				for (Incident i : incidentList) {
@@ -118,45 +116,38 @@ public class SpeechService {
 			} catch (Exception e) {
 				System.err.println("Jotain meni pieleen");
 			}
-			
+
 		}
-		
 
 		// Valitsee oikean incidentin keywordien perusteella
-		
-		// if (booleanChosenIncident == null) -> chooseIncident() 
+
+		// if (booleanChosenIncident == null) -> chooseIncident()
 		// else -> checkAnswers()
-		if (chosenIncident==false) {
+		if (chosenIncident == false) {
 			chooseIncident(transcript);
 		}
-		for (int w = 0 ; w < incidentList.size(); w++) {
+		for (int w = 0; w < incidentList.size(); w++) {
 			con.setQuestionList(incidentList.get(w).getContent().getQuestionList());
 			checkAnswers(transcript, con);
 		}
-		
-		
-		
-		
-		
-		
-		// Tähän täytyy tehdä logiikka, joka ensin käy tekemässä chooseIncidentin, josta saadaan boolean (mikä incident on valittu). 
-		// Sitten kun se on tehty, voidaan kutsua checkAnswers(). 
-		
+
+		// Tähän täytyy tehdä logiikka, joka ensin käy tekemässä chooseIncidentin, josta
+		// saadaan boolean (mikä incident on valittu).
+		// Sitten kun se on tehty, voidaan kutsua checkAnswers().
+
 	}
 
-	
 	public void sendObject(Found found) {
-		//Creating client etc for REST
+		// Creating client etc for REST
 		String uri = "http://127.0.0.1:8080/rest/speechservice/getdata";
-		Client c=ClientBuilder.newClient();
-		WebTarget wt=c.target(uri);
-		Builder b=wt.request();
-		//Here we create an Entity of a Found object as JSON string format
-		Entity<Found> e=Entity.entity(found,MediaType.APPLICATION_JSON);		
-		String s=b.post(e, String.class);//We get the response as a String
+		Client c = ClientBuilder.newClient();
+		WebTarget wt = c.target(uri);
+		Builder b = wt.request();
+		// Here we create an Entity of a Found object as JSON string format
+		Entity<Found> e = Entity.entity(found, MediaType.APPLICATION_JSON);
+		String s = b.post(e, String.class);// We get the response as a String
 	}
-	
-	
+
 	private void readContent(JSONArray arr, Incident incident) {
 		Content content = new Content();
 		for (int i = 0; i < arr.size(); i++) {
@@ -185,7 +176,7 @@ public class SpeechService {
 //				System.out.println("Answer 93:"+a.getId()+" "+a.getAvalue());
 				JSONArray akeyarr = (JSONArray) ao.get("akeywords");
 //				System.out.println("AKeywords 94: "+ao.get("akeywords"));
-			    ArrayList<String> akeyList = new ArrayList<>();
+				ArrayList<String> akeyList = new ArrayList<>();
 				for (int m = 0; m < akeyarr.size(); m++) {
 					akeyList.add((String) akeyarr.get(m));
 //					System.out.println("AKeyword 98:"+a.getId()+" "+a.getAvalue()+" "+(String) akeyarr.get(m));
@@ -195,25 +186,24 @@ public class SpeechService {
 				System.out.println("163: Keywords: " + akeyList);
 				System.out.println("Answer keywords: " + a.getId() + " " + a.getKeywordList());
 				readAkeyList(akeyList);
-				
-				
+
 			}
-			
+
 		}
 		incident.setContent(content);
 		System.out.println("Testilista: " + testilista);
-	
+
 	}
-	
-	private ArrayList<String> readAkeyList(ArrayList<String >list) {
+
+	private ArrayList<String> readAkeyList(ArrayList<String> list) {
 		int counter = 0;
-		while (counter<2) {
-		System.out.println("174 list: " + list);
-		counter++;
+		while (counter < 2) {
+			System.out.println("174 list: " + list);
+			counter++;
 		}
 		return list;
 	}
-	
+
 	private void readNegatives(JSONArray arr, Incident incident) {
 		ArrayList<String> list = new ArrayList<>();
 //		System.out.println(arr);
@@ -238,7 +228,7 @@ public class SpeechService {
 	public void chooseIncident(String transcript) throws IOException, InterruptedException {
 
 		System.out.println("167 " + incidentList.get(0).getKeywordList());
-		transcript=transcript.toLowerCase();
+		transcript = transcript.toLowerCase();
 		ArrayList<String> foundTreeWords = new ArrayList<String>();
 		ArrayList<String> foundShopliftingWords = new ArrayList<String>();
 		int calcFallen = 0;
@@ -342,30 +332,27 @@ public class SpeechService {
 				+ " number of words in foundTreeWords: " + calcFallen);
 		System.out.println("words in foundShopliftingWords list: " + foundShopliftingWords.toString()
 				+ " number of words in foundShopliftingWords: " + calcShopl);
-		
-	
+
 		if (calcFallen > calcShopl) {
-			
-			
+
 			incidentFallen = true;
 			incidentShopL = false;
-			chosenIncident=true;
+			chosenIncident = true;
 			tofront.setId("1");
 			tofront.setValue("");
 			tofront.setFoundWords(foundTreeWords);
 			sendObject(tofront);
 			System.err.println("Kyse on puun kaatumisesta.");
-			
 
 		}
 		if (calcFallen == calcShopl) {
-			
+
 			incidentFallen = true;
 			incidentShopL = true;
 			System.err.println("Kyse voi olla puun kaatumisesta tai ryöstöstä.");
 		}
 		if (calcFallen < calcShopl) {
-			chosenIncident=true;
+			chosenIncident = true;
 			incidentFallen = false;
 			incidentShopL = true;
 			tofront.setId("2");
@@ -375,39 +362,32 @@ public class SpeechService {
 			System.err.println("Kyse on varkaudesta/ryöstöstä.");
 
 		}
-		
-		// if calcFallen > calcShopl tai calcFallen < calcShopl -> boolean chosenIncident == true
+
+		// if calcFallen > calcShopl tai calcFallen < calcShopl -> boolean
+		// chosenIncident == true
 	}
 
-	
-	
-	
 	public static void checkAnswers(String transcript, Content con) {
 		Answer ans = new Answer();
 		Question que = new Question();
 		for (int i = 0; i < con.getQuestionList().size(); i++) {
 			que.setAnswerList(con.getQuestionList().get(i).getAnswerList());
 
-		
-		
-		for (int e = 0; e < que.getAnswerList().size(); e++) {
-			ans.setAvalue(que.getAnswerList().get(e).getAvalue());
-			ans.setId(que.getAnswerList().get(e).getId());
-			ans.setKeywordList(que.getAnswerList().get(e).getKeywordList());
-		
-		for (String keyword : ans.getKeywordList()) {
-			if (transcript.contains(keyword)) {
-				System.err.println("Puheessa mainittiin ID "+ans.getId() +" eli vastaus: " + ans.getAvalue());
+			for (int e = 0; e < que.getAnswerList().size(); e++) {
+				ans.setAvalue(que.getAnswerList().get(e).getAvalue());
+				ans.setId(que.getAnswerList().get(e).getId());
+				ans.setKeywordList(que.getAnswerList().get(e).getKeywordList());
+
+				for (String keyword : ans.getKeywordList()) {
+					if (transcript.contains(keyword)) {
+						System.err
+								.println("Puheessa mainittiin ID " + ans.getId() + " eli vastaus: " + ans.getAvalue());
+					}
+				}
 			}
 		}
-		}
-		}
 
-	
-	
 	}
-	
-
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
 		Iterator<String> negativeIterator = negativeKeywords.iterator();
@@ -434,5 +414,4 @@ public class SpeechService {
 		return found;
 	}
 
-	
 }
