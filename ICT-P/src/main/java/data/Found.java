@@ -7,6 +7,7 @@ public class Found {
 	String id;
 	String value;
 	List<String> foundWords;
+	int size;
 	
 
 	public Found() {
@@ -76,6 +77,24 @@ public class Found {
 
 
 	/**
+	 * @return the size
+	 */
+	public int getSize() {
+		return size;
+	}
+
+
+
+	/**
+	 * @param size the size to set
+	 */
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+
+
+	/**
 	 * @param foundWords the foundWords to set
 	 */
 	public void setFoundWords(List<String> foundWords) {
@@ -83,7 +102,7 @@ public class Found {
 	}
 	
 	public String toString() {
-		return id + " " + value + " " + " " + foundWords;
+		return id + " " + value + " " + " " + foundWords + " " + size;
 	}
 	
 
