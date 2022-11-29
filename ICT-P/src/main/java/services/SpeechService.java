@@ -75,8 +75,7 @@ public class SpeechService {
 	@Produces(MediaType.TEXT_PLAIN)
 	public static String getTranscript() {
 		String toFrontend=tofront.getFound();
-		String valueToFront = toFrontend.replace("\"","");
-		return valueToFront;
+		return toFrontend;
 		
 	}
 //	@GET
@@ -127,14 +126,12 @@ public class SpeechService {
 	}
 	
 	public void sendRestServer(String string) throws IOException, InterruptedException {
-		ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper
-                .writeValueAsString(string);
+		
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://127.0.0.1:8080/rest/speechservice/getdata"))
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .POST(HttpRequest.BodyPublishers.ofString(string))
                 .build();
 
         HttpResponse<String> response = client.send(request,
