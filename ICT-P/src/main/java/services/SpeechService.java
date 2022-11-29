@@ -98,7 +98,11 @@ public class SpeechService {
 
 					arr = (JSONArray) jo.get("content");
 					readContent(arr, incident);
-					checkAnswers(transcript, arr);
+					// Väärässä paikassa -> chooseIncident() alle. 
+					// Tämä try catch tehdään vain kerran alussa, kun JSON luetaan ensimmäisen kerran incident-olioon
+					// arr -> incidentList (incidentList.get(0).getContent()?)
+					checkAnswers(transcript, arr); 
+					
 					incidentList.add(incident);
 				}
 				for (Incident i : incidentList) {
@@ -113,8 +117,14 @@ public class SpeechService {
 		
 		System.out.println("110" +incidentList.get(0).getContent());
 		// Valitsee oikean incidentin keywordien perusteella
+		
+		// if (booleanChosenIncident == null) -> chooseIncident() 
+		// else -> checkAnswers()
 		chooseIncident(transcript);
-
+		
+		// Tähän täytyy tehdä logiikka, joka ensin käy tekemässä chooseIncidentin, josta saadaan boolean (mikä incident on valittu). 
+		// Sitten kun se on tehty, voidaan kutsua checkAnswers(). 
+		
 	}
 	
 	public Found getFoundWord() {
@@ -335,6 +345,8 @@ public class SpeechService {
 			System.err.println("Kyse on varkaudesta/ryöstöstä." + testword);
 
 		}
+		
+		// if calcFallen > calcShopl tai calcFallen < calcShopl -> boolean chosenIncident == true
 	}
 	public static void checkAnswers(String transcript, JSONArray array) {
 		
@@ -409,69 +421,4 @@ public class SpeechService {
 
 		return found;
 	}
-
-//	public static String lueTdsto() {
-//		File in=new File("./src/main/java/app/incidentassesments.json");
-//		File f=new File("./src/main/java/app/incidentassesments.json");
-//		if (f.exists()) {
-//			System.out.println("File exists");
-//		}
-//		FileReader fr=null;
-//		StringBuffer sb=new StringBuffer();
-//		try{
-//			fr=new FileReader(in);
-//			//luettujen merkkien lukumäärä
-//			int lkm=0;
-//			//taulukko, johon merkit luetaan
-//			char [] c=new char[10];
-//			
-//			//niin kauan kuin luettujen merkkien 
-//			//lukumäärä on eri kuin -1 
-//			while ((lkm=fr.read(c))!=-1){
-//				//tulostetaan luetut merkit tiedostoon, ei näytölle
-////				fw.write(c, 0, lkm);
-//				System.out.print(c);
-//				sb.append(c, 0, lkm);
-//			}
-//		}
-//		/*
-//		 * FileReader -luokan muodostin heittää poikkeuksen
-//		 * FileNotFoundException, jos tiedostoa ei löydy
-//		*/		
-//		catch (FileNotFoundException e){
-//			Tulosta("Tiedostoa ei löytynyt: "+
-//					e.getMessage());
-//		}
-//
-//		/*
-//		 * FileReader.read heittää poikkeuksen 
-//		 * IOException, jos lukeminen epäonnistuu
-//		 * Saman poikkeuksen heittää myös FileWriter -muodostin
-//		 */
-//		catch (IOException e){
-//			Tulosta("Tiedoston lukeminen epäonnistui: "+
-//					e.getMessage());
-//		}
-//		
-//		/*
-//		 * Tapahtuipa poikkeuksia tai ei, try - catch - finally
-//		 * kokonaisuudessa toteutetaan viimeisenä aina finally -lohko.
-//		 */		
-//		finally{
-//			try{
-//				if (fr!=null)
-//					fr.close();
-//			}
-//			//Myös close voi heittää poikkeuksen, joka
-//			//on otettava kiinni
-//			catch (IOException e){
-//				//do nothing
-//			}
-//		}
-//		Tulosta(sb.toString());
-//		return sb.toString();
-//	}
-//	static void Tulosta(String s){
-//		System.out.println(s);
-//	}
 }
