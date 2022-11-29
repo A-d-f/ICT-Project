@@ -1,34 +1,25 @@
 package services;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang3.StringUtils;
-
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.SystemParameterOrBuilder;
+import org.json.simple.JSONArray;
 
 import data.Answer;
 import data.Content;
@@ -36,7 +27,7 @@ import data.Found;
 import data.Incident;
 import data.Question;
 
-import org.json.simple.JSONArray;
+
 
 @Path("/speechservice")
 public class SpeechService {
@@ -49,12 +40,7 @@ public class SpeechService {
 	// mutta ei ainakaan toistaiseksi löydä getterillä chooseIncidentissä
 	// päivitettyä arvoa esim "1" vaan tulostaa null
 	public static Found tofront = new Found();
-	public String testword;
-
-	// List of keywordlists of questions
-//	static List<List<Question>> info = new ArrayList<>();
 	public List<Question> info = new ArrayList<>();
-//	static List<Answer> info2 = new ArrayList<>();
 	public List<Answer> info2 = new ArrayList<>();
 	public List<List<String>> info3 = new ArrayList<>();
 	public List<String> testilista = new ArrayList<>();
@@ -62,32 +48,37 @@ public class SpeechService {
 	@POST
 	@Path("/getdata")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String readData(String chosenvalue) {
-		//String found = getFoundWord().toString();
-		System.out.println("readData " + chosenvalue);
-		tofront.setFound(chosenvalue);
-		
-		return chosenvalue;
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String readData(Found found) {
+		System.out.println("readData " + found.getId());
+		tofront.setId(found.getId());
+		tofront.setFoundWords(found.getFoundWords());		
+		return "success";
 	}
 
 	@GET
 	@Path("/getthis")
-	@Produces(MediaType.TEXT_PLAIN)
-	public static String getTranscript() {
-		String toFrontend=tofront.getFound();
-		return toFrontend;
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public static ArrayList<Found> getTranscript() {
+
+		ArrayList<Found> list = new ArrayList<>();
+		Found found = new Found();
+		found.setId(tofront.getId());
+		System.out.println("founds id" + found.getId());	
+		list.add(tofront);
+		System.out.println("lista" + list.toString());
+	
+		return list;
 		
 	}
-//	@GET
-//	@Path("/handledata")
-//	@Produces(MediaType.TEXT_PLAIN)
+
 	public void handleData(String transcript) throws IOException, InterruptedException {
 
 		//Tarkistetaan onko incidentListiin jo haettu tiedot eli tehdään vain ensimmäisellä kerralla kun ohjelmaa ajetaan
 		if (incidentList.isEmpty()) {
 
 			try {
-				// String json=lueTdsto();//Lue tiedosto
 				JSONParser parser = new JSONParser();// Tee JSONParser
 				// Object obj = parser.parse(json);//Merkkijono parsitaan objektiksi
 
@@ -125,21 +116,18 @@ public class SpeechService {
 
 	}
 	
-	public void sendRestServer(String string) throws IOException, InterruptedException {
-		
-
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://127.0.0.1:8080/rest/speechservice/getdata"))
-                .POST(HttpRequest.BodyPublishers.ofString(string))
-                .build();
-
-        HttpResponse<String> response = client.send(request,
-                HttpResponse.BodyHandlers.ofString());
-
-        System.out.println(response.body());
+	public void sendObject(Found found) {
+		//Creating client etc for REST
+		String uri = "http://127.0.0.1:8080/rest/speechservice/getdata";
+		Client c=ClientBuilder.newClient();
+		WebTarget wt=c.target(uri);
+		Builder b=wt.request();
+		//Here we create an Entity of a Found object as JSON string format
+		Entity<Found> e=Entity.entity(found,MediaType.APPLICATION_JSON);		
+		String s=b.post(e, String.class);//We get the response as a String
 	}
-
+	
+	
 	private void readContent(JSONArray arr, Incident incident) {
 		Content content = new Content();
 		for (int i = 0; i < arr.size(); i++) {
@@ -323,32 +311,35 @@ public class SpeechService {
 				+ " number of words in foundTreeWords: " + calcFallen);
 		System.out.println("words in foundShopliftingWords list: " + foundShopliftingWords.toString()
 				+ " number of words in foundShopliftingWords: " + calcShopl);
+		
+	
 		if (calcFallen > calcShopl) {
-
+			
+			
 			incidentFallen = true;
 			incidentShopL = false;
-			tofront.setFound("1");
-			//testword = "1";
-			sendRestServer(tofront.getFound());
-			System.err.println("Kyse on puun kaatumisesta." + testword);
-			System.out.println("getFound" + tofront.getFound().toString());
+			tofront.setId("1");
+			tofront.setValue("");
+			tofront.setFoundWords(foundTreeWords);
+			sendObject(tofront);
+			System.err.println("Kyse on puun kaatumisesta.");
+			
 		}
 		if (calcFallen == calcShopl) {
 
 			incidentFallen = true;
 			incidentShopL = true;
-			tofront.setFound("");
-			testword = "";
-			System.err.println("Kyse voi olla puun kaatumisesta tai ryöstöstä." + testword);
+			System.err.println("Kyse voi olla puun kaatumisesta tai ryöstöstä.");
 		}
 		if (calcFallen < calcShopl) {
 
 			incidentFallen = false;
 			incidentShopL = true;
-			tofront.setFound("2");
-			//testword = "2";
-			sendRestServer(tofront.getFound());
-			System.err.println("Kyse on varkaudesta/ryöstöstä." + testword);
+			tofront.setId("2");
+			tofront.setValue("");
+			tofront.setFoundWords(foundShopliftingWords);
+			sendObject(tofront);
+			System.err.println("Kyse on varkaudesta/ryöstöstä.");
 
 		}
 	}
