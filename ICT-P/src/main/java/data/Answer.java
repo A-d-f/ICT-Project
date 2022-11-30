@@ -6,6 +6,7 @@ public class Answer {
 	private int id;
 	private String avalue;
 	private ArrayList<String> keywordList;
+	private ArrayList<String> negativeList;
 	public int getId() {
 		return id;
 	}
@@ -40,6 +41,21 @@ public class Answer {
 		};
 		keywordList.add(s);
 	}
+	
+	public ArrayList<String> getNegativeList() {
+		return negativeList;
+	}
+	public void setNegativeList(ArrayList<String> negativeList) {
+		this.negativeList = negativeList;
+	}
+	public void addNegativeList(String s) {
+		if (this.negativeList == null) {
+			this.negativeList=new ArrayList<>();
+		};
+		negativeList.add(s);
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Answer [id=" + id + ", avalue=" + avalue + ", keywordList=" + keywordList + "]";
