@@ -62,37 +62,10 @@ public class InfiniteStreamRecognize {
 	private boolean lastTranscriptWasFinal = false;
 	private StreamController referenceToStreamController;
 	private ByteString tempByteString;
-	private boolean testi=true;
-	DataTransfer data= new DataTransfer();
+	private boolean testi = true;
+	DataTransfer data = new DataTransfer();
 
 	private String savedTranscript = "";
-
-	public void entinenMain(String[] args) {
-		//maini alkoi ennen tästä
-	
-		/*
-		 * s = b.get(Speech.class);
-		 * 
-		 * String st=b.get(String.class); System.out.println("Object: " + s);
-		 * System.out.println("JSON: " + st);
-		 */
-		
-		
-//		InfiniteStreamRecognizeOptions options = InfiniteStreamRecognizeOptions.fromFlags(args);
-//		if (options == null) {
-//			// Could not parse.
-//			System.out.println("Failed to parse options.");
-//			System.exit(1);
-//		}
-//
-//		try {
-//			infiniteStreamingRecognize(options.langCode);
-//			
-//			
-//		} catch (Exception e) {
-//			System.out.println("Exception caught: " + e);
-//		}
-	}//maini loppui tähän
 
 	public String convertMillisToDate(double milliSeconds) {
 		long millis = (long) milliSeconds;
@@ -108,49 +81,37 @@ public class InfiniteStreamRecognize {
 
 		// Microphone Input buffering
 		class MicBuffer implements Runnable {
-			
+
 			@Override
 			public void run() {
-				
-				while (testi==true) {
-				System.out.println("ollaanko tryssa?");
-				String uri = "http://127.0.0.1:8080/hello";
-				
-				javax.ws.rs.client.Client c = ClientBuilder.newClient();
-				WebTarget wt = c.target(uri);
-				Builder b = wt.request(); 
-				
-				
-				System.out.println(YELLOW);
-				System.out.println("Start speaking...Press Ctrl-C to stop");
-				targetDataLine.start();
-				
-				System.out.println("haloo" + targetDataLine.isActive());
-				System.out.println("haloojaa" + targetDataLine.isOpen());
-				byte[] data = new byte[BYTES_PER_BUFFER];
-				while (targetDataLine.isOpen()) {
-										try {
-						int numBytesRead = targetDataLine.read(data, 0, data.length);
-						if ((numBytesRead <= 0) && (targetDataLine.isOpen())) {
-							continue;
+
+				while (testi == true) {
+
+					String uri = "http://127.0.0.1:8080/hello";
+
+//				javax.ws.rs.client.Client c = ClientBuilder.newClient();
+//				WebTarget wt = c.target(uri);
+//				Builder b = wt.request(); 
+
+					System.out.println(YELLOW);
+					System.out.println("Start speaking...Press Ctrl-C to stop");
+					targetDataLine.start();
+
+					byte[] data = new byte[BYTES_PER_BUFFER];
+					while (targetDataLine.isOpen()) {
+						try {
+							int numBytesRead = targetDataLine.read(data, 0, data.length);
+							if ((numBytesRead <= 0) && (targetDataLine.isOpen())) {
+								continue;
+							}
+
+							sharedQueue.put(data.clone());
+						} catch (InterruptedException e) {
+							System.out.println("Microphone input buffering interrupted : " + e.getMessage());
 						}
-					
-						sharedQueue.put(data.clone());
-					} catch (InterruptedException e) {
-						System.out.println("Microphone input buffering interrupted : " + e.getMessage());
 					}
-				} 
-				if(!targetDataLine.isOpen()) {
-					System.out.println("target dataline");
-					try {
-						Thread.sleep(2000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+
 				}
-				
-			}
 			}
 		}
 
@@ -159,10 +120,7 @@ public class InfiniteStreamRecognize {
 		Thread micThread = new Thread(micrunnable);
 		ResponseObserver<StreamingRecognizeResponse> responseObserver = null;
 		try (SpeechClient client = SpeechClient.create()) {
-			
-			System.out.println("tulostellaan");
-			System.out.println("are you alive" + micThread.isAlive());
-			System.out.println("are you alive" + micThread.interrupted());
+
 			ClientStream<StreamingRecognizeRequest> clientStream;
 			responseObserver = new ResponseObserver<StreamingRecognizeResponse>() {
 
@@ -184,14 +142,13 @@ public class InfiniteStreamRecognize {
 					if (result.getIsFinal()) {
 						System.out.print(GREEN);
 						System.out.print("\033[2K\r");
-//                System.err.println("Testi "+alternative.getTranscript()+ " Sitten  "+convertMillisToDate(correctedTime)+ "  Loppu");
+
 						System.out.printf("%s: %s [confidence: %.2f]\n", convertMillisToDate(correctedTime),
 								alternative.getTranscript(), alternative.getConfidence());
 						isFinalEndTime = resultEndTimeInMS;
 						lastTranscriptWasFinal = true;
 						String transcript = alternative.getTranscript();
-//						System.out.println("mikä tämä on " + alternative);
-//						System.out.println("response " + response);
+
 						try {
 							onComplete(transcript);
 						} catch (IOException e) {
@@ -212,11 +169,9 @@ public class InfiniteStreamRecognize {
 				public void onComplete(String transcript) throws IOException, InterruptedException {
 
 					// Method for finding and matching keywords from splittedList
-					//Json.dataFetch(transcript);
+
 					data.dataFetch(transcript);
 				}
-
-
 
 				public void onError(Throwable t) {
 				}
