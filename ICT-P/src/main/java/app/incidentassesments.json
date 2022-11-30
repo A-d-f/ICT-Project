@@ -17,10 +17,10 @@
                     ],
                 "answers":
                     [
-                        { "aid": "111", "avalue": "1", "akeywords":["yksi", "puu"] },
-                        { "aid": "112", "avalue": "2", "akeywords":["pari", "kaksi", "puuta"] },
-                        { "aid": "113", "avalue": "3", "akeywords": ["kolme", "puuta"] },
-                        { "aid": "114", "avalue": "Monta", "akeywords": ["monta", "use", "kymmeniä", "muutam", "puuta"], "anegative":["useasti", "usein", "useimmiten"] }
+                        { "aid": "111", "avalue": "1", "akeywords":["yksi puu", "yksi", "puu"] },
+                        { "aid": "112", "avalue": "2", "akeywords":["pari puuta", "kaksi puuta"] },
+                        { "aid": "113", "avalue": "3", "akeywords": ["kolme puuta"] },
+                        { "aid": "114", "avalue": "Monta", "akeywords": ["monta puuta", "use", "kymmeniä", "muutam"], "anegative":["useasti", "usein", "useimmiten"] }
                     ]
 
                 }
@@ -38,7 +38,7 @@
 
                 "answers":
                     [
-                        { "aid": "121", "avalue": "Yksityinen alue", "akeywords":["yksityinen", "metsä", "kotona", "mökillä"] },
+                        { "aid": "121", "avalue": "Yksityinen alue", "akeywords":["yksityinen", "metsä", "kotona", "mökillä", "yksityinen metsä"] },
                         { "aid": "122", "avalue": "Julkinen", "akeywords":["julkinen", "julkisella", "koulu", "päiväkodin", "kaupungin", "keskustassa", "piha"] }
 
                     ]

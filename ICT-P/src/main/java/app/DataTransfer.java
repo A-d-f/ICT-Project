@@ -12,9 +12,9 @@ public class DataTransfer implements Runnable {
 	@Override
 	public void run() {
 		while (testi==true) {
-		System.out.println("Current transcript: " + currentTranscript);
+//		System.out.println("Current transcript: " + currentTranscript);
 		currentTranscript=""; //nollaus
-		System.out.println("Saved transcript: " + savedTranscript);
+//		System.out.println("Saved transcript: " + savedTranscript);
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -25,8 +25,8 @@ public class DataTransfer implements Runnable {
 		
 	}
 	public void dataFetch(String transcript) throws IOException, InterruptedException {
-		System.err.println("Json-luokan transcript:");
-		System.out.println("Transkripti: " + transcript);
+//		System.err.println("Json-luokan transcript:");
+//		System.out.println("Transkripti: " + transcript);
 		saveTranscriptToString(transcript);
 		//SpeechService.getTranscript(transcript);
 		service.handleData(transcript);
@@ -37,7 +37,7 @@ public class DataTransfer implements Runnable {
 		currentTranscript=transcript;
 		savedTranscript = savedTranscript + transcript;
 
-		System.out.println("Saved transcript: " + savedTranscript);
+//		System.out.println("Saved transcript: " + savedTranscript);
 	}
 	
 }

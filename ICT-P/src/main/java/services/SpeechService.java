@@ -3,6 +3,7 @@ package services;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -44,6 +45,7 @@ public class SpeechService {
 	boolean chosenIncident = false;
 	static Content con = new Content();
 	static Found tofront = new Found();
+	static Found incIndex = new Found();
 	public List<Question> info = new ArrayList<>();
 	public List<Answer> info2 = new ArrayList<>();
 	public List<List<String>> info3 = new ArrayList<>();
@@ -133,9 +135,13 @@ public class SpeechService {
 		if (chosenIncident == false) {
 			chooseIncident(transcript);
 		}
-		for (int w = 0; w < incidentList.size(); w++) {
-			con.setQuestionList(incidentList.get(w).getContent().getQuestionList());
+		else {
+			System.out.println("INC ID "+ incIndex.getId());
+//		for (int w = 0; w < incidentList.size(); w++) {
+			int index = Integer.parseInt(incIndex.getId()) - 1;
+			con.setQuestionList(incidentList.get(index).getContent().getQuestionList());
 			checkAnswers(transcript, con);
+//		}
 		}
 
 		// Tähän täytyy tehdä logiikka, joka ensin käy tekemässä chooseIncidentin, josta
@@ -314,6 +320,7 @@ public class SpeechService {
 			
 			chosenIncident = true;
 			sendObject(objList.get(0));
+			incIndex.setId(objList.get(0).getId());
 			
 		}
 
@@ -321,9 +328,14 @@ public class SpeechService {
 
 	}
 
-	public static void checkAnswers(String transcript, Content con) {
+	public void checkAnswers(String transcript, Content con) {
+		transcript = transcript.toLowerCase();
+		int size = 0;
+		System.out.println("Transcript: " + transcript);
+		List<String> array = new ArrayList<>();
 		Answer ans = new Answer();
 		Question que = new Question();
+		Found fou = new Found();
 		for (int i = 0; i < con.getQuestionList().size(); i++) {
 			que.setAnswerList(con.getQuestionList().get(i).getAnswerList());
 
@@ -331,18 +343,81 @@ public class SpeechService {
 				ans.setAvalue(que.getAnswerList().get(e).getAvalue());
 				ans.setId(que.getAnswerList().get(e).getId());
 				ans.setKeywordList(que.getAnswerList().get(e).getKeywordList());
-
-				for (String keyword : ans.getKeywordList()) {
-					if (transcript.contains(keyword)) {
-						System.err
-								.println("Puheessa mainittiin ID " + ans.getId() + " eli vastaus: " + ans.getAvalue());
+//				System.out.println("335: "+ans.toString());
+//				List<String> matchingAnswers = new ArrayList<>();
+				
+				//YKSI SANA
+				String[] splittedList = transcript.split(" ");
+				for (String splittedWord : splittedList) {
+					
+					for (String keyword : ans.getKeywordList()) {
+						
+						if (splittedWord.contains(keyword)) {
+//							size = checkCheck(splittedList, ans.getKeywordList());
+							Found fo = new Found();
+							System.out.println("353 checkcheck "+checkCheck(splittedList, ans.getKeywordList()));
+							fo = checkCheck(splittedList, ans.getKeywordList());
+							System.out.println("FO " + fo.toString());
+							System.out.println("354: " + size + " " + array.toString());
+							if (fo.getSize()>1) {
+//							System.out.println("344: " + keyword + ans.getId());
+							System.out.println("Array 359 " + array);
+							if(array.isEmpty()) {
+								array.addAll(fo.getFoundWords());
+							}
+//							array.addAll(fo.getFoundWords());
+							System.out.println("Array 361 " + array);
+							fou.setId(Integer.toString(ans.getId()));
+//							System.out.println("FOUUU: " + fou.getId() + " "+ fou.getFoundWords());
+							break;
+							}
+						}	
+				//FRAASIT
 					}
 				}
+				
+				for (String keyword : ans.getKeywordList()) {
+					if (keyword.contains(" ")) {
+					
+						//if transcript contains phrase, matching = true and phrase will be added to foundWords list
+						boolean matching = transcript.contains(keyword);
 
+						if (matching) {
+//							foundWords.add(keyword);
+							System.out.println("378: " + keyword+ " "+ans.getId());
+							System.out.println("Array: " + array);
+							array.add(keyword);
+							fou.setFoundWords(array);
+							System.out.println("FOUUU: " + fou.getId() + " "+ fou.getFoundWords());
+							int count = StringUtils.countMatches(transcript, keyword);
+							
+							System.out.println("Phrases " + count);
+							int total = count + size;
+						}
+					}
+				}
+	
+			}
+			}
+		System.out.println("FOU PRINT: " + fou.toString());
+		sendObject(fou);
+		}
+		
+	private Found checkCheck(String[] splittedList, ArrayList<String> keywordList) {
+		List<String> lista = new ArrayList<>();
+		Found f = new Found();
+		for (String splittedWord : splittedList) {
+			for (String keyword : keywordList) {
+				if(splittedWord.contains(keyword)) {
+					lista.add(keyword);
+				}
 			}
 		}
-
-
+		f.setFoundWords(lista);
+		f.setSize(lista.size());
+		System.out.println("387: "+lista);
+		
+		return f;
 	}
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
