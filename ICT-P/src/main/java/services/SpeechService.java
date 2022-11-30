@@ -355,7 +355,7 @@ public class SpeechService {
 						if (matching) {
 
 							array.add(keyword);
-							fou.setFoundWords(array);
+							
 
 							int count = StringUtils.countMatches(transcript, keyword);
 
@@ -367,9 +367,10 @@ public class SpeechService {
 
 			}
 		}
+		fou.setFoundWords(array);
 		System.out.println("FOU PRINT: " + fou.getId() + " " + fou.getFoundWords());
 		//Sending the Found object to frontend
-//		sendObject(fou);
+		sendObject(fou);
 	}
 	//Method for comparing transcript words to every word in keyword list of a certain Answer object
 	//Creating object for saving found words and list size
