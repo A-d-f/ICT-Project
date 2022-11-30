@@ -3,6 +3,7 @@ package services;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -44,19 +45,15 @@ public class SpeechService {
 	boolean chosenIncident = false;
 	static Content con = new Content();
 	static Found tofront = new Found();
-	public List<Question> info = new ArrayList<>();
-	public List<Answer> info2 = new ArrayList<>();
-	public List<List<String>> info3 = new ArrayList<>();
-	public List<String> testilista = new ArrayList<>();
-	
+	static Found incIndex = new Found();
 
 	@POST
 	@Path("/getdata")
 	@Produces(MediaType.TEXT_PLAIN)
-
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String readData(Found found) {
-		System.out.println("readData " + found.getId() + " " + found.getFoundWords() + " " + found.getSize() + " " + found.getValue());
+		System.out.println("readData " + found.getId() + " " + found.getFoundWords() + " " + found.getSize() + " "
+				+ found.getValue());
 		tofront.setId(found.getId());
 		tofront.setFoundWords(found.getFoundWords());
 		tofront.setValue(found.getValue());
@@ -71,8 +68,6 @@ public class SpeechService {
 	public static ArrayList<Found> getFoundValues() {
 
 		ArrayList<Found> list = new ArrayList<>();
-//		Found found = new Found();
-//		found.setId(tofront.getId());
 		System.out.println("founds id" + tofront.getId());
 		list.add(tofront);
 		System.out.println("lista" + list.toString());
@@ -89,7 +84,6 @@ public class SpeechService {
 
 			try {
 				JSONParser parser = new JSONParser();// Tee JSONParser
-				// Object obj = parser.parse(json);//Merkkijono parsitaan objektiksi
 
 				Object data = parser.parse(new FileReader("src/main/java/app/incidentassesments.json"));
 				JSONArray array = (JSONArray) data;// Objektista JSONArray
@@ -106,19 +100,15 @@ public class SpeechService {
 
 					arr = (JSONArray) jo.get("content");
 
-//					System.out.println("JSCONT 103: " + JScont);
 					readContent(arr, incident);
-					// Väärässä paikassa -> chooseIncident() alle.
+
 					// Tämä try catch tehdään vain kerran alussa, kun JSON luetaan ensimmäisen
 					// kerran incident-olioon
-					// arr -> incidentList (incidentList.get(0).getContent()?)
-//					checkAnswers(transcript, arr); 
 
 					incidentList.add(incident);
 				}
 				for (Incident i : incidentList) {
-//					System.out.println("103: " + i);
-//					System.out.println("104: " + i.getKeywordList());
+
 				}
 			} catch (Exception e) {
 				System.err.println("Jotain meni pieleen");
@@ -128,19 +118,16 @@ public class SpeechService {
 
 		// Valitsee oikean incidentin keywordien perusteella
 
-		// if (booleanChosenIncident == null) -> chooseIncident()
-		// else -> checkAnswers()
 		if (chosenIncident == false) {
 			chooseIncident(transcript);
-		}
-		for (int w = 0; w < incidentList.size(); w++) {
-			con.setQuestionList(incidentList.get(w).getContent().getQuestionList());
-			checkAnswers(transcript, con);
-		}
+		} else {
+			System.out.println("INC ID " + incIndex.getId());
 
-		// Tähän täytyy tehdä logiikka, joka ensin käy tekemässä chooseIncidentin, josta
-		// saadaan boolean (mikä incident on valittu).
-		// Sitten kun se on tehty, voidaan kutsua checkAnswers().
+			int index = Integer.parseInt(incIndex.getId()) - 1;
+			con.setQuestionList(incidentList.get(index).getContent().getQuestionList());
+			checkAnswers(transcript, con);
+
+		}
 
 	}
 
@@ -164,12 +151,12 @@ public class SpeechService {
 			Question q = new Question();
 			q.setId(qo.get("qid"));
 			q.setQuestion((String) qo.get("qvalue"));
-//			System.out.println("Question 77: "+q.getId()+" "+q.getQuestion());
+
 			JSONArray karray = (JSONArray) qo.get("qkeywords");
 			ArrayList<String> qkeywordList = new ArrayList<>();
 			for (int k = 0; k < karray.size(); k++) {
 				qkeywordList.add((String) karray.get(k));
-//				System.out.println("QKeyword 82:"+(String)karray.get(k));
+
 			}
 			q.setKeywordList(qkeywordList);
 			content.addQuestionList(q);
@@ -180,86 +167,72 @@ public class SpeechService {
 				Answer a = new Answer();
 				a.setId(ao.get("aid"));
 				a.setAvalue((String) ao.get("avalue"));
-//				System.out.println("Answer 93:"+a.getId()+" "+a.getAvalue());
+
 				JSONArray akeyarr = (JSONArray) ao.get("akeywords");
-//				System.out.println("AKeywords 94: "+ao.get("akeywords"));
+
 				ArrayList<String> akeyList = new ArrayList<>();
 				for (int m = 0; m < akeyarr.size(); m++) {
 					akeyList.add((String) akeyarr.get(m));
-//					System.out.println("AKeyword 98:"+a.getId()+" "+a.getAvalue()+" "+(String) akeyarr.get(m));
+
 				}
 				a.setKeywordList(akeyList);
 				q.addAnswerList(a);
-//				System.out.println("163: Keywords: " + akeyList);
-//				System.out.println("Answer keywords: " + a.getId() + " " + a.getKeywordList());
-				readAkeyList(akeyList);
 
 			}
 
 		}
 		incident.setContent(content);
-		System.out.println("Testilista: " + testilista);
 
-	}
-
-	private ArrayList<String> readAkeyList(ArrayList<String> list) {
-		int counter = 0;
-		while (counter < 2) {
-			System.out.println("174 list: " + list);
-			counter++;
-		}
-		return list;
 	}
 
 	private void readNegatives(JSONArray arr, Incident incident) {
 		ArrayList<String> list = new ArrayList<>();
-//		System.out.println(arr);
+
 		for (int i = 0; i < arr.size(); i++) {
 			list.add((String) arr.get(i));
-//			System.out.println("Negatives rivi 111: "+(String) arr.get(i));
+
 		}
 		incident.setNegativeList(list);
 	}
 
 	private void readKeyWords(JSONArray arr, Incident incident) {
 		ArrayList<String> list = new ArrayList<>();
-//		System.out.println(arr);
+
 		for (int i = 0; i < arr.size(); i++) {
 			list.add((String) arr.get(i));
 		}
 		incident.setKeywordList(list);
 	}
 
-
-	//Method for choosing incident,
-	//Returns boolean value
+	// Method for choosing incident,
+	// Returns boolean value
 	public boolean chooseIncident(String transcript) {
-		
-		//transcript changed for LowerCase
+
+		// transcript changed for LowerCase
 		transcript = transcript.toLowerCase();
-	
-		//Creating ArrayList for objects
+
+		// Creating ArrayList for objects
 		ArrayList<Found> objList = new ArrayList<Found>();
 
-		//Looping through incidentList for objects
+		// Looping through incidentList for objects
 		for (Incident inc : incidentList) {
-			//Creating object for receiving values 
+			// Creating object for receiving values
 			Found foundObj = new Found();
 
-			//Setting id and value (name)
+			// Setting id and value (name)
 			foundObj.setId(Integer.toString(inc.getId()));
 			foundObj.setValue(inc.getName());
-			
-			//Creating lists for keywords, negative keywords and matching words
+
+			// Creating lists for keywords, negative keywords and matching words
 			ArrayList<String> keywords = new ArrayList<>();
 			ArrayList<String> negatives = new ArrayList<>();
 			ArrayList<String> foundWords = new ArrayList<>();
 
-			//getting inc objects keyword lists
+			// getting inc objects keyword lists
 			keywords.addAll(inc.getKeywordList());
 			negatives.addAll(inc.getNegativeList());
 
-			//Splitting transcript to separate words for looping through
+			// Splitting transcript to separate words for looping through
 			String[] splittedList = transcript.split(" ");
 
 			// Looping splittedWord list
@@ -269,20 +242,22 @@ public class SpeechService {
 				for (String keyword : keywords) {
 
 					if (splittedWord.contains(keyword)) {
-						
-						//checking that found word is not in the negative keyword list (checkNegativeWords())
-						//if not then it is added to foundWords list
+
+						// checking that found word is not in the negative keyword list
+						// (checkNegativeWords())
+						// if not then it is added to foundWords list
 						if (checkNegativeWords(splittedWord, negatives) == false) {
 							foundWords.add(splittedWord);
 						}
 					}
 				}
 			}
-			//Looping through phrases
+			// Looping through phrases
 			for (String keyword : keywords) {
 				if (keyword.contains(" ")) {
-				
-					//if transcript contains phrase, matching = true and phrase will be added to foundWords list
+
+					// if transcript contains phrase, matching = true and phrase will be added to
+					// foundWords list
 					boolean matching = transcript.contains(keyword);
 
 					if (matching) {
@@ -293,56 +268,127 @@ public class SpeechService {
 				}
 			}
 
-
-			//Setting foundWords list to object
+			// Setting foundWords list to object
 			foundObj.setFoundWords(foundWords);
-			//Setting foundWords list size to object
+			// Setting foundWords list size to object
 			foundObj.setSize(foundWords.size());
-			//Adding object to ojbList
+			// Adding object to ojbList
 			objList.add(foundObj);
 
 		}
-		
+
 		// Sorting objList with Collections method sort by object's keywordlist size, so
 		// the biggest list is in the first index
 		Collections.sort(objList, Comparator.comparingInt(Found::getSize).reversed());
 		System.out.println("ObjList " + objList.get(0));
-		//If previously sorted lists first indexes list isEmpty chosenIncident = false, otherwise true (Incident has been found) 
+		// If previously sorted lists first indexes list isEmpty chosenIncident = false,
+		// otherwise true (Incident has been found)
 		if (objList.get(0).getFoundWords().isEmpty()) {
 			chosenIncident = false;
 		} else {
-			
+
 			chosenIncident = true;
 			sendObject(objList.get(0));
-			
+			incIndex.setId(objList.get(0).getId());
+
 		}
 
 		return chosenIncident;
 
 	}
-
-	public static void checkAnswers(String transcript, Content con) {
+	//Compares transcript to answer keywords and answer phrases of a certain incident
+	public void checkAnswers(String transcript, Content con) {
+		transcript = transcript.toLowerCase();
+		System.out.println("Transcript: " + transcript);
+		List<String> array = new ArrayList<>();
 		Answer ans = new Answer();
 		Question que = new Question();
-		for (int i = 0; i < con.getQuestionList().size(); i++) {
+		Found fou = new Found();
+		//First 2 loops: 
+		//the first loop loops questionlist of Content object -> gets answerlists of every questionlist indexes -> sets answerlists to object Question
+		//the second loop loops answerlists of Question object -> gets value, id and keywords -> sets them to object Answer
+		for (int i = 0; i < con.getQuestionList().size(); i++) { 
 			que.setAnswerList(con.getQuestionList().get(i).getAnswerList());
 
-			for (int e = 0; e < que.getAnswerList().size(); e++) {
+			for (int e = 0; e < que.getAnswerList().size(); e++) { 
 				ans.setAvalue(que.getAnswerList().get(e).getAvalue());
 				ans.setId(que.getAnswerList().get(e).getId());
 				ans.setKeywordList(que.getAnswerList().get(e).getKeywordList());
 
+				// Comparing single keywords
+				String[] splittedList = transcript.split(" ");
+				//loops transcript's word separately -> sets them to String splittedWord
+				for (String splittedWord : splittedList) { 
+					//loops keyword list of object Answer -> sets keywords to String keyword
+					for (String keyword : ans.getKeywordList()) { 
+						
+						if (splittedWord.contains(keyword)) {
+							//Creating a new Found object for the method 
+							Found fo = new Found();
+							//Finding more matching words from answerlist
+							fo = checkAnswerlist(splittedList, ans.getKeywordList());
+							System.out.println("FO " + fo.toString());
+							//If the size of the object's list is larger than 1...
+							if (fo.getSize() > 1) {
+								//...and if the array is empty -> found words are added to array
+								if (array.isEmpty()) {
+									array.addAll(fo.getFoundWords());
+								}
+								//Setting answer id to Found object
+								fou.setId(Integer.toString(ans.getId()));
+
+								break;
+							}
+						}
+						// Comparing phrases
+					}
+				}
+
 				for (String keyword : ans.getKeywordList()) {
-					if (transcript.contains(keyword)) {
-						System.err
-								.println("Puheessa mainittiin ID " + ans.getId() + " eli vastaus: " + ans.getAvalue());
+					//If keyword is a phrase (contains "SPACE")
+					if (keyword.contains(" ")) {
+
+						// if transcript contains phrase and matching = true, phrase will be added to the same
+						// array of already found words -> the array will be set to found words of object Found 
+						boolean matching = transcript.contains(keyword);
+
+						if (matching) {
+
+							array.add(keyword);
+							
+
+							int count = StringUtils.countMatches(transcript, keyword);
+
+							System.out.println("Phrases " + count);
+
+						}
 					}
 				}
 
 			}
 		}
+		fou.setFoundWords(array);
+		System.out.println("FOU PRINT: " + fou.getId() + " " + fou.getFoundWords());
+		//Sending the Found object to frontend
+		sendObject(fou);
+	}
+	//Method for comparing transcript words to every word in keyword list of a certain Answer object
+	//Creating object for saving found words and list size
+	//If matching words are found -> add the word to "list"
+	private Found checkAnswerlist(String[] splittedList, ArrayList<String> keywordList) {
+		List<String> list = new ArrayList<>();
+		Found f = new Found();
+		for (String splittedWord : splittedList) {
+			for (String keyword : keywordList) {
+				if (splittedWord.contains(keyword)) {
+					list.add(keyword);
+				}
+			}
+		}
+		f.setFoundWords(list);
+		f.setSize(list.size());
 
-
+		return f;
 	}
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
