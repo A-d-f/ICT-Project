@@ -46,6 +46,7 @@ public class SpeechService {
 	static Content con = new Content();
 	static Found tofront = new Found();
 	static Found incIndex = new Found();
+	String selectedIncident;
 
 	@POST
 	@Path("/getdata")
@@ -74,6 +75,15 @@ public class SpeechService {
 
 		return list;
 
+	}
+	
+	@POST
+	@Path("/selectincident")
+	@Produces(MediaType.TEXT_PLAIN)
+	public void selectIncident(String chosenIncident) {
+		int selected = Integer.parseInt(chosenIncident);
+		System.out.println("selected: " + selected);
+		
 	}
 
 	public void handleData(String transcript) throws IOException, InterruptedException {
