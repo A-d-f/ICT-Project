@@ -17,7 +17,7 @@
                     ],
                 "answers":
                     [
-                        { "aid": "111", "avalue": "1", "akeywords":["yksi", "puu", "1"], "anegative":["yksityinen", "yksityiskohta", "yksityiskohtainen", "yksikkö", "puuta", "yksitoista", "puuton", "puuttua", "puuttuu", "puutuu", "sukupuu", "polttopuu"]},
+                        { "aid": "111", "avalue": "1", "akeywords":["yksi", "puu"], "anegative":["yksityinen", "yksityiskohta", "yksityiskohtainen", "yksikkö", "puuta", "yksitoista", "puuton", "puuttua", "puuttuu", "puutuu", "sukupuu", "polttopuu"]},
                         { "aid": "112", "avalue": "2", "akeywords":["pari", "kaksi", "2", "puuta"], "anegative":["parikymmentä", "kaksitoista", "kaksikymmentä", "kaksi sataa", "kaksisataa", "puutalo", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "pori"]},
                         { "aid": "113", "avalue": "3", "akeywords":["kolme", "3", "puuta"], "anegative":["kolmetoista", "kolmekymmentä", "kolmesataa"]},
                         { "aid": "114", "avalue": "Monta", "akeywords":["monta", "monia", "use", "kymmeniä", "muutam", "puuta"], "anegative":["useasti", "usein", "useimmiten", "muutamasti", "puutalo", "lause", "nousen", "kuusen"]}

@@ -175,7 +175,15 @@ public class SpeechService {
 					akeyList.add((String) akeyarr.get(m));
 
 				}
+				JSONArray aNegakeyarr = (JSONArray) ao.get("anegative");
+
+				ArrayList<String> aNegakeyList = new ArrayList<>();
+				for (int n = 0; n < aNegakeyarr.size(); n++) {
+					aNegakeyList.add((String) aNegakeyarr.get(n));
+
+				}
 				a.setKeywordList(akeyList);
+				a.setNegativeList(aNegakeyList);
 				q.addAnswerList(a);
 
 			}
@@ -296,7 +304,9 @@ public class SpeechService {
 		return chosenIncident;
 
 	}
-	//Compares transcript to answer keywords and answer phrases of a certain incident
+
+	// Compares transcript to answer keywords and answer phrases of a certain
+	// incident
 	public void checkAnswers(String transcript, Content con) {
 		transcript = transcript.toLowerCase();
 		System.out.println("Transcript: " + transcript);
@@ -304,58 +314,69 @@ public class SpeechService {
 		Answer ans = new Answer();
 		Question que = new Question();
 		Found fou = new Found();
-		//First 2 loops: 
-		//the first loop loops questionlist of Content object -> gets answerlists of every questionlist indexes -> sets answerlists to object Question
-		//the second loop loops answerlists of Question object -> gets value, id and keywords -> sets them to object Answer
-		for (int i = 0; i < con.getQuestionList().size(); i++) { 
+		boolean negativeFound;
+		// First 2 loops:
+		// the first loop loops questionlist of Content object -> gets answerlists of
+		// every questionlist indexes -> sets answerlists to object Question
+		// the second loop loops answerlists of Question object -> gets value, id and
+		// keywords -> sets them to object Answer
+		for (int i = 0; i < con.getQuestionList().size(); i++) {
 			que.setAnswerList(con.getQuestionList().get(i).getAnswerList());
 
-			for (int e = 0; e < que.getAnswerList().size(); e++) { 
+			for (int e = 0; e < que.getAnswerList().size(); e++) {
 				ans.setAvalue(que.getAnswerList().get(e).getAvalue());
 				ans.setId(que.getAnswerList().get(e).getId());
 				ans.setKeywordList(que.getAnswerList().get(e).getKeywordList());
+				ans.setNegativeList(que.getAnswerList().get(e).getNegativeList());
 
 				// Comparing single keywords
 				String[] splittedList = transcript.split(" ");
-				//loops transcript's word separately -> sets them to String splittedWord
-				for (String splittedWord : splittedList) { 
-					//loops keyword list of object Answer -> sets keywords to String keyword
-					for (String keyword : ans.getKeywordList()) { 
-						
+				// loops transcript's word separately -> sets them to String splittedWord
+				for (String splittedWord : splittedList) {
+					// loops keyword list of object Answer -> sets keywords to String keyword
+					for (String keyword : ans.getKeywordList()) {
+
 						if (splittedWord.contains(keyword)) {
-							//Creating a new Found object for the method 
+
+							// Creating a new Found object for the method
+
 							Found fo = new Found();
-							//Finding more matching words from answerlist
-							fo = checkAnswerlist(splittedList, ans.getKeywordList());
+							// Finding more matching words from answerlist
+							System.out.println("keywords: " + splittedWord);
+							fo = checkAnswerlist(splittedList, ans.getKeywordList(), ans.getNegativeList());
 							System.out.println("FO " + fo.toString());
-							//If the size of the object's list is larger than 1...
+							// If the size of the object's list is larger than 1...
 							if (fo.getSize() > 1) {
-								//...and if the array is empty -> found words are added to array
+
+								// ...and if the array is empty -> found words are added to array
+
 								if (array.isEmpty()) {
 									array.addAll(fo.getFoundWords());
 								}
-								//Setting answer id to Found object
+								// Setting answer id to Found object
 								fou.setId(Integer.toString(ans.getId()));
 
 								break;
 							}
+
 						}
 						// Comparing phrases
 					}
 				}
 
 				for (String keyword : ans.getKeywordList()) {
-					//If keyword is a phrase (contains "SPACE")
+					// If keyword is a phrase (contains "SPACE")
 					if (keyword.contains(" ")) {
 
-						// if transcript contains phrase and matching = true, phrase will be added to the same
-						// array of already found words -> the array will be set to found words of object Found 
+						// if transcript contains phrase and matching = true, phrase will be added to
+						// the same
+						// array of already found words -> the array will be set to found words of
+						// object Found
 						boolean matching = transcript.contains(keyword);
 
 						if (matching) {
 
 							array.add(keyword);
-							
 
 							int count = StringUtils.countMatches(transcript, keyword);
 
@@ -369,19 +390,29 @@ public class SpeechService {
 		}
 		fou.setFoundWords(array);
 		System.out.println("FOU PRINT: " + fou.getId() + " " + fou.getFoundWords());
-		//Sending the Found object to frontend
+		// Sending the Found object to frontend
 		sendObject(fou);
 	}
-	//Method for comparing transcript words to every word in keyword list of a certain Answer object
-	//Creating object for saving found words and list size
-	//If matching words are found -> add the word to "list"
-	private Found checkAnswerlist(String[] splittedList, ArrayList<String> keywordList) {
+
+	// Method for comparing transcript words to every word in keyword list of a
+	// certain Answer object
+	// Creating object for saving found words and list size
+	// If matching words are found -> add the word to "list"
+	private Found checkAnswerlist(String[] splittedList, ArrayList<String> keywordList,
+			ArrayList<String> negativeList) {
 		List<String> list = new ArrayList<>();
 		Found f = new Found();
+		boolean negativeFound;
 		for (String splittedWord : splittedList) {
+
 			for (String keyword : keywordList) {
 				if (splittedWord.contains(keyword)) {
-					list.add(keyword);
+					negativeFound = checkNegativeWords(splittedWord, negativeList);
+					System.out.println("BOOLEAN: " + negativeFound);
+					if (negativeFound == false) {
+						System.out.println("splittedword 406 " + splittedWord);
+						list.add(splittedWord);
+					}
 				}
 			}
 		}
@@ -399,14 +430,14 @@ public class SpeechService {
 		while (negativeIterator.hasNext()) {
 
 			String negativeWord = negativeIterator.next().toString();
-			// System.out.println("splitted " + splittedWord + " negative " + negativeWord);
+
 			if (splittedWord.equals(negativeWord)) {
-				// System.out.println("negative word found " + negativeWord);
+
 				neg = negativeWord;
 				found = true;
 				break;
 			} else {
-				// System.out.println("not found" + splittedWord);
+
 				found = false;
 
 			}
