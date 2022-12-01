@@ -1,7 +1,11 @@
 package services;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,9 +23,16 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import com.google.appengine.repackaged.org.apache.http.HttpEntity;
+import com.google.appengine.repackaged.org.apache.http.ParseException;
+import com.google.appengine.repackaged.org.apache.http.util.EntityUtils;
+
 import org.json.simple.JSONArray;
 import java.util.Comparator;
 
@@ -46,6 +57,8 @@ public class SpeechService {
 	static Content con = new Content();
 	static Found tofront = new Found();
 	static Found incIndex = new Found();
+	static Found fromFront = new Found();
+	Found fromfrontend= new Found();
 	String selectedIncident;
 	int selected;
 
@@ -81,9 +94,23 @@ public class SpeechService {
 	@POST
 	@Path("/selectincident")
 	@Produces(MediaType.TEXT_PLAIN)
-	public void selectIncident(String chosenIncident) {
+	public void selectIncident(String chosenIncident) throws IOException {
 		selected = Integer.parseInt(chosenIncident);
 		System.out.println("selected: " + selected);
+		fromFront.setId(chosenIncident);
+		ServerSocket ss=new ServerSocket(6666); 
+		Socket s=ss.accept();  
+		DataOutputStream out=new DataOutputStream(s.getOutputStream());
+		out.writeUTF(chosenIncident);  
+		ss.close();  
+	}
+	
+	@GET
+	@Path("/getselected")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getSelected() {
+		return fromFront.getId();
+	
 		
 	}
 
@@ -133,9 +160,13 @@ public class SpeechService {
 			chooseIncident(transcript);
 		} else {
 			System.out.println("INC ID " + incIndex.getId());
-
-			int index = (selected - 1);
-			System.err.println("138 index"+ index+" selected "+selected);
+			Socket s=new Socket("localhost",6666);
+			DataInputStream dis=new DataInputStream(s.getInputStream());
+			String isId=(String)dis.readUTF();
+			System.out.println("SOCKKET HOMMIA   ISID: : "+isId);
+			int incidentchosen= Integer.parseInt(isId);
+			int index = (incidentchosen - 1);
+//			System.err.println("138 index"+ index+" selected "+selected);
 			con.setQuestionList(incidentList.get(index).getContent().getQuestionList());
 			checkAnswers(transcript, con);
 
@@ -298,7 +329,7 @@ public class SpeechService {
 		if (objList.get(0).getFoundWords().isEmpty()) {
 			chosenIncident = false;
 		} else {
-
+			
 			chosenIncident = true;
 			sendObject(objList.get(0));
 			incIndex.setId(objList.get(0).getId());
