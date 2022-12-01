@@ -47,6 +47,7 @@ public class SpeechService {
 	static Found tofront = new Found();
 	static Found incIndex = new Found();
 	String selectedIncident;
+	int selected;
 
 	@POST
 	@Path("/getdata")
@@ -81,7 +82,7 @@ public class SpeechService {
 	@Path("/selectincident")
 	@Produces(MediaType.TEXT_PLAIN)
 	public void selectIncident(String chosenIncident) {
-		int selected = Integer.parseInt(chosenIncident);
+		selected = Integer.parseInt(chosenIncident);
 		System.out.println("selected: " + selected);
 		
 	}
@@ -133,7 +134,8 @@ public class SpeechService {
 		} else {
 			System.out.println("INC ID " + incIndex.getId());
 
-			int index = Integer.parseInt(incIndex.getId()) - 1;
+			int index = (selected - 1);
+			System.err.println("138 index"+ index+" selected "+selected);
 			con.setQuestionList(incidentList.get(index).getContent().getQuestionList());
 			checkAnswers(transcript, con);
 
