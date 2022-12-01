@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -58,6 +59,7 @@ public class SpeechService {
 	static Found tofront = new Found();
 	static Found incIndex = new Found();
 	static Found fromFront = new Found();
+	int incidentchosen=0;
 	Found fromfrontend= new Found();
 	String selectedIncident;
 	int selected;
@@ -160,18 +162,26 @@ public class SpeechService {
 			chooseIncident(transcript);
 		} else {
 			System.out.println("INC ID " + incIndex.getId());
-			Socket s=new Socket("localhost",6666);
-			DataInputStream dis=new DataInputStream(s.getInputStream());
-			String isId=(String)dis.readUTF();
-			System.out.println("SOCKKET HOMMIA   ISID: : "+isId);
-			int incidentchosen= Integer.parseInt(isId);
+			
+			if (incidentchosen<1) {
+			incidentchosen= Integer.parseInt(idFromSocket());
+			}
+			System.err.println(" ID "+incidentchosen);
 			int index = (incidentchosen - 1);
 //			System.err.println("138 index"+ index+" selected "+selected);
 			con.setQuestionList(incidentList.get(index).getContent().getQuestionList());
 			checkAnswers(transcript, con);
+			
 
 		}
 
+	}
+	
+	public String idFromSocket() throws UnknownHostException, IOException {
+		Socket s=new Socket("localhost",6666);
+		DataInputStream dis=new DataInputStream(s.getInputStream());
+		String isId=(String)dis.readUTF();
+		return isId;
 	}
 
 	public void sendObject(Found found) {
