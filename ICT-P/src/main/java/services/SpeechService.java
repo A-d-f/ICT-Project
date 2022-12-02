@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -310,12 +312,11 @@ public class SpeechService {
 	public void checkAnswers(String transcript, Content con) {
 		transcript = transcript.toLowerCase();
 		System.out.println("Transcript: " + transcript);
-		List<String> array = new ArrayList<>();
+
 		Answer ans = new Answer();
 		Question que = new Question();
-//		Found fou = new Found();
 		ArrayList<Found> objectList = new ArrayList<Found>();
-		boolean negativeFound;
+		String[] splittedList = transcript.split(" ");
 		// First 2 loops:
 		// the first loop loops questionlist of Content object -> gets answerlists of
 		// every questionlist indexes -> sets answerlists to object Question
@@ -329,154 +330,92 @@ public class SpeechService {
 				ans.setId(que.getAnswerList().get(e).getId());
 				ans.setKeywordList(que.getAnswerList().get(e).getKeywordList());
 				ans.setNegativeList(que.getAnswerList().get(e).getNegativeList());
-				
+
+				// Creating list for found keywords and Found object for saving them and the
+				// answers id
+				List<String> array = new ArrayList<>();
 				Found fou = new Found();
-//				fou.setId(Integer.toString(ans.getId()));
-				// Comparing single keywords
-				String[] splittedList = transcript.split(" ");
-				// loops transcript's word separately -> sets them to String splittedWord
-				
+
+				// Looping through transcript
 				for (String splittedWord : splittedList) {
-					// loops keyword list of object Answer -> sets keywords to String keyword
-					for (String keyword : ans.getKeywordList()) {
-						Found fo = new Found();
-						if (splittedWord.contains(keyword)) {
+					// Checking if splittedWord is in the keywordlist
+					String foundWord = getMatchingSubstring(splittedWord, ans.getKeywordList());
 
-							// Creating a new Found object for the method
+					// If found word is not null, then checking if it is the negativelist
+					if (foundWord != null) {
 
-							
-							// Finding more matching words from answerlist
-							System.out.println("keywords: " + splittedWord);
-							fo = checkAnswerlist(splittedList, ans.getKeywordList(), ans.getNegativeList(), ans.getId());
-							System.out.println("FO " + fo.toString());
-							// If the size of the object's list is larger than 1...
-							fo.setId(Integer.toString(ans.getId()));
-							if (fo.getSize() > 1) {
-								
-								// ...and if the array is empty -> found words are added to array
-
-								if (array.isEmpty()) {
-									array.addAll(fo.getFoundWords());
-									System.err.println("ID 359: " + fo.getId());
-								}
-								// Setting answer id to Found object
-//								fou.setId(Integer.toString(ans.getId()));
-								fou.setId(fo.getId());
-								break;
-							}
-
+						boolean isNeg = checkNegativeWords(foundWord, ans.getNegativeList());
+						// If isNeg == false (the word was not in the negativelist), adding it to the
+						// list
+						if (isNeg == false) {
+							array.add(foundWord);
 						}
-						// Comparing phrases
-						else if (keyword.contains(" ")) {
-
-							// if transcript contains phrase and matching = true, phrase will be added to
-							// the same
-							// array of already found words -> the array will be set to found words of
-							// object Found
-							boolean matching = transcript.contains(keyword);
-
-							if (matching) {
-								System.err.println("ID 385: " + fou.getId());
-//								fou.setId(fo.getId());
-								array.add(keyword);
-								System.err.println("ID 388: " + fou.getId());
-								int count = StringUtils.countMatches(transcript, keyword);
-
-								System.out.println("Phrases " + count);
-
-							}
-						}
-						
 					}
-					
 				}
-				System.err.println("ARRAY 367: " + array);
-//				for (String keyword : ans.getKeywordList()) {
-//					// If keyword is a phrase (contains "SPACE")
-//					if (keyword.contains(" ")) {
-//
-//						// if transcript contains phrase and matching = true, phrase will be added to
-//						// the same
-//						// array of already found words -> the array will be set to found words of
-//						// object Found
-//						boolean matching = transcript.contains(keyword);
-//
-//						if (matching) {
-//							System.err.println("ID 385: " + fou.getId());
-//							fou.setId(Integer.toString(ans.getId()));
-//							array.add(keyword);
-//							System.err.println("ID 388: " + fou.getId());
-//							int count = StringUtils.countMatches(transcript, keyword);
-//
-//							System.out.println("Phrases " + count);
-//
-//						}
-//					}
-//				}
-				fou.setFoundWords(array);
-				fou.setSize(fou.getFoundWords().size());
-				System.out.println("FOU PRINT: " + fou.getId() + " " + fou.getFoundWords());
-				objectList.add(fou);
-//				System.err.println("Object list: " + objectList.get(0).toString());
-				
+
+				// Phrases
+				for (String keyword : ans.getKeywordList()) {
+					if (keyword.contains(" ")) {
+
+						// if transcript contains phrase and matching = true, phrase will be added to
+						// the same array of already found words
+						boolean matching = transcript.contains(keyword);
+
+						if (matching) {
+							array.add(keyword);
+							int count = StringUtils.countMatches(transcript, keyword);
+							System.out.println("Phrases " + count);
+						}
+					}
+				}
+
+				// If the list of found words is not empty/is greater than 1, setting answer id
+				// and the array to Found Object "fou"
+				// Finally adding the fou object to objectList
+//				if (!array.isEmpty()) {
+				if (array.size() > 1) {
+					fou.setId(Integer.toString(ans.getId()));
+					fou.setFoundWords(array);
+					objectList.add(fou);
+				}
 			}
-//			fou.setFoundWords(array);
-//			fou.setSize(fou.getFoundWords().size());
-//			
-//			objectList.add(fou);
-//			System.err.println("Object list: " + objectList.toString());
-			
 		}
-		Collections.sort(objectList, Comparator.comparingInt(Found::getSize).reversed());
-		System.out.println("ObjList " + objectList.get(0));
-		// If previously sorted lists first indexes list isEmpty chosenIncident = false,
-		// otherwise true (Incident has been found)
-		
-		if (objectList.get(0).getFoundWords().isEmpty()) {
-//			chosenIncident = false;
-		} else {
+		System.out.println("objectList " + objectList.toString());
+		// If objectList is not empty, the list will be sorted in descending by the
+		// foundwords list size
+		if (!objectList.isEmpty()) {
+			Collections.sort(objectList, Comparator.comparingInt(Found::getSize).reversed());
 
-//			chosenIncident = true;
-//			sendObject(objectList.get(0));
-//			incIndex.setId(objectList.get(0).getId());
-			sendObject(objectList.get(0));
+			// If the found words list is not empty and has more than one word, checking
+			// that the lists are not equal size
+			if (!objectList.get(0).getFoundWords().isEmpty() && objectList.size() > 1) {
+
+				int index0size = objectList.get(0).getFoundWords().size();
+				int index1size = objectList.get(1).getFoundWords().size();
+				System.out.println("index 0: " + objectList.get(0).getFoundWords() + " index 1: "
+						+ objectList.get(1).getFoundWords());
+
+				// If the first list has more words than the second, the object will be sent to
+				// frontend
+				// Else just printing
+				if (index0size > index1size) {
+					sendObject(objectList.get(0));
+				}
+
+				else {
+					System.out.println("Ei voida tehdä ehdotusta.");
+				}
+
+			}
 
 		}
-		System.err.println("ARRAY 393: " + array);
-//		System.out.println("FOU PRINT: " + fou.getId() + " " + fou.getFoundWords());
-		// Sending the Found object to frontend
-//		sendObject(fou);
+
 	}
 
-	// Method for comparing transcript words to every word in keyword list of a
-	// certain Answer object
-	// Creating object for saving found words and list size
-	// If matching words are found -> add the word to "list"
-	private Found checkAnswerlist(String[] splittedList, ArrayList<String> keywordList,
-			ArrayList<String> negativeList, int id) {
-		List<String> list = new ArrayList<>();
-		Found f = new Found();
-		boolean negativeFound;
-		System.out.println("Splitted list checkAList " + splittedList);
-		for (String splittedWord : splittedList) {
-			
-			for (String keyword : keywordList) {
-				if (splittedWord.contains(keyword)) {
-					System.out.println("Splitted word & keyword checkAList " + splittedWord + " " + keyword);
-					
-					negativeFound = checkNegativeWords(splittedWord, negativeList);
-					System.out.println("BOOLEAN: " + negativeFound);
-					if (negativeFound == false) {
-						System.out.println("splittedword 406 " + splittedWord);
-						list.add(splittedWord);
-					}
-				}
-			}
-		}
-		f.setFoundWords(list);
-		f.setSize(list.size());
-//		f.setId(Integer.toString(id));
-		return f;
+	// Method that receives String and List<String>, word is compared to the list
+	// and if it matches, it will be returned
+	private static String getMatchingSubstring(String str, List<String> substrings) {
+		return substrings.stream().filter(str::contains).findAny().orElse(null);
 	}
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
