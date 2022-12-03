@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -356,11 +358,11 @@ public class SpeechService {
 	public void checkAnswers(String transcript, Content con) {
 		transcript = transcript.toLowerCase();
 		System.out.println("Transcript: " + transcript);
-		List<String> array = new ArrayList<>();
+
 		Answer ans = new Answer();
 		Question que = new Question();
-		Found fou = new Found();
-		boolean negativeFound;
+		ArrayList<Found> objectList = new ArrayList<Found>();
+		String[] splittedList = transcript.split(" ");
 		// First 2 loops:
 		// the first loop loops questionlist of Content object -> gets answerlists of
 		// every questionlist indexes -> sets answerlists to object Question
@@ -375,97 +377,99 @@ public class SpeechService {
 				ans.setKeywordList(que.getAnswerList().get(e).getKeywordList());
 				ans.setNegativeList(que.getAnswerList().get(e).getNegativeList());
 
-				// Comparing single keywords
-				String[] splittedList = transcript.split(" ");
-				// loops transcript's word separately -> sets them to String splittedWord
+				// Creating list for found keywords and Found object for saving them and the
+				// answers id
+				List<String> array = new ArrayList<>();
+				Found fou = new Found();
+
+				// Looping through transcript
 				for (String splittedWord : splittedList) {
-					// loops keyword list of object Answer -> sets keywords to String keyword
-					for (String keyword : ans.getKeywordList()) {
+					// Checking if splittedWord is in the keywordlist
+					String foundWord = getMatchingSubstring(splittedWord, ans.getKeywordList());
 
-						if (splittedWord.contains(keyword)) {
+					// If found word is not null, then checking if it is the negativelist
+					if (foundWord != null) {
 
-							// Creating a new Found object for the method
-
-							Found fo = new Found();
-							// Finding more matching words from answerlist
-							System.out.println("keywords: " + splittedWord);
-							fo = checkAnswerlist(splittedList, ans.getKeywordList(), ans.getNegativeList());
-							System.out.println("FO " + fo.toString());
-							// If the size of the object's list is larger than 1...
-							if (fo.getSize() > 1) {
-
-								// ...and if the array is empty -> found words are added to array
-
-								if (array.isEmpty()) {
-									array.addAll(fo.getFoundWords());
-								}
-								// Setting answer id to Found object
-								fou.setId(Integer.toString(ans.getId()));
-
-								break;
-							}
-
+						boolean isNeg = checkNegativeWords(foundWord, ans.getNegativeList());
+						// If isNeg == false (the word was not in the negativelist), adding it to the
+						// list
+						if (isNeg == false) {
+							array.add(foundWord);
 						}
-						// Comparing phrases
 					}
 				}
 
+				// Phrases
 				for (String keyword : ans.getKeywordList()) {
-					// If keyword is a phrase (contains "SPACE")
 					if (keyword.contains(" ")) {
 
 						// if transcript contains phrase and matching = true, phrase will be added to
-						// the same
-						// array of already found words -> the array will be set to found words of
-						// object Found
+						// the same array of already found words
 						boolean matching = transcript.contains(keyword);
 
 						if (matching) {
-
 							array.add(keyword);
-
 							int count = StringUtils.countMatches(transcript, keyword);
-
 							System.out.println("Phrases " + count);
-
 						}
 					}
 				}
 
-			}
-		}
-		fou.setFoundWords(array);
-		System.out.println("FOU PRINT: " + fou.getId() + " " + fou.getFoundWords());
-		// Sending the Found object to frontend
-		sendObject(fou);
-	}
-
-	// Method for comparing transcript words to every word in keyword list of a
-	// certain Answer object
-	// Creating object for saving found words and list size
-	// If matching words are found -> add the word to "list"
-	private Found checkAnswerlist(String[] splittedList, ArrayList<String> keywordList,
-			ArrayList<String> negativeList) {
-		List<String> list = new ArrayList<>();
-		Found f = new Found();
-		boolean negativeFound;
-		for (String splittedWord : splittedList) {
-
-			for (String keyword : keywordList) {
-				if (splittedWord.contains(keyword)) {
-					negativeFound = checkNegativeWords(splittedWord, negativeList);
-					System.out.println("BOOLEAN: " + negativeFound);
-					if (negativeFound == false) {
-						System.out.println("splittedword 406 " + splittedWord);
-						list.add(splittedWord);
-					}
+				// If the list of found words is not empty/is greater than 1, setting answer id
+				// and the array to Found Object "fou"
+				// Finally adding the fou object to objectList
+//				if (!array.isEmpty()) {
+				if (array.size() > 1) {
+					fou.setId(Integer.toString(ans.getId()));
+					fou.setFoundWords(array);
+					fou.setSize(array.size());
+					objectList.add(fou);
 				}
 			}
 		}
-		f.setFoundWords(list);
-		f.setSize(list.size());
+		System.out.println("objectList " + objectList.toString());
+		// If objectList is not empty, the list will be sorted in descending by the
+		// foundwords list size
+		if (objectList.size()>0) {
+			System.out.println("387");
+			Collections.sort(objectList, Comparator.comparingInt(Found::getSize).reversed());
+			System.out.println("List" + objectList.toString());
+			if (objectList.size() == 1) {
+				sendObject(objectList.get(0));
+			
+			}
+			System.out.println("389");
+			// If the found words list is not empty and has more than one word, checking
+			// that the lists are not equal size
+			if (objectList.size() > 1) {
 
-		return f;
+				int index0size = objectList.get(0).getFoundWords().size();
+				int index1size = objectList.get(1).getFoundWords().size();
+				System.out.println("index 0: " + objectList.get(0).getFoundWords() + " index 1: "
+						+ objectList.get(1).getFoundWords());
+
+				// If the first list has more words than the second, the object will be sent to
+				// frontend
+				// Else just printing
+				if (index0size > index1size) {
+					System.out.println("tullaanko tänne? " + objectList.get(0));
+					sendObject(objectList.get(0));
+				}
+
+				else {
+					System.out.println("Ei voida tehdä ehdotusta.");
+				}
+
+			}
+
+		}
+
+	}
+
+	// Method that receives String and List<String>, word is compared to the list
+	// and if it matches, it will be returned
+	private static String getMatchingSubstring(String str, List<String> substrings) {
+		return substrings.stream().filter(str::contains).findAny().orElse(null);
 	}
 
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {

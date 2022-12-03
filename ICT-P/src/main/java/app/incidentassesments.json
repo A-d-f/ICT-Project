@@ -7,110 +7,133 @@
         "content":
         [
 
-                {
-                
-                "question": 
-                    [
-                        {
-                        "qid": "11", "qvalue": "mikä on puiden lukumäärä", "qkeywords":["mikä on puiden lukumäärä", "puiden lukumäärä", "puiden", "lukumäärä", "montako puuta"]
-                        }
-                    ],
-                "answers":
-                    [
-                        { "aid": "111", "avalue": "1", "akeywords":["yksi", "puu"], "anegative":["yksityinen", "yksityiskohta", "yksityiskohtainen", "yksikkö", "puuta", "yksitoista", "puuton", "puuttua", "puuttuu", "puutuu", "sukupuu", "polttopuu"]},
-                        { "aid": "112", "avalue": "2", "akeywords":["pari", "kaksi", "2", "puuta"], "anegative":["parikymmentä", "kaksitoista", "kaksikymmentä", "kaksi sataa", "kaksisataa", "puutalo", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "pori"]},
-                        { "aid": "113", "avalue": "3", "akeywords":["kolme", "3", "puuta"], "anegative":["kolmetoista", "kolmekymmentä", "kolmesataa"]},
-                        { "aid": "114", "avalue": "Monta", "akeywords":["monta", "monia", "use", "kymmeniä", "muutam", "puuta"], "anegative":["useasti", "usein", "useimmiten", "muutamasti", "puutalo", "lause", "nousen", "kuusen"]}
-                    ]
-
-                }
-            ,
+        	{
             
-                {
-                
-                "question": 
-                [
-                    {
-                    "qid": "12", "qvalue": "missä puu on", "qkeywords":["missä puu on", "missä puu", "missä", "puu", "puun sijainti", "julkinen", "yksityinen" ]
-                    }
-                ],
+	            "question": 
+	                [
+	                    {
+	                    "qid": "11", "qvalue": "mikä on puiden lukumäärä", "qkeywords":["mikä on puiden lukumäärä", "puiden lukumäärä", "puiden", "lukumäärä", "montako puuta"]
+	                    }
+	                ],
+	            "answers":
+	                [
+	                    { "aid": "111", "avalue": "1", "akeywords":["yksi", "puu", "1", "yksi puu", "yksi puu on kaatunut"], "anegative":["kaksi", "2", "pari", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "yksityinen", "yksityiskohta", "yksityiskohtainen", "yksikkö", "yksityisellä", "yksityisessä", "yksityistä", "puuta", "yksitoista", "puuton", "puuttua", "puuttuu", "puutuu", "sukupuu", "polttopuu", "puute", "miksi"]},
+	                    { "aid": "112", "avalue": "2", "akeywords":["pari", "kaksi", "2", "puuta", "kaksi puuta", "pari puuta", "on kaatunut", "kaksi puuta on kaatunut"], "anegative":["yksi", "1", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "parikymmentä", "kaksitoista", "kaksikymmentä", "kaksi sataa", "kaksisataa", "puutalo", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "pori", "puute"]},
+	                    { "aid": "113", "avalue": "3", "akeywords":["kolme", "3", "puuta", "kolme puuta","kolme puuta on kaatunut"], "anegative":["yksi", "1", "kaksi", "2", "pari", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kolmetoista", "kolmekymmentä", "kolmesataa", "puute"]},
+	                    { "aid": "114", "avalue": "Monta", "akeywords":["neljä", "viisi", "4", "5", "monta", "monia", "use", "kymmeniä", "muutam", "puuta", "puita", "kymmeniä", "monta puuta", "monia puita", "useita puita", "kymmeniä puita", "muutamia puita", "useampi puu on kaatunut", "monta puuta on kaatunut", "puita on kaatunut"], "anegative":["yksi", "1", "kaksi", "2","pari", "kolme", "3","useasti", "usein", "useimmiten", "muutamasti", "puutalo", "lause", "nousen", "kuusen", "peace", "puute"]}
+	                ]
 
-
-                "answers":
-                    [
-                        { "aid": "121", "avalue": "Yksityinen alue", "akeywords":["yksityinen", "metsä", "kotona", "mökillä"], "anegative": ["metsämies", "metsästää"] },
-                        { "aid": "122", "avalue": "Julkinen", "akeywords":["julkinen", "julkisella", "koulu", "päiväkodin", "kaupungin", "keskustassa", "piha"], "anegative": ["koululainen", "julkinen liikenne"] }
-
-                    ]
-                }
-            ,
-            
-                {
-                
+            }
+        ,
+        
+            {
+	            
+	            "question": 
+	                [
+	                    {
+	                    "qid": "12", "qvalue": "missä puu on", "qkeywords":["missä puu on", "missä puu", "missä", "puu", "puun sijainti", "julkinen", "yksityinen" ]
+	                    }
+	                ],
+	
+	
+	            "answers":
+	                [
+	                    { "aid": "121", "avalue": "Yksityinen alue", "akeywords":["yksityinen", "kotipiha", "pihatie", "mökkitie", "metsä", "kotona", "mökill", "mökin pihassa", "yksityinen alue", "yksityisellä alueella", "yksityismetsä", "yksityinen metsä", "yksityisalue"], "anegative": ["yksi", "metsämies", "metsästää"] },
+	                    { "aid": "122", "avalue": "Julkinen", "akeywords":["julki", "koulu", "päiväkodi", "kaupungi", "keskustassa", "piha", "julkinen alue", "julkisella alueella"], "anegative": ["koululainen", "julkisivu"] }
+	                ]
+            }
+        ,
+        
+            {               
                 "question":
-                [
-                    {
-                        "qid":"13", "qvalue":"estääkö tapahtuma liikennettä", "qkeywords":["estääkö", "estääkö liikenteen", "estääkö tapahtuma liikennettä"]
-                    }
-                ],
-                "answers":
-                    [
-                        {
-                        "aid":"131", "avalue":"kyllä", "akeywords":["estää", "liikenteen", "liikennettä", "tukossa", "jumissa"], "anegative":["liikenteenjakaja", "kestää", "sienestää", "verestää", "rellestää"], "children":[
-                            {
-                                "qid":"1311","qvalue":"mitä liikennettä tapahtuma estää", "qkeywords":["mitä liikennettä estää"], "child1":[
-                                    {"aid":"13111", "value":"moottoritie", "akeywords":["moottoritie", "motari"], "anegative":["notaari"]},
-                                    {"aid":"13112", "value":"maantie", "akeywords":["maantie"], "anegative":["maantierosvo"]},
-                                    {"aid":"13113", "value":"taajama", "akeywords":["taajama", "kadu"], "anegative":["kaduttaa", "kakadu"]},
-                                    {"aid":"13114", "value":"junaraiteet", "akeywords":["junarai"], "anegative":["junaraiskaus"]},
-                                    {"aid":"13115", "value":"pihatie", "akeywords":["pihatie"], "anegative":[""]},
-                                    {"aid":"13116", "value":"kevyen liikenteen väylä", "akeywords":["kevyen", "kevyen liikenteen", "jalkakäytävä", "pyörätie"], "anegative":["kevyenlainen"]}
-                                ]
-                            }
-                        ]
-                    },
-                        {"aid":"132", "avalue":"ei", "akeywords":["ei estä", "ei", "estä"], "anegative":["estää", "estämässä", "sei", "kestää", "verestää", "sienestää", "hei"]}
-                    
-                    ]    
-                }
-            ,
-            
-                {
-                    
-                    "question":
-                    [
-                        {
-                            "qid":"14", "qvalue":"onko aiheutunut ihmisvahinkoa", "qkeywords":["onko aiheutunut ihmisvahinkoa", "ihmisvahinko", "aiheutunut", "loukkaant"]
-                        }
-                    ],
-                    "answers":
-                        [
-                            {
-                            "aid":"141", "avalue":"kyllä", "akeywords":["kyllä", "ihminen", "välissä", "jumi", "päälle", "on ihmisvahinkoa", "on vahinkoa", "on loukkaant"], "anegative":["tupajumi"], "children":[
-                                {
-                                    "qid":"1411","qvalue":"kuinka monta ihmistä on vahingoittunut", "qkeywords":["kuinka monta ihmistä on vahingoittunut", "kuinka monta", "monta vahingoittunut"], "child1":[
-                                        {"aid":"14111", "avalue":"yksi", "akeywords":["yksi", "1", "ihminen", "vahingoittunut"], "anegative":["kaksi", "2", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "yksityinen", "yksityiskohta", "yksityiskohtainen","yksitoista"]},
-                                        {"aid":"14112", "avalue":"kaksi", "akeywords":["kaksi", "2", "ihmistä", "vahingoittunut", "pari"], "anegative":["yksi", "1", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kaksikymmentä", "parikymmentä", "kaksitoista", "kaksi sataa", "kaksisataa", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "parisataa", "pari tonnia", "kaksi tonnia", "pori"]},
-                                        {"aid":"14113", "avalue":"kolme", "akeywords":["kolme", "3", "ihmistä", "vahingoittunut"], "anegative":["yksi", "1", "kaksi", "2", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kolmetoista", "kolmekymmentä", "kolmesataa"]},
-                                        {"aid":"14114", "avalue":"useita", "akeywords":["monta", "ihmistä", "vahingoittunut", "use", "kymmeniä", "muutam"], "anegative":["yksi", "1", "kaksi", "2", "kolme", "3", "kuusen", "nousen", "museo", "useasti", "usein", "useimmiten", "lause"]}  
-                                    ]
-                                },
-                                {
-                                    "qid":"1412","qvalue":"minkälaista vahinkoa", "qkeywords":["minkälaista vahinkoa", "vahinkoa"], "child2":[
-                                        {"aid":"14121", "avalue":"lievästi loukkaantunut", "akeywords":["lievä", "loukkaant", "lievästi loukkaantunut", "vahingoitt", "haavoit", "tajuis", "elos", "reagoiva",
-                                        "reagoi", "murtu", "vähäi", "naarmu", "veri", "verta", "luu", "luita", "toimintakyk" ], "anegative":["vertainen", "vähäilmeinen", "vähäilmeisesti", "murtumaton", "tajuta, elotie, elosalama, elostelija, elostella, elostelu"]},
-                                        {"aid":"14122", "avalue":"vakavasti loukkaantunut", "akeywords":["vakava", "loukkaant", "vakavasti loukkaantunut", "tajut", "elos", "reagoimaton", "loukkaantu",
-                                        "vahingoitt", "haavoit", "veri", "verta", "paljon", "runsa", "luu", "luita", "toimintakyv", "päävamma", "päähän", "sokissa", "poikki", "hengitysvaikeu"], "anegative":["tajuissaan", "tajuissa", "lievä", "lievästi", "kuollut", "kuolla", "kuolleena", "tajuta", "vakavarainen", "kaveri", "veriappelsiini", "veriarvo", "veripankki", "luuranko", "luukku", "luukulla", "luumu", "luuri", "paluu", "päähänpisto"]},
-                                        {"aid":"14123", "avalue":"eloton", "akeywords":["eloton", "kuollut", "kuol"], "anegative":["elossa", "tajuissa", "tajuissaan", "lievä", "lievästi", "sokissa", "sokki", "reagoiva", "reagoi", "hengittää", "kuola"]}  
-                                    ]  
-                                }
-                            ]
-                        },
-                            {"aid":"142", "avalue":"ei", "akeywords":["ei", "ei vahinkoa", "vahinkoa", "ihmisvahinkoa", "ei ihmisvahinkoa", "ei loukkaant"], "anegative":["hei", "sei"]}
-                        
-                        ]    
-                    }  
-            
+	                [
+	                    {
+	                        "qid":"13", "qvalue":"estääkö tapahtuma liikennettä", "qkeywords":["estääkö", "estääkö liikenteen", "estääkö tapahtuma liikennettä"]
+	                    }
+	                ],
+                
+	            "answers":
+	                [
+	                    {"aid":"131", "avalue":"kyllä", "akeywords":["kyllä", "joo", "juu", "estää", "liikenteen", "liikennettä", "tukossa", "jumissa", "estää liiken", "tukkii tie", "tukkii liiken", "liikenne jumissa"], "anegative":["liikenteenjakaja", "kestää", "sienestää", "verestää", "rellestää", "tieliikennelaitos"]},
+	                    {"aid":"132", "avalue":"ei", "akeywords":["ei estä", "ei", "estä", "ei este", "ei vaikuta liikenteeseen", "ei estä liikennettä"], "anegative":["estää", "estämässä", "sei", "kestää", "verestää", "sienestää", "hei", "tukkii", "jumittaa"]}	                       
+	                ]
+             }
+             
+        	,
+             
+             {
+             
+                "question":               
+	               [ 
+	              		 {"qid":"14","qvalue":"mitä liikennettä tapahtuma estää", "qkeywords":["mitä liikennettä estää"]}
+	               ],
+               
+               	"answers":
+	                [
+	                    {"aid":"141", "value":"moottoritie", "akeywords":["moottoritie", "valtatie", "motari","iso tie", "moottoriliikennetie", "moottoriliikenne", "estää", "tukkii", "sulkee", "estää moottori", "estää motari", "tukkii moottori", "sulkee"], "anegative":["maantieliikennettä", "maantiellä", "taajamaliikennettä", "taajamassa", "junaraiteita", "junaraidetta", "junaraiteella", "pihatietä", "pihatiellä", "kevyen liikenteen väylällä", "kevyttä liikennettä", "jalkakäytävää", "jalkakäytävällä", "pyörätietä, pyörätiellä", "notaari"]},
+	                    {"aid":"142", "value":"maantie", "akeywords":["maantie", "yleinen tie", "yleisellä tiellä", "estää maantie", "tukkii maantie", "sulkee maantie", "estää", "tukkii", "sulkee"], "anegative":["maantierosvo", "moottoritiellä", "moottoritietä", "taajamaliikennettä", "taajamassa", "junaraiteita", "junaraidetta", "junaraiteella", "pihatietä", "pihatiellä", "kevyen liikenteen väylällä", "kevyttä liikennettä", "jalkakäytävää", "jalkakäytävällä", "pyörätietä, pyörätiellä"]},
+	                    {"aid":"143", "value":"taajama", "akeywords":["taajama", "kadu","keskustaliiken", "asuinalue", "keskusta", "estää taajama", "tukkii taajama", "sulkee taajama", "estää", "tukkii", "sulkee"], "anegative":["moottoritiellä", "moottoritietä", "maantieliikennettä", "maantiellä", "junaraiteita", "junaraidetta", "junaraiteella", "pihatietä", "pihatiellä", "kevyen liikenteen väylällä", "kevyttä liikennettä", "jalkakäytävää", "jalkakäytävällä", "pyörätietä, pyörätiellä", "kaduttaa", "kakadu"]},
+	                    {"aid":"144", "value":"junaraiteet", "akeywords":["junarai", "junaliiken", "junakisk", "juna-asem", "juna asem", "raite", "raide", "estää juna", "tukkii juna", "sulkee juna", "estää", "tukkii", "sulkee"], "anegative":["moottoritiellä", "moottoritietä", "maantieliikennettä", "maantiellä", "taajamaliikennettä", "taajamassa", "pihatietä", "pihatiellä", "kevyen liikenteen väylällä", "kevyttä liikennettä", "jalkakäytävää", "jalkakäytävällä", "pyörätietä, pyörätiellä", "junaraiskaus"]},
+	                    {"aid":"145", "value":"pihatie", "akeywords":["pihatie", "kotipiha", "talon piha", "mökkitie", "estää pihatie", "tukkii pihatie", "sulkee pihatie", "estää", "tukkii", "sulkee"], "anegative":["moottoritiellä", "moottoritietä", "maantieliikennettä", "maantiellä", "junaraiteita", "junaraidetta", "junaraiteella", "taajamaliikennettä", "taajamassa", "kevyen liikenteen väylällä", "kevyttä liikennettä", "jalkakäytävää", "jalkakäytävällä", "pyörätietä, pyörätiellä"]},
+	                    {"aid":"146", "value":"kevyen liikenteen väylä", "akeywords":[ "kevyen liikenteen väylällä", "kevyttä liikennettä", "jalkakäytävää", "jalkakäytävällä", "pyörätietä", "pyörätiellä", "kevyen", "kevyen liikenteen", "kevyen liikenteen väylä", "jalkakäytävä", "pyörätie", "estää kevyen", "tukkii kevyen", "sulkee kevyen", "estää jalkakäytäv", "tukkii jalkakäytäv", "sulkee jalkakäytäv", "estää", "tukkii", "sulkee"], "anegative":["moottoritiellä", "moottoritietä", "maantieliikennettä", "maantiellä", "junaraiteita", "junaraidetta", "junaraiteella", "taajamaliikennettä", "taajamassa","kevyenlainen","pihatietä", "pihatiellä"]}
+	                ]
+              }
+                 
+              ,
+                 
+                                             
+			{
+			    
+			    "question":
+			    [
+			        {
+			            "qid":"15", "qvalue":"onko aiheutunut ihmisvahinkoa", "qkeywords":["onko aiheutunut ihmisvahinkoa", "ihmisvahinko", "aiheutunut", "loukkaant"]
+			        }
+			    ],
+			    
+			    "answers":
+			        [
+			            {"aid":"151", "avalue":"kyllä", "akeywords":["joo", "juu", "kyllä", "ihminen", "välissä", "alle", "alla", "jumi", "pääll", "ihmis vahinkoa", "on ihmis vahinkoa", "on ihmisvahinkoa", "on vahinkoa", "on loukkaant", "ihminen puun alla", "puun alla"], "anegative":["tupajumi", "ei"]},
+			            {"aid":"152", "avalue":"ei", "akeywords":["ei", "ei vahinkoa", "vahinkoa", "ihmisvahinkoa", "ihmis vahinkoa", "ei ihmisvahinkoa", "ei ihmis vahinkoa", "ei loukkaant", "ei ole"], "anegative":["hei", "sei", "alla", "jumissa"]}
+			        ]
+			 }
+             ,
+               
+           {
+       			"question":
+       			[
+       				{
+       					"qid":"16","qvalue":"kuinka monta ihmistä on vahingoittunut", "qkeywords":["kuinka monta ihmistä on vahingoittunut", "kuinka monta", "monta vahingoittunut"]
+       				}
+       			],
+       			
+       			"answers":
+       			[
+       				{"aid":"161", "avalue":"yksi", "akeywords":["yksi", "1", "ihminen", "vahingoittunut", "yksi vahingoittunut", "yksi loukkaantunut"], "anegative":["kaksi", "2", "pari", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "yksityinen", "yksityiskohta", "yksityiskohtainen","yksitoista"]},
+                    {"aid":"162", "avalue":"kaksi", "akeywords":["kaksi", "2", "ihmistä", "vahingoittunut", "pari", "kaksi ihmistä vahingoittunut", "kaksi ihmistä on loukkaantunut", "pari loukkaantunutta", " pari vahingoittunutta"], "anegative":["yksi", "1", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kaksikymmentä", "parikymmentä", "kaksitoista", "kaksi sataa", "kaksisataa", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "parisataa", "pari tonnia", "kaksi tonnia", "pori"]},
+                    {"aid":"163", "avalue":"kolme", "akeywords":["kolme", "3", "ihmistä", "vahingoittunut", "kolme vahingoittunut", "kolme loukkaantunutta"], "anegative":["yksi", "1", "kaksi", "2", "pari", "neljä", "4", "viisi", "monta", "usea", "useampia", "kymmeniä", "kolmetoista", "kolmekymmentä", "kolmesataa"]},
+                    {"aid":"164", "avalue":"useita", "akeywords":["monta", "ihmistä", "vahingoittunut", "use", "kymmeniä", "muutam", "monta ihmistä", "monta loukkaantunut", "monta vahingoittunut", "kymmeniä loukkaantuneita", "monta ihmistä vahingoittunut"], "anegative":["yksi", "1", "kaksi", "2", "pari", "kolme", "3", "kuusen", "nousen", "museo", "useasti", "usein", "useimmiten", "lause"]}
+       			]
+           }         
+               ,
+               
+           {
+           		"question":
+           		[
+           			{ 
+           				"qid":"17","qvalue":"minkälaista vahinkoa", "qkeywords":["minkälaista vahinkoa", "vahinkoa"] 
+           			}
+           		],
+           		
+           		"answers":
+           		[
+           			{"aid":"171", "avalue":"lievästi loukkaantunut", "akeywords":["lievä", "loukkaant", "lievästi loukkaantunut", "lieviä vammoja", "lievästi vahingoittunut", "haavoit", "tajuis", "elos", "reagoiva",
+                    "reagoi", "murtu", "vähäi", "naarmu", "veri", "verta", "luu", "luita", "toimintakyk" ], "anegative":["vertainen", "vähäilmeinen", "vähäilmeisesti", "toimintakyvytön", "reagoimaton", "murtumaton", "tajuton", "tajuttomana", "kuollut", "kuolleena", "kuolla", "päävamma", "elotie", "elosalama", "elostelija", "elostella", "elostelu"]},
+                    {"aid":"172", "avalue":"vakavasti loukkaantunut", "akeywords":["vakava", "loukkaant", "vakavasti loukkaantunut","vakavia vammoja", "vakava verenvuoto", "tajut", "elos", "reagoimaton", "loukkaantu",
+                    "vakavasti vahingoittunut", "haavoit", "veri", "verta", "paljon", "runsa", "luu", "luita", "toimintakyv", "päävamma", "päähän", "sokissa", "poikki", "hengitysvaikeu"], "anegative":["tajuissaan", "tajuissa", "lievä", "lievästi", "kuollut", "kuolla", "kuolleena", "tajuta", "vakavarainen", "kaveri", "veriappelsiini", "veriarvo", "veripankki", "luuranko", "luukku", "luukulla", "luumu", "luuri", "paluu", "päähänpisto"]},
+                    {"aid":"173", "avalue":"eloton", "akeywords":["eloton", "kuollut", "kuol", "ei pulssia", "on kuollut"], "anegative":["elossa", "tajuissa", "tajuissaan", "lievä", "lievästi", "sokissa", "sokki", "reagoiva", "reagoi", "hengittää", "kuola"]}  
+           		]
+           }         
         ]
 },
 {
@@ -126,81 +149,142 @@
             "question": 
                 [
                     {
-                    "qid": "21", "qvalue": "onko väkivallan uhkaa", "qkeywords":["onko väkivallan uhkaa", "uhka", "väkivallan"]
+                    	"qid": "21", "qvalue": "onko väkivallan uhkaa", "qkeywords":["onko väkivallan uhkaa", "uhka", "väkivallan"]
                     }
                 ],
+                
             "answers":
                 [
-                    { "aid": "211", "avalue": "kyllä", "akeywords":["vaarassa", "uhkailee", "kyllä", "uhka"], "anegative":["huuhkaja"], "children":[
-                        {
-                            "qid": "2111", "qvalue":"Onko henkilövahinkoa", "qkeywords":["henkilövahinkoa", "onko henkilövahinkoa"], "child1":[
-                                {"aid":"21111", "avalue":"kyllä", "akeywords":["kyllä", "vahinko", "henkilövahinko", "on vahingoitettu"], "anegative":["vahinkosaneeraus", "vesivahinko", "vahinkovakuutus"], "child1.1":[
-                                    {"qid":"211111", "qvalue":"kuinka monta ihmistä on vahingoittunut", "qkeywords":["kuinka monta ihmistä on vahingoittunut", "kuinka monta", "vahingoittunut", 
-                                        "ihmistä"], "child1.1.1":[
-                                        {"aid":"2111111", "avalue":"yksi", "akeywords":["yksi", "1", "ihminen", "vahingoittunut"], "anegative":["kaksi", "2", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "yksikkö", "yksityinen", "yksityisellä", "yksitoista", "tekijä", "tekijää", "tekijöitä"]},
-                                        {"aid":"2111112", "avalue":"kaksi", "akeywords":["kaksi", "2", "ihmistä", "vahingoittunut"], "anegative":["yksi", "1", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kaksikymmentä", "parikymmentä", "kaksi sataa", "kaksisataa", "parisataa", "pari tonnia", "kaksi tonnia", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "pori", "tekijä", "tekijää", "tekijöitä"]},
-                                        {"aid":"2111113", "avalue":"kolme", "akeywords":["kolme", "3", "ihmistä", "vahingoittunut"], "anegative":["yksi", "1", "kaksi", "2", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kolmekymmentä", "kolmesataa", "kolmetoista", "tekijä", "tekijää", "tekijöitä"]},
-                                        {"aid":"2111114", "avalue":"useita", "akeywords":["neljä", "4", "viisi", "5", "monta", "ihmistä", "monia", "ihmisiä", "vahingoittunut", "use", "kymmeniä", "muutam"], "anegative":["yksi", "1", "kaksi", "2", "kolme", "3", "useasti", "usein", "useimmiten", "muutamasti", "lause", "nousen", "kuusen", "museo", "tekijä", "tekijää", "tekijöitä"]} 
-                                    ]},
-                                    {"qid":"211112", "qvalue":"minkälaista vahinkoa", "qkeywords":["minkälaista vahinkoa", "minkälaista", "vahinkoa"], "child1.1.2":[
-                                        {"aid":"2111121", "avalue":"lievästi loukkaantunut", "akeywords":["lievästi loukkaantunut", "lievä", "loukkaantu", "vahingoitt", "haavoit", "tajuis", "elos", "reagoiva", "reagoi", "murtu", "vähäi", "naarmu",
-                                        "veri", "verta", "luu", "luita", "toimintakyk"], "anegative":["vertainen", "vähäilmeinen", "vähäilmeisesti", "toimintakyvytön", "reagoimaton", "murtumaton", "tajuton", "tajuttomana", "kuollut", "kuolleena", "kuolla", "päävamma", "elotie", "elosalama", "elostelija", "elostella", "elostelu"]},
-                                        {"aid":"2111122", "avalue":"vakavasti loukkaantunut", "akeywords":["vakavasti loukkaantunut", "vakava", "tajut", "elos", "reagoimaton", "loukkaantu", "vahingoitt", "haavoit", "veri", "verta",
-                                        "paljon", "runsa", "luu", "luita", "toimintakyv", "päävamma", "päähän", "sokissa", "poikki", "hengitysvaikeu"], "anegative":["tajuissaan", "tajuissa", "lievä", "lievästi", "kuollut", "kuolla", "kuolleena", "tajuta", "vakavarainen", "kaveri", "veriappelsiini", "veriarvo", "veripankki", "luuranko", "luukku", "luukulla", "luumu", "luuri", "paluu", "päähänpisto"]},
-                                        {"aid":"2111123", "avalue":"eloton", "akeywords":["eloton", "kuollut", "elot", "kuoll"], "anegative":["elossa", "tajuissa", "tajuissaan", "lievä", "lievästi", "sokissa", "sokki", "reagoiva", "reagoi", "hengittää", "kuola"]}
-                                    ]}
-                                ]},
-                                {"aid":"21112", "avalue":"ei", "akeywords":["ei", "vahinkoa", "ei henkilövahinkoa"], "anegative":[""]}
-                            ]
-                        },
-                        {
-                            "qid": "2112", "qvalue":"aseistus", "qkeywords":["aseistus", "onko asetta", "ase"], "child2":[
-                                {"aid":"21121", "avalue":"teräase", "akeywords":["teräase", "puukko", "veitsi"], "anegative":["pyssy", "haulikko", "pistooli", "pesäpallomaila","moukari"]},
-                                {"aid":"21122", "avalue":"ampuma-ase", "akeywords":["pyssy", "haulikko", "pistooli"], "anegative":["pesäpallomaila","moukari", "teräase", "puukko", "veitsi"]},
-                                {"aid":"21123", "avalue":"lyömäase", "akeywords":["pesäpallomaila","moukari"], "anegative":["pyssy", "haulikko", "pistooli", "teräase", "puukko", "veitsi"]},
-                                {"aid":"21124", "avalue":"ei asetta", "akeywords":["ei asetta"], "anegative":["pyssy", "haulikko", "pistooli", "teräase", "puukko", "veitsi", "pesäpallomaila","moukari"]}
-                                
-                            ] 
-                        }
-                    ]
-                    },
-                    { "aid": "212", "avalue": "ei", "akeywords":["ei", "ei asetta", "ase"], "anegative":[""]}
-                    
-                ]
+                    { "aid": "211", "avalue": "kyllä", "akeywords":["vaarassa", "uhkailee", "kyllä", "joo", "juu", "uhka", "ryöstö", "ryöstää", "uhkailee aseella", "osoittaa aseella"], "anegative":["aseeton", "turvallinen", "turvallista"]},
+                    { "aid": "212", "avalue": "ei", "akeywords":["ei", "ei asetta", "ei ole asetta", "aseetta", "aseeton", "ei ota kontaktia", "ei lähestynyt"], "anegative":["pelottavaa", "pelottaa", "uhkaavaa","uhata", "uhkaa", "aseistettu"]}                    
+                ]                
+             }
+             ,
+              
+             {
+             
+             	"question":
+             	[
+             		{
+                    	"qid": "22", "qvalue":"Onko henkilövahinkoa", "qkeywords":["henkilövahinkoa", "onko henkilövahinkoa"]
+                    }
+             	],
+             	
+             "answers":
+         		[
+         			{"aid":"221", "avalue":"kyllä", "akeywords":["kyllä", "joo", "juu", "vahinko", "henkilövahinko", "on henkilövahinkoa", "on vahingoitettu", "on loukkaantu", "on loukannut", "ovat vahingoittaneet"], "anegative":["vahinkosaneeraus", "vesivahinko", "vahinkovakuutus"]},
+         			{"aid":"222", "avalue":"ei", "akeywords":["ei", "vahinkoa", "ei henkilövahinkoa", "ei ole", "ei loukkaantumisia", "ei ole vahinkoa", "kaikki on kunnossa"], "anegative":["haavoittunut", "loukkaantunut", "kuollut", "puukotettu", "ammuttu", "hakattu"]}
+         		]	
+             }
+             ,
+             
+             {
+             	"question":
+             	[
+             		{
+             			"qid":"23", "qvalue":"kuinka monta ihmistä on vahingoittunut", "qkeywords":["kuinka monta ihmistä on vahingoittunut", "kuinka monta", "vahingoittunut", "ihmistä"]
+             		}
+             	],
+             	
+             	"answers":
+             	[
+             		{"aid":"231", "avalue":"yksi", "akeywords":["yksi", "1", "ihminen", "vahingoittunut", "yksi vahingoittunut", "yksi loukkaantunut"], "anegative":["kaksi", "2", "pari", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "yksikkö", "yksityinen", "yksityisellä", "yksitoista", "tekijä", "tekijää", "tekijöitä"]},
+                    {"aid":"232", "avalue":"kaksi", "akeywords":["kaksi", "2", "ihmistä", "vahingoittunut", "kaksi loukkaantunut", "pari loukkaantunut", "pari vahingoittunut", "kaksi vahingoittunut"], "anegative":["yksi", "1", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kaksikymmentä", "parikymmentä", "kaksi sataa", "kaksisataa", "parisataa", "pari tonnia", "kaksi tonnia", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "pori", "tekijä", "tekijää", "tekijöitä"]},
+                    {"aid":"233", "avalue":"kolme", "akeywords":["kolme", "3", "ihmistä", "vahingoittunut", "kolme loukkaantunut", "kolme vahingoittunut"], "anegative":["yksi", "1", "kaksi", "2", "pari", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kolmekymmentä", "kolmesataa", "kolmetoista", "tekijä", "tekijää", "tekijöitä"]},
+                    {"aid":"234", "avalue":"useita", "akeywords":["neljä", "4", "viisi", "5", "monta", "ihmistä", "monia", "ihmisiä", "vahingoittunut", "use", "kymmeniä", "muutam", "useita loukkaantun", "useita vahingoittun", "kymmeniä vahingoittun", "kymmeniä loukkaantun", "monta loukkaantun", "monta vahingoittun"], "anegative":["yksi", "1", "kaksi", "2", "pari", "kolme", "3", "useasti", "usein", "useimmiten", "muutamasti", "lause", "nousen", "kuusen", "museo", "tekijä", "tekijää", "tekijöitä"]} 
+             	]
+             }
+             ,
+             
+             {
+             	"question":
+             	[
+             		{
+             			"qid":"24", "qvalue":"minkälaista vahinkoa", "qkeywords":["minkälaista vahinkoa", "minkälaista", "vahinkoa"]
+             		}	
+             	],
+             	
+             	"answers":
+             	[
+             		{"aid":"241", "avalue":"lievästi loukkaantunut", "akeywords":["lievästi loukkaantunut", "lievä", "loukkaantu", "vahingoitt", "haavoit", "lieviä vammoja", "tajuis", "elos", "reagoiva", "reagoi", "murtu", "vähäi", "naarmu",
+                    "veri", "verta", "luu", "luita", "toimintakyk"], "anegative":["vertainen", "vähäilmeinen", "vähäilmeisesti", "toimintakyvytön", "reagoimaton", "murtumaton", "tajuton", "tajuttomana", "kuollut", "kuolleena", "kuolla", "päävamma", "elotie", "elosalama", "elostelija", "elostella", "elostelu"]},
+                    {"aid":"242", "avalue":"vakavasti loukkaantunut", "akeywords":["vakavasti loukkaantunut", "vakava", "tajut", "elos", "reagoimaton", "loukkaantu", "vahingoitt", "haavoit", "vakavia vammoja", "vakava verenvuoto", "veri", "verta",
+                    "paljon", "runsa", "luu", "luita", "toimintakyv", "päävamma", "päähän", "sokissa", "poikki", "hengitysvaikeu"], "anegative":["tajuissaan", "tajuissa", "lievä", "lievästi", "kuollut", "kuolla", "kuolleena", "tajuta", "vakavarainen", "kaveri", "veriappelsiini", "veriarvo", "veripankki", "luuranko", "luukku", "luukulla", "luumu", "luuri", "paluu", "päähänpisto"]},
+                    {"aid":"243", "avalue":"eloton", "akeywords":["eloton", "kuollut", "elot", "kuoll", "ei pulssia", "on kuollut"], "anegative":["elossa", "tajuissa", "tajuissaan", "lievä", "lievästi", "sokissa", "sokki", "reagoiva", "reagoi", "hengittää", "kuola"]}
+             	]
+             }
+             ,
+             
+             {
+             	"question":
+             	[
+             		{
+             			"qid": "25", "qvalue":"aseistus", "qkeywords":["aseistus", "onko asetta", "ase"]
+             		}
+             	],
+             	
+             	"answers":
+             	[
+	         		{"aid":"251", "avalue":"teräase", "akeywords":["teräase", "puukko", "veitsi", "puukott"], "anegative":["pyssy", "haulikko", "pistooli", "pesäpallomaila","moukari", "aseeton"]},
+                    {"aid":"252", "avalue":"ampuma-ase", "akeywords":["pyssy", "haulikko", "pistooli", "ampua", "ampunut"], "anegative":["pesäpallomaila","moukari", "teräase", "puukko", "veitsi","aseeton"]},
+                    {"aid":"253", "avalue":"lyömäase", "akeywords":["pesäpallomaila","moukari", "pesismaila", "lyödä", "on lyönyt"], "anegative":["pyssy", "haulikko", "pistooli", "teräase", "puukko", "veitsi", "aseeton"]},
+                    {"aid":"254", "avalue":"ei asetta", "akeywords":["ei asetta", "aseeton", "ei ole aseistettu", "ei ole aseita", "ei ole aseita näkyvi", "asetta näkyvi"], "anegative":["pyssy", "haulikko", "pistooli", "teräase", "puukko", "veitsi", "pesäpallomaila","moukari", "aseellinen"]}
+             	]
+             }
+             ,
+             
+             {
+             	"question": 
+	            [
+	                {
+	                "qid": "26", "qvalue": "onko tekijä tiedossa", "qkeywords":["onko tekijä tiedossa", "tekijä", "tiedossa"]
+	                }
+	            ],
 
-            }
-        ,
-        
-            {
-            
-            "question": 
-            [
-                {
-                "qid": "22", "qvalue": "onko tekijä tiedossa", "qkeywords":["onko tekijä tiedossa", "tekijä", "tiedossa"]
-                }
-            ],
 
+            	"answers":
+            	[
+            		{"aid": "261", "avalue": "kyllä", "akeywords":["kyllä", "joo", "juu", "tekijä", "tekijä on tiedossa", "tekijä tiedetään", "se on tuttu tyyppi", "käynyt ennenkin", "tuttu tekijä"], "anegative":["tuntematon", "tuntemattomia"]},
+            		{"aid": "262", "avalue": "ei", "akeywords":["ei", "tekijä ei tiedossa", "ei tiedetä tekijää", "ei ole tuttu", "tekijä", "tiedossa", "tiedä yhtään kuka"], "anegative":["tiedetä"]}
+            	]
 
-            "answers":
-                [
-                    { "aid": "221", "avalue": "kyllä", "akeywords":["kyllä", "tekijä", "tekijä on tiedossa"], "anegative":["tuntematon", "tuntemattomia"], "children":[
-                        {"qid": "2211", "qvalue":"kuinka monta tekijää", "qkeywords":["kuinka monta", "tekijä", "tekijää", "kuinka monta tekijää"], "child1":[
-                            {"aid":"22111", "avalue":"yksi", "akeywords":["yksi", "ihminen", "tekijä"], "anegative":["kaksi", "2", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "yksikkö", "yksinkertainen", "yksimielinen", "yksinkertaisesti", "vahingoittunut", "vahingoitettu"]},
-                            {"aid":"22112", "avalue":"kaksi", "akeywords":["kaksi", "ihmistä", "tekijä"], "anegative":["yksi", "1", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kaksikymmentä", "parikymmentä", "kaksi sataa", "kaksisataa", "parisataa", "pari tonnia", "kaksi tonnia", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "pori","vahingoittunut", "vahingoitettu"]},
-                            {"aid":"22113", "avalue":"kolme", "akeywords":["kolme", "ihmistä", "tekijä"], "anegative":["yksi", "1", "kaksi", "2", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kolmekymmentä", "kolmesataa", "kolmetoista", "vahingoittunut", "vahingoitettu"]},
-                            {"aid":"22114", "avalue":"useita", "akeywords":["neljä", "4", "viisi", "5", "monta", "ihmistä","use", "muutam", "tekijä"], "anegative":["yksi", "1", "kaksi", "2", "kolme", "3", "useasti", "usein", "useimmiten", "muutamasti", "lause", "nousen", "kuusen", "museo", "vahingoittunut", "vahingoitettu"]} 
-                        ]},
-                        {"qid": "2212", "qvalue":"onko tekijä paikalla", "qkeywords":["onko tekijä paikalla", "tekijä", "paikalla"], "child2":[
-                            {"aid": "22121", "avalue": "kyllä", "akeywords":["kyllä", "paikalla", "tekijä on paikalla"], "anegative":["poissa"]},
-                            {"aid": "22122", "avalue": "ei", "akeywords":["ei", "tekijä", "paikalla"], "anegative":[""]}
-                        ]}
-                    ] },
-                    { "aid": "222", "avalue": "ei", "akeywords":["ei", "tekijä ei tiedossa", "tekijä", "tiedossa"], "anegative":[""]}
-
-                ]
-            }
-        
-    ]
-}
+             }
+             ,
+             
+             {
+             	"question":
+             	[
+             		{
+             			"qid": "27", "qvalue":"kuinka monta tekijää", "qkeywords":["kuinka monta", "tekijä", "tekijää", "kuinka monta tekijää"]
+             		}
+             	],
+             	
+             	"answers":
+             	[
+             		{"aid":"271", "avalue":"yksi", "akeywords":["yksi", "ihminen", "tekijä", "yksi tekijä", "tyyppi"], "anegative":["kaksi", "2", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "yksikkö", "yksinkertainen", "yksimielinen", "yksinkertaisesti", "vahingoittunut", "vahingoitettu"]},
+                    {"aid":"272", "avalue":"kaksi", "akeywords":["kaksi", "ihmistä", "tekijä", "tyyppi"], "anegative":["yksi", "1", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kaksikymmentä", "parikymmentä", "kaksi sataa", "kaksisataa", "parisataa", "pari tonnia", "kaksi tonnia", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "pori","vahingoittunut", "vahingoitettu"]},
+                    {"aid":"273", "avalue":"kolme", "akeywords":["kolme", "ihmistä", "tekijä", "tyyppi"], "anegative":["yksi", "1", "kaksi", "2", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kolmekymmentä", "kolmesataa", "kolmetoista", "vahingoittunut", "vahingoitettu"]},
+                    {"aid":"274", "avalue":"useita", "akeywords":["neljä", "4", "viisi", "5", "monta", "ihmistä","use", "muutam", "tekijä", "tyypp"], "anegative":["yksi", "1", "kaksi", "2", "kolme", "3", "useasti", "usein", "useimmiten", "muutamasti", "lause", "nousen", "kuusen", "museo", "vahingoittunut", "vahingoitettu"]} 
+             	]
+             }
+             ,
+             
+             {
+             	"question":
+             	[
+             		{
+             			"qid": "28", "qvalue":"onko tekijä paikalla", "qkeywords":["onko tekijä paikalla", "tekijä", "paikalla"]
+             		}
+             	],
+             	
+             	"answers":
+             	[
+             		{"aid": "281", "avalue": "kyllä", "akeywords":["kyllä", "juu", "joo", "paikalla", "tekijä on paikalla", "on täällä", "on paikalla", "on vielä"], "anegative":["poissa", "poistunut", "pakeni", "paennut", "lähtenyt"]},
+                    {"aid": "282", "avalue": "ei", "akeywords":["ei", "tekijä", "paikalla", "paikalta", "tekijä ei ole paikalla", "on poistunut", "ovat poistuneet", "poistu",  "paenn", "lähten", "ei ole enää"], "anegative":[""]}
+             	]      	
+			} 
+			        
+        ]
+	}
   
 ]
