@@ -376,6 +376,7 @@ public class SpeechService {
 				if (array.size() > 1) {
 					fou.setId(Integer.toString(ans.getId()));
 					fou.setFoundWords(array);
+					fou.setSize(array.size());
 					objectList.add(fou);
 				}
 			}
@@ -383,12 +384,18 @@ public class SpeechService {
 		System.out.println("objectList " + objectList.toString());
 		// If objectList is not empty, the list will be sorted in descending by the
 		// foundwords list size
-		if (!objectList.isEmpty()) {
+		if (objectList.size()>0) {
+			System.out.println("387");
 			Collections.sort(objectList, Comparator.comparingInt(Found::getSize).reversed());
-
+			System.out.println("List" + objectList.toString());
+			if (objectList.size() == 1) {
+				sendObject(objectList.get(0));
+			
+			}
+			System.out.println("389");
 			// If the found words list is not empty and has more than one word, checking
 			// that the lists are not equal size
-			if (!objectList.get(0).getFoundWords().isEmpty() && objectList.size() > 1) {
+			if (objectList.size() > 1) {
 
 				int index0size = objectList.get(0).getFoundWords().size();
 				int index1size = objectList.get(1).getFoundWords().size();
@@ -399,6 +406,7 @@ public class SpeechService {
 				// frontend
 				// Else just printing
 				if (index0size > index1size) {
+					System.out.println("tullaanko tänne? " + objectList.get(0));
 					sendObject(objectList.get(0));
 				}
 
