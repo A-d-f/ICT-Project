@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -41,21 +39,16 @@ import data.Question;
 @Path("/speechservice")
 public class SpeechService {
 
-	// Lista incidenttejä varten jotta voidaan chooseIncidentissä hakea incidenttien
-	// avainsanalistat
+	// List for incident objects
 	public ArrayList<Incident> incidentList = new ArrayList<>();
-
-	// Uusi luokka tehty frontille lähetettävää stringiä varten,
-	// mutta ei ainakaan toistaiseksi löydä getterillä chooseIncidentissä
-	// päivitettyä arvoa esim "1" vaan tulostaa null
-
+	
 	boolean chosenIncident = false;
 	static Content con = new Content();
 	static Found tofront = new Found();
 	static Found incIndex = new Found();
 	static Found fromFront = new Found();
-	int incidentchosen=0;
-	Found fromfrontend= new Found();
+	int incidentchosen = 0;
+	Found fromfrontend = new Found();
 	String selectedIncident;
 	int selected;
 
@@ -87,7 +80,7 @@ public class SpeechService {
 		return list;
 
 	}
-	
+
 	@POST
 	@Path("/selectincident")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -95,20 +88,19 @@ public class SpeechService {
 		selected = Integer.parseInt(chosenIncident);
 		System.out.println("selected: " + selected);
 		fromFront.setId(chosenIncident);
-		ServerSocket ss=new ServerSocket(6666); 
-		Socket s=ss.accept();  
-		DataOutputStream out=new DataOutputStream(s.getOutputStream());
-		out.writeUTF(chosenIncident);  
-		ss.close();  
+		ServerSocket ss = new ServerSocket(6666);
+		Socket s = ss.accept();
+		DataOutputStream out = new DataOutputStream(s.getOutputStream());
+		out.writeUTF(chosenIncident);
+		ss.close();
 	}
-	
+
 	@GET
 	@Path("/getselected")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getSelected() {
 		return fromFront.getId();
-	
-		
+
 	}
 
 	public void handleData(String transcript) throws IOException, InterruptedException {
@@ -157,25 +149,24 @@ public class SpeechService {
 			chooseIncident(transcript);
 		} else {
 			System.out.println("INC ID " + incIndex.getId());
-			
-			if (incidentchosen<1) {
-			incidentchosen= Integer.parseInt(idFromSocket());
+
+			if (incidentchosen < 1) {
+				incidentchosen = Integer.parseInt(idFromSocket());
 			}
-			System.err.println(" ID "+incidentchosen);
+			System.err.println(" ID " + incidentchosen);
 			int index = (incidentchosen - 1);
 //			System.err.println("138 index"+ index+" selected "+selected);
 			con.setQuestionList(incidentList.get(index).getContent().getQuestionList());
 			checkAnswers(transcript, con);
-			
 
 		}
 
 	}
-	
+
 	public String idFromSocket() throws UnknownHostException, IOException {
-		Socket s=new Socket("localhost",6666);
-		DataInputStream dis=new DataInputStream(s.getInputStream());
-		String isId=(String)dis.readUTF();
+		Socket s = new Socket("localhost", 6666);
+		DataInputStream dis = new DataInputStream(s.getInputStream());
+		String isId = (String) dis.readUTF();
 		return isId;
 	}
 
@@ -342,7 +333,7 @@ public class SpeechService {
 		if (objList.get(0).getFoundWords().isEmpty()) {
 			chosenIncident = false;
 		} else {
-			
+
 			chosenIncident = true;
 			sendObject(objList.get(0));
 			incIndex.setId(objList.get(0).getId());
@@ -416,7 +407,8 @@ public class SpeechService {
 				}
 
 				// If the list of found words is not empty/is greater than 1, setting answer id
-				// and the array to Found Object "fou"
+				// and
+				// the array and it's size to Found Object "fou"
 				// Finally adding the fou object to objectList
 //				if (!array.isEmpty()) {
 				if (array.size() > 1) {
@@ -428,19 +420,18 @@ public class SpeechService {
 			}
 		}
 		System.out.println("objectList " + objectList.toString());
-		// If objectList is not empty, the list will be sorted in descending by the
-		// foundwords list size
-		if (objectList.size()>0) {
-			System.out.println("387");
+		// If the objectList has content, sorting objects by their size (list size) in
+		// descending order
+		if (objectList.size() > 0) {
 			Collections.sort(objectList, Comparator.comparingInt(Found::getSize).reversed());
-			System.out.println("List" + objectList.toString());
+
+			// If there is only one object, sending that to frontend
 			if (objectList.size() == 1) {
 				sendObject(objectList.get(0));
-			
+
 			}
-			System.out.println("389");
-			// If the found words list is not empty and has more than one word, checking
-			// that the lists are not equal size
+			// If there is more than one object in objectList, saving first two indexes
+			// sizes to varibles
 			if (objectList.size() > 1) {
 
 				int index0size = objectList.get(0).getFoundWords().size();
