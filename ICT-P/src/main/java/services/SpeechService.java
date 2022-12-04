@@ -385,7 +385,7 @@ public class SpeechService {
 						// If isNeg == false (the word was not in the negativelist), adding it to the
 						// list
 						if (isNeg == false) {
-							array.add(foundWord);
+							array.add(splittedWord);
 						}
 					}
 				}
