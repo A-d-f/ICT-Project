@@ -18,7 +18,7 @@
 	            "answers":
 	                [
 	                    { "aid": "111", "avalue": "1", "akeywords":["yksi", "puu", "1", "yksi puu", "yksi puu on kaatunut"], "anegative":["kaksi", "2", "pari", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "yksityinen", "yksityiskohta", "yksityiskohtainen", "yksikkö", "yksityisellä", "yksityisessä", "yksityistä", "puuta", "yksitoista", "puuton", "puuttua", "puuttuu", "puutuu", "sukupuu", "polttopuu", "puute", "miksi"]},
-	                    { "aid": "112", "avalue": "2", "akeywords":["pari", "kaksi", "2", "puuta", "kaksi puuta", "pari puuta", "on kaatunut", "kaksi puuta on kaatunut"], "anegative":["yksi", "1", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "parikymmentä", "kaksitoista", "kaksikymmentä", "kaksi sataa", "kaksisataa", "puutalo", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "pori", "puute"]},
+	                    { "aid": "112", "avalue": "2", "akeywords":["pari", "kaksi", "2", "puuta", "kaksi puuta", "pari puuta", "kaatunut", "on kaatunut", "kaksi puuta on kaatunut"], "anegative":["yksi", "1", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "parikymmentä", "kaksitoista", "kaksikymmentä", "kaksi sataa", "kaksisataa", "puutalo", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "pori", "puute"]},
 	                    { "aid": "113", "avalue": "3", "akeywords":["kolme", "3", "puuta", "kolme puuta","kolme puuta on kaatunut"], "anegative":["yksi", "1", "kaksi", "2", "pari", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kolmetoista", "kolmekymmentä", "kolmesataa", "puute"]},
 	                    { "aid": "114", "avalue": "Monta", "akeywords":["neljä", "viisi", "4", "5", "monta", "monia", "use", "kymmeniä", "muutam", "puuta", "puita", "kymmeniä", "monta puuta", "monia puita", "useita puita", "kymmeniä puita", "muutamia puita", "useampi puu on kaatunut", "monta puuta on kaatunut", "puita on kaatunut"], "anegative":["yksi", "1", "kaksi", "2","pari", "kolme", "3","useasti", "usein", "useimmiten", "muutamasti", "puutalo", "lause", "nousen", "kuusen", "peace", "puute"]}
 	                ]
@@ -93,7 +93,7 @@
 			    
 			    "answers":
 			        [
-			            {"aid":"151", "avalue":"kyllä", "akeywords":["joo", "juu", "kyllä", "ihminen", "välissä", "alle", "alla", "jumi", "pääll", "ihmis vahinkoa", "on ihmis vahinkoa", "on ihmisvahinkoa", "on vahinkoa", "on loukkaant", "ihminen puun alla", "puun alla"], "anegative":["tupajumi", "ei"]},
+			            {"aid":"151", "avalue":"kyllä", "akeywords":["joo", "juu", "kyllä", "ihminen", "välissä", "alle", "osui", "alla", "jumi", "pääll", "ihmis vahinkoa", "on ihmis vahinkoa", "on ihmisvahinkoa", "on vahinkoa", "on loukkaant", "ihminen puun alla", "puun alla"], "anegative":["tupajumi", "ei"]},
 			            {"aid":"152", "avalue":"ei", "akeywords":["ei", "ei vahinkoa", "vahinkoa", "ihmisvahinkoa", "ihmis vahinkoa", "ei ihmisvahinkoa", "ei ihmis vahinkoa", "ei loukkaant", "ei ole"], "anegative":["hei", "sei", "alla", "jumissa"]}
 			        ]
 			 }
@@ -139,7 +139,7 @@
 {
     "incident":"2",
     "name": "Kauppa ryöstetty",
-    "keywords":["kauppa", "ryöstö", "varas", "ryöstetty", "kauppa on ryöstetty"],
+    "keywords":["kauppa", "kaupan", "ryöstö", "varas", "ryöstetty", "on ryöstetty", "kauppa on ryöstetty"],
     "negative":["varasto", "puu", "kaatunut", "puita", "varaslähtö"],
     "content":
     [
