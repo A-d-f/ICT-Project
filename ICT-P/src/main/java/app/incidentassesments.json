@@ -18,7 +18,7 @@
 	            "answers":
 	                [
 	                    { "aid": "111", "avalue": "1", "akeywords":["yksi", "puu", "1", "yksi puu", "yksi puu on kaatunut"], "anegative":["kaksi", "2", "pari", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "yksityinen", "yksityiskohta", "yksityiskohtainen", "yksikkö", "yksityisellä", "yksityisessä", "yksityistä", "puuta", "yksitoista", "puuton", "puuttua", "puuttuu", "puutuu", "sukupuu", "polttopuu", "puute", "miksi"]},
-	                    { "aid": "112", "avalue": "2", "akeywords":["pari", "kaksi", "2", "puuta", "kaksi puuta", "pari puuta", "on kaatunut", "kaksi puuta on kaatunut"], "anegative":["yksi", "1", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "parikymmentä", "kaksitoista", "kaksikymmentä", "kaksi sataa", "kaksisataa", "puutalo", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "pori", "puute"]},
+	                    { "aid": "112", "avalue": "2", "akeywords":["pari", "kaksi", "2", "puuta", "kaksi puuta", "pari puuta", "kaatunut", "on kaatunut", "kaksi puuta on kaatunut"], "anegative":["yksi", "1", "kolme", "3", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "parikymmentä", "kaksitoista", "kaksikymmentä", "kaksi sataa", "kaksisataa", "puutalo", "parivaljakko", "pariton", "parillinen", "ripari", "aviopari", "paristo", "pori", "puute"]},
 	                    { "aid": "113", "avalue": "3", "akeywords":["kolme", "3", "puuta", "kolme puuta","kolme puuta on kaatunut"], "anegative":["yksi", "1", "kaksi", "2", "pari", "neljä", "4", "viisi", "monta", "usea", "kymmeniä", "kolmetoista", "kolmekymmentä", "kolmesataa", "puute"]},
 	                    { "aid": "114", "avalue": "Monta", "akeywords":["neljä", "viisi", "4", "5", "monta", "monia", "use", "kymmeniä", "muutam", "puuta", "puita", "kymmeniä", "monta puuta", "monia puita", "useita puita", "kymmeniä puita", "muutamia puita", "useampi puu on kaatunut", "monta puuta on kaatunut", "puita on kaatunut"], "anegative":["yksi", "1", "kaksi", "2","pari", "kolme", "3","useasti", "usein", "useimmiten", "muutamasti", "puutalo", "lause", "nousen", "kuusen", "peace", "puute"]}
 	                ]
@@ -93,8 +93,8 @@
 			    
 			    "answers":
 			        [
-			            {"aid":"151", "avalue":"kyllä", "akeywords":["joo", "juu", "kyllä", "ihminen", "välissä", "alle", "alla", "jumi", "pääll", "ihmis vahinkoa", "on ihmis vahinkoa", "on ihmisvahinkoa", "on vahinkoa", "on loukkaant", "ihminen puun alla", "puun alla"], "anegative":["tupajumi", "ei"]},
-			            {"aid":"152", "avalue":"ei", "akeywords":["ei", "ei vahinkoa", "vahinkoa", "ihmisvahinkoa", "ihmis vahinkoa", "ei ihmisvahinkoa", "ei ihmis vahinkoa", "ei loukkaant", "ei ole"], "anegative":["hei", "sei", "alla", "jumissa"]}
+			            {"aid":"151", "avalue":"kyllä", "akeywords":["joo", "juu", "kyllä", "on ihmis vahinkoa", "ihminen", "välissä", "alle", "osui", "osu ihmisiin", "osu ihmiseen", "osui ihmisiin", "osui ihmiseen", "alla", "jumi", "pääll", "on ihmisvahinkoa", "on vahinkoa", "on loukkaant", "ihminen puun alla", "puun alla"], "anegative":["tupajumi", "ei"]},
+			            {"aid":"152", "avalue":"ei", "akeywords":["ei", "ei vahinkoa", "ei ihmisvahinkoa","vahinkoa", "ei ihmis vahinkoa", "ei loukkaant", "ei ole"], "anegative":["hei", "sei", "alla", "jumissa", "joo", "juu", "kyllä"]}
 			        ]
 			 }
              ,
@@ -139,7 +139,7 @@
 {
     "incident":"2",
     "name": "Kauppa ryöstetty",
-    "keywords":["kauppa", "ryöstö", "varas", "ryöstetty", "kauppa on ryöstetty"],
+    "keywords":["kauppa", "kaupan", "ryöstö", "varas", "ryöstetty", "on ryöstetty", "kauppa on ryöstetty"],
     "negative":["varasto", "puu", "kaatunut", "puita", "varaslähtö"],
     "content":
     [
@@ -156,7 +156,7 @@
             "answers":
                 [
                     { "aid": "211", "avalue": "kyllä", "akeywords":["vaarassa", "uhkailee", "kyllä", "joo", "juu", "uhka", "ryöstö", "ryöstää", "uhkailee aseella", "osoittaa aseella"], "anegative":["aseeton", "turvallinen", "turvallista"]},
-                    { "aid": "212", "avalue": "ei", "akeywords":["ei", "ei asetta", "ei ole asetta", "aseetta", "aseeton", "ei ota kontaktia", "ei lähestynyt"], "anegative":["pelottavaa", "pelottaa", "uhkaavaa","uhata", "uhkaa", "aseistettu"]}                    
+                    { "aid": "212", "avalue": "ei", "akeywords":["ei", "ei väkivallan uhkaa", "ei ole uhkaa", "ei uhkailtu", "ei vaaraa", "ei ole väkivallan uhkaa"], "anegative":["ase", "asetta","vahinkoa", "paikalla", "tekijä", "poistunut", "pelottavaa", "pelottaa", "uhkaavaa","uhata", "uhkaa", "aseistettu"]}                    
                 ]                
              }
              ,
@@ -173,7 +173,7 @@
              "answers":
          		[
          			{"aid":"221", "avalue":"kyllä", "akeywords":["kyllä", "joo", "juu", "vahinko", "henkilövahinko", "on henkilövahinkoa", "on vahingoitettu", "on loukkaantu", "on loukannut", "ovat vahingoittaneet"], "anegative":["vahinkosaneeraus", "vesivahinko", "vahinkovakuutus"]},
-         			{"aid":"222", "avalue":"ei", "akeywords":["ei", "vahinkoa", "ei henkilövahinkoa", "ei ole", "ei loukkaantumisia", "ei ole vahinkoa", "kaikki on kunnossa"], "anegative":["haavoittunut", "loukkaantunut", "kuollut", "puukotettu", "ammuttu", "hakattu"]}
+         			{"aid":"222", "avalue":"ei", "akeywords":["ei", "vahinkoa", "ei henkilövahinkoa", "ei ole", "ei loukkaantumisia", "ei ole vahinkoa", "kaikki on kunnossa"], "anegative":["ase", "asetta", "paikalla", "tekijä", "poistunut", "haavoittunut", "loukkaantunut", "kuollut", "puukotettu", "ammuttu", "hakattu"]}
          		]	
              }
              ,
@@ -228,7 +228,7 @@
 	         		{"aid":"251", "avalue":"teräase", "akeywords":["teräase", "puukko", "veitsi", "puukott"], "anegative":["pyssy", "haulikko", "pistooli", "pesäpallomaila","moukari", "aseeton"]},
                     {"aid":"252", "avalue":"ampuma-ase", "akeywords":["pyssy", "haulikko", "pistooli", "ampua", "ampunut"], "anegative":["pesäpallomaila","moukari", "teräase", "puukko", "veitsi","aseeton"]},
                     {"aid":"253", "avalue":"lyömäase", "akeywords":["pesäpallomaila","moukari", "pesismaila", "lyödä", "on lyönyt"], "anegative":["pyssy", "haulikko", "pistooli", "teräase", "puukko", "veitsi", "aseeton"]},
-                    {"aid":"254", "avalue":"ei asetta", "akeywords":["ei asetta", "aseeton", "ei ole aseistettu", "ei ole aseita", "ei ole aseita näkyvi", "asetta näkyvi"], "anegative":["pyssy", "haulikko", "pistooli", "teräase", "puukko", "veitsi", "pesäpallomaila","moukari", "aseellinen"]}
+                    {"aid":"254", "avalue":"ei asetta", "akeywords":["ei", "ei asetta", "asetta", "aseeton", "ei ole aseistettu", "ei ole asetta", "ei ole aseita", "ei ole aseita näkyvi", "asetta näkyvi"], "anegative":["tekijää", "tekijä", "vahinko", "vahinkoa", "pyssy", "haulikko", "pistooli", "teräase", "puukko", "veitsi", "pesäpallomaila","moukari", "aseellinen"]}
              	]
              }
              ,
@@ -245,7 +245,7 @@
             	"answers":
             	[
             		{"aid": "261", "avalue": "kyllä", "akeywords":["kyllä", "joo", "juu", "tekijä", "tekijä on tiedossa", "tekijä tiedetään", "se on tuttu tyyppi", "käynyt ennenkin", "tuttu tekijä"], "anegative":["tuntematon", "tuntemattomia"]},
-            		{"aid": "262", "avalue": "ei", "akeywords":["ei", "tekijä ei tiedossa", "ei tiedetä tekijää", "ei ole tuttu", "tekijä", "tiedossa", "tiedä yhtään kuka"], "anegative":["tiedetä"]}
+            		{"aid": "262", "avalue": "ei", "akeywords":["ei", "tekijä ei tiedossa", "ei tiedetä tekijää", "ei ole tuttu", "tekijä", "tiedossa", "tiedä yhtään kuka"], "anegative":["ase", "asetta", "poistunut", "paikalla", "tiedetä", "vahinko", "vahinkoa"]}
             	]
 
              }
@@ -280,7 +280,7 @@
              	"answers":
              	[
              		{"aid": "281", "avalue": "kyllä", "akeywords":["kyllä", "juu", "joo", "paikalla", "tekijä on paikalla", "on täällä", "on paikalla", "on vielä"], "anegative":["poissa", "poistunut", "pakeni", "paennut", "lähtenyt"]},
-                    {"aid": "282", "avalue": "ei", "akeywords":["ei", "tekijä", "paikalla", "paikalta", "tekijä ei ole paikalla", "on poistunut", "ovat poistuneet", "poistu",  "paenn", "lähten", "ei ole enää"], "anegative":[""]}
+                    {"aid": "282", "avalue": "ei", "akeywords":["ei", "tekijä", "paikalla", "paikalta", "tekijä ei ole paikalla", "on poistunut", "ovat poistuneet", "poistu",  "paenn", "lähten", "ei ole enää"], "anegative":["tiedetä", "tiedossa", "vahinko", "vahinkoa"]}
              	]      	
 			} 
 			        
