@@ -147,17 +147,22 @@ public class SpeechService {
 
 		if (chosenIncident == false) {
 			chooseIncident(transcript);
+			incidentchosen = Integer.parseInt(idFromSocket());
+			if (incidentchosen > 0) {
+				chosenIncident = true;
+				System.err.println(" ID " + incidentchosen);
+				int index = (incidentchosen - 1);
+				con.setQuestionList(incidentList.get(index).getContent().getQuestionList());
+				checkAnswers(transcript, con);
+			}
 		} else {
 			System.out.println("INC ID " + incIndex.getId());
-
-			if (incidentchosen < 1) {
-				incidentchosen = Integer.parseInt(idFromSocket());
-			}
-			System.err.println(" ID " + incidentchosen);
 			int index = (incidentchosen - 1);
-//			System.err.println("138 index"+ index+" selected "+selected);
 			con.setQuestionList(incidentList.get(index).getContent().getQuestionList());
 			checkAnswers(transcript, con);
+
+
+			
 
 		}
 
@@ -167,6 +172,7 @@ public class SpeechService {
 		Socket s = new Socket("localhost", 6666);
 		DataInputStream dis = new DataInputStream(s.getInputStream());
 		String isId = (String) dis.readUTF();
+		
 		return isId;
 	}
 
@@ -330,11 +336,12 @@ public class SpeechService {
 		System.out.println("ObjList " + objList.get(0));
 		// If previously sorted lists first indexes list isEmpty chosenIncident = false,
 		// otherwise true (Incident has been found)
+		System.err.println("BOOLEAN ONPI: " + chosenIncident);
 		if (objList.get(0).getFoundWords().isEmpty()) {
 			chosenIncident = false;
 		} else {
 
-			chosenIncident = true;
+
 			sendObject(objList.get(0));
 			incIndex.setId(objList.get(0).getId());
 
