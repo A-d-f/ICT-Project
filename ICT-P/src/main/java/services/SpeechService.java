@@ -39,19 +39,23 @@ import data.Question;
 @Path("/speechservice")
 public class SpeechService {
 
+	// Handling the transcript data and sending data to frontend via REST
+
 	// List for incident objects
 	public ArrayList<Incident> incidentList = new ArrayList<>();
-	
+	// Boolean attribute - is the incident chosen (true) or not chosen (false) by
+	// the calltaker
 	boolean chosenIncident = false;
+	// Getting question and answer content to be sent to checkAnswers method
 	static Content con = new Content();
 	static Found tofront = new Found();
-	static Found incIndex = new Found();
-	static Found fromFront = new Found();
+
 	int incidentchosen = 0;
 	Found fromfrontend = new Found();
 	String selectedIncident;
 	int selected;
 
+	// Receiving Found object from method sendObject, setting it to object "tofront"
 	@POST
 	@Path("/getdata")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -66,6 +70,8 @@ public class SpeechService {
 
 	}
 
+	// Setting object tofront to a object list, returning list
+	// This method is called from the frontend
 	@GET
 	@Path("/getvalues")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -81,13 +87,15 @@ public class SpeechService {
 
 	}
 
+	// When incident is selected in frontend:
+	// Receiving the id of the selected incident and setting it to object fromFront
 	@POST
 	@Path("/selectincident")
 	@Produces(MediaType.TEXT_PLAIN)
 	public void selectIncident(String chosenIncident) throws IOException {
-		selected = Integer.parseInt(chosenIncident);
-		System.out.println("selected: " + selected);
-		fromFront.setId(chosenIncident);
+
+		System.out.println("Selected: " + chosenIncident);
+
 		ServerSocket ss = new ServerSocket(6666);
 		Socket s = ss.accept();
 		DataOutputStream out = new DataOutputStream(s.getOutputStream());
@@ -95,26 +103,19 @@ public class SpeechService {
 		ss.close();
 	}
 
-	@GET
-	@Path("/getselected")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getSelected() {
-		return fromFront.getId();
-
-	}
-
 	public void handleData(String transcript) throws IOException, InterruptedException {
 
-		// Tarkistetaan onko incidentListiin jo haettu tiedot eli tehdään vain
-		// ensimmäisellä kerralla kun ohjelmaa ajetaan
+		// Checking if incidentList already contains info - it is done only once when
+		// the program is ran
+
 		if (incidentList.isEmpty()) {
 
 			try {
-				JSONParser parser = new JSONParser();// Tee JSONParser
-
+				JSONParser parser = new JSONParser();
+				// Reading the data from the json file into an Object
 				Object data = parser.parse(new FileReader("src/main/java/app/incidentassesments.json"));
-				JSONArray array = (JSONArray) data;// Objektista JSONArray
-
+				JSONArray array = (JSONArray) data;
+				// Fetching data to objects and saving the objects to incidentList
 				for (int i = 0; i < array.size(); i++) {
 					JSONObject jo = (JSONObject) array.get(i);
 					Incident incident = new Incident();
@@ -129,53 +130,53 @@ public class SpeechService {
 
 					readContent(arr, incident);
 
-					// Tämä try catch tehdään vain kerran alussa, kun JSON luetaan ensimmäisen
-					// kerran incident-olioon
-
 					incidentList.add(incident);
 				}
-				for (Incident i : incidentList) {
 
-				}
 			} catch (Exception e) {
-				System.err.println("Jotain meni pieleen");
+				System.err.println("Something went wrong.");
 			}
 
 		}
 
-		// Valitsee oikean incidentin keywordien perusteella
+		// If incident hasn't been chosen, method chooseIncident is called, and checking
+		// if the incident ID has been received from frontend
 
 		if (chosenIncident == false) {
 			chooseIncident(transcript);
 			incidentchosen = Integer.parseInt(idFromSocket());
+			// If the ID is bigger than zero, an incident has been chosen and
+			// the chosenIncident is set "true"
 			if (incidentchosen > 0) {
 				chosenIncident = true;
 				System.err.println(" ID " + incidentchosen);
 				int index = (incidentchosen - 1);
+				// Setting the data to con of the selected incident
 				con.setQuestionList(incidentList.get(index).getContent().getQuestionList());
+				// Sending the data to checkAnswers with transcript
 				checkAnswers(transcript, con);
 			}
+			// If incident has been chosen, the data is set to con
 		} else {
-			System.out.println("INC ID " + incIndex.getId());
 			int index = (incidentchosen - 1);
 			con.setQuestionList(incidentList.get(index).getContent().getQuestionList());
+			// Sending the data to checkAnswers with transcript
 			checkAnswers(transcript, con);
-
-
-			
 
 		}
 
 	}
 
+	// Fetching incident ID from frontend
 	public String idFromSocket() throws UnknownHostException, IOException {
 		Socket s = new Socket("localhost", 6666);
 		DataInputStream dis = new DataInputStream(s.getInputStream());
 		String isId = (String) dis.readUTF();
-		
+
 		return isId;
 	}
 
+	// Method to sending incident and answer objects to frontend
 	public void sendObject(Found found) {
 		// Creating client etc for REST
 		String uri = "http://127.0.0.1:8080/rest/speechservice/getdata";
@@ -187,6 +188,9 @@ public class SpeechService {
 		String s = b.post(e, String.class);// We get the response as a String
 	}
 
+	// Iterating and reading the content of the json and saving it to Content,
+	// Question and Answer objects
+	// The whole object Content is saved to object Incident in the end
 	private void readContent(JSONArray arr, Incident incident) {
 		Content content = new Content();
 		for (int i = 0; i < arr.size(); i++) {
@@ -238,6 +242,7 @@ public class SpeechService {
 
 	}
 
+	// Method for reading negative keywords of the incident
 	private void readNegatives(JSONArray arr, Incident incident) {
 		ArrayList<String> list = new ArrayList<>();
 
@@ -248,6 +253,7 @@ public class SpeechService {
 		incident.setNegativeList(list);
 	}
 
+	// Method for reading keywords of the incident
 	private void readKeyWords(JSONArray arr, Incident incident) {
 		ArrayList<String> list = new ArrayList<>();
 
@@ -258,7 +264,7 @@ public class SpeechService {
 	}
 
 	// Method for choosing incident,
-	// Returns boolean value
+	// returns boolean value
 	public boolean chooseIncident(String transcript) {
 
 		// transcript changed for LowerCase
@@ -335,22 +341,19 @@ public class SpeechService {
 		Collections.sort(objList, Comparator.comparingInt(Found::getSize).reversed());
 		System.out.println("ObjList " + objList.get(0));
 		// If previously sorted lists first indexes list isEmpty chosenIncident = false,
-		// otherwise true (Incident has been found)
-		System.err.println("BOOLEAN ONPI: " + chosenIncident);
+		// otherwise sending found object to object sendObject
+
 		if (objList.get(0).getFoundWords().isEmpty()) {
 			chosenIncident = false;
+
 		} else {
-
-
 			sendObject(objList.get(0));
-			incIndex.setId(objList.get(0).getId());
-
 		}
-
 		return chosenIncident;
 
 	}
 
+	// Checking the answers:
 	// Compares transcript to answer keywords and answer phrases of a certain
 	// incident
 	public void checkAnswers(String transcript, Content con) {
@@ -364,11 +367,12 @@ public class SpeechService {
 		// First 2 loops:
 		// the first loop loops questionlist of Content object -> gets answerlists of
 		// every questionlist indexes -> sets answerlists to object Question
-		// the second loop loops answerlists of Question object -> gets value, id and
-		// keywords -> sets them to object Answer
+
 		for (int i = 0; i < con.getQuestionList().size(); i++) {
 			que.setAnswerList(con.getQuestionList().get(i).getAnswerList());
 
+			// the second loop loops answerlists of Question object -> gets value, id and
+			// keywords -> sets them to object Answer
 			for (int e = 0; e < que.getAnswerList().size(); e++) {
 				ans.setAvalue(que.getAnswerList().get(e).getAvalue());
 				ans.setId(que.getAnswerList().get(e).getId());
@@ -413,11 +417,11 @@ public class SpeechService {
 					}
 				}
 
-				// If the list of found words is not empty/is greater than 1, setting answer id
+				// If the list of found words is greater than 1, setting answer id
 				// and
 				// the array and it's size to Found Object "fou"
 				// Finally adding the fou object to objectList
-//				if (!array.isEmpty()) {
+
 				if (array.size() > 1) {
 					fou.setId(Integer.toString(ans.getId()));
 					fou.setFoundWords(array);
@@ -438,7 +442,7 @@ public class SpeechService {
 
 			}
 			// If there is more than one object in objectList, saving first two indexes
-			// sizes to varibles
+			// sizes to variables
 			if (objectList.size() > 1) {
 
 				int index0size = objectList.get(0).getFoundWords().size();
@@ -448,14 +452,14 @@ public class SpeechService {
 
 				// If the first list has more words than the second, the object will be sent to
 				// frontend
-				// Else just printing
+				// Else (if the lists contain the same amount of words), just printing to
+				// console
 				if (index0size > index1size) {
-					System.out.println("tullaanko tänne? " + objectList.get(0));
 					sendObject(objectList.get(0));
 				}
 
 				else {
-					System.out.println("Ei voida tehdä ehdotusta.");
+					System.out.println("Cannot make a suggestion.");
 				}
 
 			}
@@ -470,6 +474,9 @@ public class SpeechService {
 		return substrings.stream().filter(str::contains).findAny().orElse(null);
 	}
 
+	// Comparing transcript words to the negative keywords list
+	// Returns boolean value "found" - if negative word is found, the value is true,
+	// otherwise false
 	public static boolean checkNegativeWords(String splittedWord, List<String> negativeKeywords) {
 		Iterator<String> negativeIterator = negativeKeywords.iterator();
 

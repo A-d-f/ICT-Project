@@ -38,6 +38,9 @@ import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
+
+// Code from Google API, handles the speech recognition and transcription
+
 public class InfiniteStreamRecognize {
 
 	private final int STREAMING_LIMIT = 290000; // ~5 minutes
@@ -62,10 +65,8 @@ public class InfiniteStreamRecognize {
 	private boolean lastTranscriptWasFinal = false;
 	private StreamController referenceToStreamController;
 	private ByteString tempByteString;
-	private boolean testi = true;
+	private boolean status = true;
 	DataTransfer data = new DataTransfer();
-
-	private String savedTranscript = "";
 
 	public String convertMillisToDate(double milliSeconds) {
 		long millis = (long) milliSeconds;
@@ -84,14 +85,8 @@ public class InfiniteStreamRecognize {
 
 			@Override
 			public void run() {
-
-				while (testi == true) {
-
-					String uri = "http://127.0.0.1:8080/hello";
-
-//				javax.ws.rs.client.Client c = ClientBuilder.newClient();
-//				WebTarget wt = c.target(uri);
-//				Builder b = wt.request(); 
+				// In order to continue the thread loop
+				while (status == true) {
 
 					System.out.println(YELLOW);
 					System.out.println("Start speaking...Press Ctrl-C to stop");
@@ -168,7 +163,8 @@ public class InfiniteStreamRecognize {
 
 				public void onComplete(String transcript) throws IOException, InterruptedException {
 
-					// Method for finding and matching keywords from splittedList
+					// Calling dataFetch method from DataTransfer thread, and sending transcript as
+					// a parameter to it
 
 					data.dataFetch(transcript);
 				}
