@@ -5,10 +5,10 @@
 
 Team:  [Anna-Maria Palm](https://github.com/A-d-f), [Jenna Hakkarainen](https://github.com/jenhakk), [Amanda Karjalainen](https://github.com/amakarj), [Waltteri Grek](https://github.com/GreWalw)
 
- 
+![frontend](https://user-images.githubusercontent.com/75020974/207854665-e7a05773-e7c1-446d-9b0d-64f0c1a542de.png) 
  
 
-## Our task![frontend](https://user-images.githubusercontent.com/75020974/207854665-e7a05773-e7c1-446d-9b0d-64f0c1a542de.png)
+## Our task
 
 
 Our task was to explore and try the possibilities of voice recognition in the case of of 112 emergency calls. System should recognize appropriate incident assessments and correct answers from the conversation and it could suggest them to the call taker. Our program shouldn't make actions but only suggest the most likely correct answers to the calltaker.  
