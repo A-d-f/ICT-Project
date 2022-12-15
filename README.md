@@ -5,6 +5,8 @@
 
 Team:  [Anna-Maria Palm](https://github.com/A-d-f), [Jenna Hakkarainen](https://github.com/jenhakk), [Amanda Karjalainen](https://github.com/amakarj), [Waltteri Grek](https://github.com/GreWalw)
 
+[Link to frontend repository](https://github.com/jenhakk/ICT-Project-Front-end)
+
 ![frontend](https://user-images.githubusercontent.com/75020974/207854665-e7a05773-e7c1-446d-9b0d-64f0c1a542de.png) 
  
 
